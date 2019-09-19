@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link href="https://fonts.googleapis.com/css?family=Merriweather:300|Raleway:400,700" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<!-- <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css"> -->
+<link rel="shortcut icon" href="/assets/favicon.ico">
+<title>command tips</title>
+<!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>command tips - 求索</title>
+<meta property="og:title" content="command tips" />
+<meta name="description" content="尔不必求记，却宜求个明白！" />
+<meta property="og:description" content="尔不必求记，却宜求个明白！" />
+<link rel="canonical" href="http://localhost:4000/pages/commands.html" />
+<meta property="og:url" content="http://localhost:4000/pages/commands.html" />
+<meta property="og:site_name" content="求索" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "WebPage",
+"headline": "command tips",
+"description": "尔不必求记，却宜求个明白！",
+"url": "http://localhost:4000/pages/commands.html"}</script>
+<!-- End Jekyll SEO tag -->
+</head>
+
+<body>
+	<main class="container">
+		<section class="about">
+			<a href="/"><img src="/assets/profile.png" alt="Mingxu.Xie"></a>
+			<h2>Mingxu.Xie</h2>
+			<p class="tagline">Devops</p>
+			<ul class="social">
+				<a href="https://github.com/xiemx">
+					<li><i class="icon-github-circled"></i></li>
+				</a>
+				<a href="https://www.linkedin.com/in/xiemx1991">
+					<li><i class="icon-linkedin-squared"></i></li>
+				</a>
+				<a href="https://twitter.com/xiemx1991">
+					<li><i class="icon-twitter-squared"></i></li>
+				</a>
+			</ul>
+			<p>&copy; 尔不必求记，却宜求个明白！</p>
+			<div>
+				<div class="categories">
+					<h4>Categories</h4>
+					<ul>
+						<a href="/">
+							<li>Index</li>
+						</a>
+						<a href="/pages/about.html">
+							<li>About</li>
+						</a>
+						<a href="/pages/archive.html">
+							<li>Archive</li>
+						</a>
+						<a href="/blog/">
+							<li>Blogs</li>
+						</a>
+						<a href="/pages/commands.html">
+							<li>Commands</li>
+						</a>
+					</ul>
+				</div>
+				<div class="tags" style="width:200px;white-space:normal">
+					<h4>Tag Cloud:</h4>
+					<a href="/tag/cluster/" class="set-1">cluster</a> <a href="/tag/command/" class="set-1">command</a> <a href="/tag/deployment/" class="set-1">deployment</a> <a href="/tag/domain/" class="set-1">domain</a> <a href="/tag/http/" class="set-1">http</a> <a href="/tag/iis/" class="set-1">iis</a> <a href="/tag/issue/" class="set-1">issue</a> <a href="/tag/memcache/" class="set-1">memcache</a> <a href="/tag/mime-type/" class="set-1">mime-type</a> <a href="/tag/mongo/" class="set-1">mongo</a> <a href="/tag/monitor/" class="set-1">monitor</a> <a href="/tag/mysql/" class="set-1">mysql</a> <a href="/tag/python/" class="set-1">python</a> <a href="/tag/scripts/" class="set-1">scripts</a> <a href="/tag/shell/" class="set-1">shell</a> <a href="/tag/statuscode/" class="set-1">statusCode</a> <a href="/tag/uwsgi/" class="set-1">uwsgi</a> <a href="/tag/vagrant/" class="set-1">vagrant</a> <a href="/tag/vcenter/" class="set-1">vcenter</a> <a href="/tag/windows/" class="set-2">windows</a> <a href="/tag/zabbix/" class="set-5">zabbix</a> <a href="/tag/zentaopms/" class="set-1">zentaopms</a>
+				</div>
+			</div>
+		</section>
+		<section class="content">
+			<div class="post-container">
+    <div class="post">
+        <h3 id="commands-tips">Commands Tips</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#获取所有region的机器数量</span>
+<span class="k">for </span>i <span class="k">in</span> <span class="si">$(</span>aws ec2 describe-regions | <span class="nb">grep </span>RegionName| <span class="nb">awk</span> <span class="nt">-F</span><span class="s2">"[</span><span class="se">\"</span><span class="s2">]+"</span> <span class="s1">'{print $4}'</span><span class="si">)</span><span class="p">;</span><span class="k">do </span><span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">"</span><span class="nv">$i</span><span class="s2">: "</span><span class="p">;</span> <span class="nv">AWS_PROFILE</span><span class="o">=</span>jp aws
+<span class="nt">--region</span><span class="o">=</span><span class="nv">$i</span> ec2 describe-instances|grep InstanceId|wc <span class="nt">-l</span><span class="p">;</span><span class="k">done</span><span class="p">;</span>
+
+<span class="c">#获取节点的机器tag.name和privateIP</span>
+aws ec2 describe-instances <span class="nt">--filters</span> <span class="s2">"Name=tag:Service,Values=eos"</span> <span class="nt">--query</span>
+<span class="s2">"Reservations[*].Instances[*].[PrivateIpAddress,Tags[?Key=='Name'].Value]"</span> <span class="nt">--output</span> text
+
+<span class="c">#simple http server</span>
+python <span class="nt">-m</span> SimperHTTPServer 60123
+
+<span class="c">#ssh端口转发</span>
+ssh <span class="nt">-v</span> <span class="nt">-N</span> <span class="nt">-L</span> 0.0.0.0:60123:192.168.10.195:60123 203.175.165.66
+
+<span class="c">#查看rsa私钥的公钥</span>
+ssh-keygen <span class="nt">-y</span> <span class="nt">-f</span> id_rsa <span class="o">&gt;</span> id_rsa.pub
+
+<span class="c">#wget 断点续传</span>
+wget <span class="nt">-c</span> <span class="nt">-t</span> 0 <span class="nt">-O</span> backup_2018_01_01_050000_9591273.bak http://47.88.192.116:12312/backup_2018_01_01_050000_9591273.bak
+
+
+<span class="c">#rsync+ssh proxy</span>
+rsync <span class="nt">-av</span> <span class="nt">-P</span> <span class="nt">-e</span> <span class="s2">"ssh -o 'ProxyCommand ssh 123.206.197.235 nc %h %p'"</span> 2018-03-06_03-05.sql.gz 10.86.48.8:/data/backup
+
+<span class="c">#consul-template</span>
+/srv/consul/consul-template <span class="nt">-consul</span> 192.168.10.123:8500 <span class="nt">-template</span>
+/srv/consul/my.ctmpl:/srv/consul/conf.d/my.conf:/etc/init.d/nginx reload <span class="nt">-once</span>
+
+<span class="c">#iptables forward</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-d</span> 192.168.10.226 <span class="nt">-p</span> tcp <span class="nt">-dport</span> 6386 <span class="nt">-j</span> DNAT <span class="nt">--to-destination</span> 192.168.10.81:6386
+iptables <span class="nt">-t</span> nat <span class="nt">-I</span> POSTROUTING <span class="nt">-j</span> MASQUERADE
+
+<span class="c">#远程抓包在本地调用wireshark工具打开</span>
+ssh <span class="nt">-o</span> <span class="s1">'ProxyCommand ssh 123.206.197.235 nc %h %p'</span> 192.168.199.63 <span class="s2">"sudo tcpdump -vv -i eth0 port 80 -w -"</span> | wireshark <span class="nt">-k</span>
+<span class="nt">-i</span> -
+
+<span class="c">#git diff对比commit差异，只列出文件名</span>
+git diff <span class="nt">--name-status</span> 128e72a28ea38d1c8691a22a28937356e7adf736^ 128e72a28ea38d1c8691a22a28937356e7adf736
+
+<span class="c">#docker log-opt</span>
+<span class="nt">--log-driver</span> syslog <span class="nt">--log-opt</span> <span class="nv">tag</span><span class="o">=</span><span class="s2">"eos-producer"</span>
+<span class="nt">--log-driver</span> json-file <span class="nt">--log-opt</span> max-size<span class="o">=</span>500m
+
+<span class="nb">sudo </span>docker run <span class="nt">--log-driver</span><span class="o">=</span>awslogs <span class="nt">--log-opt</span> awslogs-region<span class="o">=</span>ap-southeast-1 <span class="nt">--log-opt</span> awslogs-group<span class="o">=</span>eos-log <span class="nt">--log-opt</span>
+awslogs-datetime-format<span class="o">=</span><span class="s1">'\[%b %d, %Y %H:%M:%S\]'</span> <span class="nt">-d</span> <span class="nt">-p</span> 8898:80 nginx
+
+docker run <span class="nt">-d</span> <span class="nt">-p</span> 9876:9876 <span class="nt">-p</span> 80:8888 <span class="nt">--name</span> eos <span class="nt">--log-driver</span> gelf <span class="nt">--log-opt</span> gelf-address<span class="o">=</span>udp://10.188.10.145:15155 <span class="nt">-v</span>
+/data/eos/:/eos eoslaomao/eos:1.3.0 /opt/eosio/bin/nodeos <span class="nt">--data-dir</span><span class="o">=</span>/eos/data <span class="nt">--config-dir</span><span class="o">=</span>/eos/conf
+
+docker run <span class="nt">-d</span> <span class="nt">-p</span> 9876:9876 <span class="nt">-p</span> 8888:8888 <span class="nt">--name</span> eos <span class="nt">--log-driver</span> json-file <span class="nt">--log-opt</span> max-size<span class="o">=</span>1g <span class="nt">-v</span> /data/eos/:/eos
+gcr.io/eosasia-testnet/eos:v1.5.3-patch /opt/eosio/bin/nodeos <span class="nt">--data-dir</span><span class="o">=</span>/eos/data <span class="nt">--config-dir</span><span class="o">=</span>/eos/conf
+
+<span class="c">#pigz多线程打包</span>
+apt <span class="nb">install </span>pigz
+<span class="nb">tar</span> <span class="nt">--use-compress-program</span><span class="o">=</span>pigz <span class="nt">-cvpf</span> package.tgz ./package
+<span class="nb">tar</span> <span class="nt">--use-compress-program</span><span class="o">=</span>pigz <span class="nt">-xvpf</span> package.tgz <span class="nt">-C</span> ./package
+
+<span class="c">#aws elb reg/unreg instance</span>
+aws elbv2 register-targets
+<span class="nt">--target-group-arn</span><span class="o">=</span>arn:aws:elasticloadbalancing:ap-northeast-1:908572518:targetgroup/e-api-1/65c430c260d1556e <span class="nt">--targets</span>
+<span class="nv">Id</span><span class="o">=</span>i-00b7f498a742cd
+aws elbv2 deregister-targets
+<span class="nt">--target-group-arn</span><span class="o">=</span>arn:aws:elasticloadbalancing:ap-northeast-1:908572518:targetgroup/e-api-1/65c430c260d1556e <span class="nt">--targets</span>
+<span class="nv">Id</span><span class="o">=</span>i-00b7f498a742cd
+
+<span class="c">#pmm</span>
+docker run <span class="nt">-d</span> <span class="se">\</span>
+<span class="nt">-p</span> 80:81 <span class="se">\</span>
+<span class="nt">--volumes-from</span> pmm-data <span class="se">\</span>
+<span class="nt">--name</span> pmm-server <span class="se">\</span>
+<span class="nt">--restart</span> always <span class="se">\</span>
+percona/pmm-server:latest
+
+<span class="c">#git 使用指定的private key clone</span>
+<span class="nv">GIT_SSH_COMMAND</span><span class="o">=</span><span class="s2">"ssh -i ~/.ssh/id_rsa"</span> git clone git@cd.i.ly.com:ly/cat.git
+
+
+<span class="c">#K8S 端口转发</span>
+kubectl <span class="nt">-n</span> <span class="nb">test </span>port-forward <span class="si">$(</span>kubectl <span class="nt">-n</span> <span class="nb">test </span>get endpoints prometheus <span class="nt">-o</span>
+<span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.subsets[0].addresses[0].targetRef.name}'</span><span class="si">)</span> 9090:9090
+
+<span class="c">#jp 处理数据</span>
+jq <span class="s1">'.members[]|{"id": .id, "Name": .fullName}'</span> trello.json
+jq <span class="s1">'.cards[]|if .idList == "5c64e37e57ba1c20f62751ce" then .idMembers else .xxx end'</span> trello.json
+
+<span class="c">#获取websocket返回信息</span>
+s <span class="o">=</span> new WebSocket<span class="o">(</span><span class="s1">'wss://www.staging.strikingly.com/livechat-ws'</span><span class="o">)</span>
+s.onclose <span class="o">=</span> <span class="o">(</span>e<span class="o">)</span> <span class="o">=&gt;</span> <span class="o">{</span> console.log<span class="o">(</span>e<span class="o">)}</span>
+
+<span class="c"># 获取postgresql scheme</span>
+<span class="k">select</span> <span class="k">*</span> from information_schema.schemata<span class="p">;</span>
+
+<span class="c">#查看表字段 - postgresql</span>
+SELECT a.attname as name, a.attnotnull as notnull
+FROM pg_class as c,pg_attribute as a
+where c.relname <span class="o">=</span> <span class="s1">'mini_program_accounts'</span> and a.attrelid <span class="o">=</span> c.oid and a.attnum&gt;0
+
+<span class="c">#postgresql dump database</span>
+pg_dump <span class="nt">-U</span> vi <span class="nt">-d</span> vi <span class="nt">-h</span> rm-j.pg.rds.aliyuncs.com <span class="nt">-p</span> 3433 <span class="nt">--no-owner</span> <span class="nt">--no-privileges</span> <span class="nt">-f</span> vi.sql
+
+<span class="c">#mysqldump</span>
+mysqldump <span class="nt">--host</span> rm-j.mysql.rds.aliyuncs.com <span class="nt">-u</span> vi <span class="nt">-p</span> <span class="nt">--databases</span> via <span class="nt">--column-statistics</span><span class="o">=</span>0 <span class="o">&gt;</span> vi.sql
+
+<span class="c"># 获取当前会话总数</span>
+<span class="k">select </span>count<span class="o">(</span><span class="k">*</span><span class="o">)</span> from pg_stat_activity<span class="p">;</span>
+
+<span class="c"># 杀死所有idle的进程</span>
+<span class="k">select </span>pg_terminate_backend<span class="o">(</span>pid<span class="o">)</span> from pg_stat_activity where <span class="nv">state</span><span class="o">=</span><span class="s1">'idle'</span><span class="p">;</span>
+</code></pre></div></div>
+
+    </div>
+</div>
+		</section>
+	</main></body>
+
+</html>

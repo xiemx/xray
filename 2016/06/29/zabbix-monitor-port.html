@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link href="https://fonts.googleapis.com/css?family=Merriweather:300|Raleway:400,700" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<!-- <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css"> -->
+<link rel="shortcut icon" href="/assets/favicon.ico">
+<title>zabbix监控指定端口</title>
+<!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>zabbix监控指定端口 - 求索</title>
+<meta property="og:title" content="zabbix监控指定端口" />
+<meta name="description" content="1.登陆zabbix主界面" />
+<meta property="og:description" content="1.登陆zabbix主界面" />
+<link rel="canonical" href="http://localhost:4000/2016/06/29/zabbix-monitor-port" />
+<meta property="og:url" content="http://localhost:4000/2016/06/29/zabbix-monitor-port" />
+<meta property="og:site_name" content="求索" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-06-29T18:06:32+08:00" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "zabbix监控指定端口",
+"datePublished": "2016-06-29T18:06:32+08:00",
+"description": "1.登陆zabbix主界面",
+"url": "http://localhost:4000/2016/06/29/zabbix-monitor-port"}</script>
+<!-- End Jekyll SEO tag -->
+</head>
+
+<body>
+	<main class="container">
+		<section class="about">
+			<a href="/"><img src="/assets/profile.png" alt="Mingxu.Xie"></a>
+			<h2>Mingxu.Xie</h2>
+			<p class="tagline">Devops</p>
+			<ul class="social">
+				<a href="https://github.com/xiemx">
+					<li><i class="icon-github-circled"></i></li>
+				</a>
+				<a href="https://www.linkedin.com/in/xiemx1991">
+					<li><i class="icon-linkedin-squared"></i></li>
+				</a>
+				<a href="https://twitter.com/xiemx1991">
+					<li><i class="icon-twitter-squared"></i></li>
+				</a>
+			</ul>
+			<p>&copy; 尔不必求记，却宜求个明白！</p>
+			<div>
+				<div class="categories">
+					<h4>Categories</h4>
+					<ul>
+						<a href="/">
+							<li>Index</li>
+						</a>
+						<a href="/pages/about.html">
+							<li>About</li>
+						</a>
+						<a href="/pages/archive.html">
+							<li>Archive</li>
+						</a>
+						<a href="/blog/">
+							<li>Blogs</li>
+						</a>
+						<a href="/pages/commands.html">
+							<li>Commands</li>
+						</a>
+					</ul>
+				</div>
+				<div class="tags" style="width:200px;white-space:normal">
+					<h4>Tag Cloud:</h4>
+					<a href="/tag/cluster/" class="set-1">cluster</a> <a href="/tag/command/" class="set-1">command</a> <a href="/tag/deployment/" class="set-1">deployment</a> <a href="/tag/domain/" class="set-1">domain</a> <a href="/tag/http/" class="set-1">http</a> <a href="/tag/iis/" class="set-1">iis</a> <a href="/tag/issue/" class="set-1">issue</a> <a href="/tag/memcache/" class="set-1">memcache</a> <a href="/tag/mime-type/" class="set-1">mime-type</a> <a href="/tag/mongo/" class="set-1">mongo</a> <a href="/tag/monitor/" class="set-1">monitor</a> <a href="/tag/mysql/" class="set-1">mysql</a> <a href="/tag/python/" class="set-1">python</a> <a href="/tag/scripts/" class="set-1">scripts</a> <a href="/tag/shell/" class="set-1">shell</a> <a href="/tag/statuscode/" class="set-1">statusCode</a> <a href="/tag/uwsgi/" class="set-1">uwsgi</a> <a href="/tag/vagrant/" class="set-1">vagrant</a> <a href="/tag/vcenter/" class="set-1">vcenter</a> <a href="/tag/windows/" class="set-2">windows</a> <a href="/tag/zabbix/" class="set-5">zabbix</a> <a href="/tag/zentaopms/" class="set-1">zentaopms</a>
+				</div>
+			</div>
+		</section>
+		<section class="content">
+			<div class="post-container">
+  <a class="post-link" href="/2016/06/29/zabbix-monitor-port">
+    <h2 class="post-title">zabbix监控指定端口</h2>
+  </a>
+  <div class="post-meta">
+    <ul class="post-categories"><li>zabbix</li></ul>
+    <div class="post-date"><i class="icon-calendar"></i>Jun 29, 2016</div>
+  </div>
+  <div class="post">
+    <p>1.登陆zabbix主界面</p>
+
+<p>选择：配置-模板</p>
+
+<p>选择模板组，这里我选择的是Template App Agentless，原因该自带模板组内包含各种常用服务的模板</p>
+
+<p>单击该模板组 项目</p>
+
+<p><img src="/assets/image/img_577330bdc322e.png" alt="img" />点击右上角的 创建项目</p>
+
+<p><img src="/assets/image/img_577330e1e5d06.png" alt="img" />这里添加的是mysql服务，按照如图配置</p>
+
+<p><img src="/assets/image/img_577330f8871b5.png" alt="img" />单击下方 存档 保存。</p>
+
+<p>如图点击 触发器</p>
+
+<p><img src="/assets/image/img_5773310c679a1.png" alt="img" />如图，点击右上方 创建触发器</p>
+
+<p><img src="/assets/image/img_5773313591d94.png" alt="img" />按照如图配置</p>
+
+<p><img src="/assets/image/img_57733153a13cb.png" alt="img" />点击 存档 保存，完毕。</p>
+
+<p>以上是将自定义模板服务添加到Template App Agentless模板组</p>
+
+<p>最后将Template App Agentless模板组添加到你需要监控的客户端主机内</p>
+
+  </div>
+		</section>
+	</main></body>
+
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link href="https://fonts.googleapis.com/css?family=Merriweather:300|Raleway:400,700" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<!-- <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css"> -->
+<link rel="shortcut icon" href="/assets/favicon.ico">
+<title>zabbix监控redis</title>
+<!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>zabbix监控redis - 求索</title>
+<meta property="og:title" content="zabbix监控redis" />
+<meta name="description" content="可配合zabbix自动发现，来完成自动监控 scripts cat redis.sh #!/bin/bash redis_conn=&quot;/usr/local/bin/redis-cli&quot; port=$1 case $2 in &quot;used_memory&quot;) used_memory=`$redis_conn -p $port info | grep used_memory:|awk -F&#39;:&#39; &#39;{print $2}&#39;` echo $used_memory ;; &quot;ops_sec&quot;) ops=`$redis_conn -p $port info|grep instantaneous_ops_per_sec:|awk -F&#39;:&#39; &#39;{print $2}&#39;` echo $ops ;; &quot;connected_clients&quot;) connected_clients=`$redis_conn -p $port info|grep connected_clients: | awk -F &#39;:&#39; &#39;{print $2}&#39;` echo $connected_clients ;; &quot;blocked_clients&quot;) blocked_clients=`$redis_conn -p $port info|grep blocked_clients:|awk -F&#39;:&#39; &#39;{print $2}&#39;` echo $blocked_clients ;; *) echo &quot;please input used_memory|ops_sec|connected_clients|blocked_clients&quot; ;; esac conf文件 cat zabbix_redis.conf UserParameter=redis[*],/opt/script/zabbix/redis.sh $1 $2" />
+<meta property="og:description" content="可配合zabbix自动发现，来完成自动监控 scripts cat redis.sh #!/bin/bash redis_conn=&quot;/usr/local/bin/redis-cli&quot; port=$1 case $2 in &quot;used_memory&quot;) used_memory=`$redis_conn -p $port info | grep used_memory:|awk -F&#39;:&#39; &#39;{print $2}&#39;` echo $used_memory ;; &quot;ops_sec&quot;) ops=`$redis_conn -p $port info|grep instantaneous_ops_per_sec:|awk -F&#39;:&#39; &#39;{print $2}&#39;` echo $ops ;; &quot;connected_clients&quot;) connected_clients=`$redis_conn -p $port info|grep connected_clients: | awk -F &#39;:&#39; &#39;{print $2}&#39;` echo $connected_clients ;; &quot;blocked_clients&quot;) blocked_clients=`$redis_conn -p $port info|grep blocked_clients:|awk -F&#39;:&#39; &#39;{print $2}&#39;` echo $blocked_clients ;; *) echo &quot;please input used_memory|ops_sec|connected_clients|blocked_clients&quot; ;; esac conf文件 cat zabbix_redis.conf UserParameter=redis[*],/opt/script/zabbix/redis.sh $1 $2" />
+<link rel="canonical" href="http://localhost:4000/2016/12/19/zabbix-monitor-redis" />
+<meta property="og:url" content="http://localhost:4000/2016/12/19/zabbix-monitor-redis" />
+<meta property="og:site_name" content="求索" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-12-19T13:12:43+08:00" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "zabbix监控redis",
+"datePublished": "2016-12-19T13:12:43+08:00",
+"description": "可配合zabbix自动发现，来完成自动监控 scripts cat redis.sh #!/bin/bash redis_conn=&quot;/usr/local/bin/redis-cli&quot; port=$1 case $2 in &quot;used_memory&quot;) used_memory=`$redis_conn -p $port info | grep used_memory:|awk -F&#39;:&#39; &#39;{print $2}&#39;` echo $used_memory ;; &quot;ops_sec&quot;) ops=`$redis_conn -p $port info|grep instantaneous_ops_per_sec:|awk -F&#39;:&#39; &#39;{print $2}&#39;` echo $ops ;; &quot;connected_clients&quot;) connected_clients=`$redis_conn -p $port info|grep connected_clients: | awk -F &#39;:&#39; &#39;{print $2}&#39;` echo $connected_clients ;; &quot;blocked_clients&quot;) blocked_clients=`$redis_conn -p $port info|grep blocked_clients:|awk -F&#39;:&#39; &#39;{print $2}&#39;` echo $blocked_clients ;; *) echo &quot;please input used_memory|ops_sec|connected_clients|blocked_clients&quot; ;; esac conf文件 cat zabbix_redis.conf UserParameter=redis[*],/opt/script/zabbix/redis.sh $1 $2",
+"url": "http://localhost:4000/2016/12/19/zabbix-monitor-redis"}</script>
+<!-- End Jekyll SEO tag -->
+</head>
+
+<body>
+	<main class="container">
+		<section class="about">
+			<a href="/"><img src="/assets/profile.png" alt="Mingxu.Xie"></a>
+			<h2>Mingxu.Xie</h2>
+			<p class="tagline">Devops</p>
+			<ul class="social">
+				<a href="https://github.com/xiemx">
+					<li><i class="icon-github-circled"></i></li>
+				</a>
+				<a href="https://www.linkedin.com/in/xiemx1991">
+					<li><i class="icon-linkedin-squared"></i></li>
+				</a>
+				<a href="https://twitter.com/xiemx1991">
+					<li><i class="icon-twitter-squared"></i></li>
+				</a>
+			</ul>
+			<p>&copy; 尔不必求记，却宜求个明白！</p>
+			<div>
+				<div class="categories">
+					<h4>Categories</h4>
+					<ul>
+						<a href="/">
+							<li>Index</li>
+						</a>
+						<a href="/pages/about.html">
+							<li>About</li>
+						</a>
+						<a href="/pages/archive.html">
+							<li>Archive</li>
+						</a>
+						<a href="/blog/">
+							<li>Blogs</li>
+						</a>
+						<a href="/pages/commands.html">
+							<li>Commands</li>
+						</a>
+					</ul>
+				</div>
+				<div class="tags" style="width:200px;white-space:normal">
+					<h4>Tag Cloud:</h4>
+					<a href="/tag/cluster/" class="set-1">cluster</a> <a href="/tag/command/" class="set-1">command</a> <a href="/tag/deployment/" class="set-1">deployment</a> <a href="/tag/domain/" class="set-1">domain</a> <a href="/tag/http/" class="set-1">http</a> <a href="/tag/iis/" class="set-1">iis</a> <a href="/tag/issue/" class="set-1">issue</a> <a href="/tag/memcache/" class="set-1">memcache</a> <a href="/tag/mime-type/" class="set-1">mime-type</a> <a href="/tag/mongo/" class="set-1">mongo</a> <a href="/tag/monitor/" class="set-1">monitor</a> <a href="/tag/mysql/" class="set-1">mysql</a> <a href="/tag/python/" class="set-1">python</a> <a href="/tag/scripts/" class="set-1">scripts</a> <a href="/tag/shell/" class="set-1">shell</a> <a href="/tag/statuscode/" class="set-1">statusCode</a> <a href="/tag/uwsgi/" class="set-1">uwsgi</a> <a href="/tag/vagrant/" class="set-1">vagrant</a> <a href="/tag/vcenter/" class="set-1">vcenter</a> <a href="/tag/windows/" class="set-2">windows</a> <a href="/tag/zabbix/" class="set-5">zabbix</a> <a href="/tag/zentaopms/" class="set-1">zentaopms</a>
+				</div>
+			</div>
+		</section>
+		<section class="content">
+			<div class="post-container">
+  <a class="post-link" href="/2016/12/19/zabbix-monitor-redis">
+    <h2 class="post-title">zabbix监控redis</h2>
+  </a>
+  <div class="post-meta">
+    <ul class="post-categories"><li>zabbix</li></ul>
+    <div class="post-date"><i class="icon-calendar"></i>Dec 19, 2016</div>
+  </div>
+  <div class="post">
+    <p>可配合zabbix自动发现，来完成自动监控</p>
+
+<h3 id="scripts">scripts</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>redis.sh
+<span class="c">#!/bin/bash</span>
+<span class="nv">redis_conn</span><span class="o">=</span><span class="s2">"/usr/local/bin/redis-cli"</span>
+<span class="nv">port</span><span class="o">=</span><span class="nv">$1</span>
+
+<span class="k">case</span> <span class="nv">$2</span> <span class="k">in</span> 
+  <span class="s2">"used_memory"</span><span class="p">)</span>
+    <span class="nv">used_memory</span><span class="o">=</span><span class="sb">`</span><span class="nv">$redis_conn</span> <span class="nt">-p</span> <span class="nv">$port</span> info | <span class="nb">grep </span>used_memory:|awk <span class="nt">-F</span><span class="s1">':'</span> <span class="s1">'{print $2}'</span><span class="sb">`</span>
+    <span class="nb">echo</span> <span class="nv">$used_memory</span>
+    <span class="p">;;</span>
+  <span class="s2">"ops_sec"</span><span class="p">)</span>
+    <span class="nv">ops</span><span class="o">=</span><span class="sb">`</span><span class="nv">$redis_conn</span> <span class="nt">-p</span> <span class="nv">$port</span> info|grep instantaneous_ops_per_sec:|awk <span class="nt">-F</span><span class="s1">':'</span> <span class="s1">'{print $2}'</span><span class="sb">`</span>
+    <span class="nb">echo</span> <span class="nv">$ops</span>
+    <span class="p">;;</span>
+  <span class="s2">"connected_clients"</span><span class="p">)</span>
+    <span class="nv">connected_clients</span><span class="o">=</span><span class="sb">`</span><span class="nv">$redis_conn</span> <span class="nt">-p</span> <span class="nv">$port</span> info|grep connected_clients: | <span class="nb">awk</span> <span class="nt">-F</span> <span class="s1">':'</span> <span class="s1">'{print $2}'</span><span class="sb">`</span>
+    <span class="nb">echo</span> <span class="nv">$connected_clients</span>
+    <span class="p">;;</span>
+  <span class="s2">"blocked_clients"</span><span class="p">)</span>
+    <span class="nv">blocked_clients</span><span class="o">=</span><span class="sb">`</span><span class="nv">$redis_conn</span> <span class="nt">-p</span> <span class="nv">$port</span> info|grep blocked_clients:|awk <span class="nt">-F</span><span class="s1">':'</span> <span class="s1">'{print $2}'</span><span class="sb">`</span>
+    <span class="nb">echo</span> <span class="nv">$blocked_clients</span>
+    <span class="p">;;</span> 
+  <span class="k">*</span><span class="p">)</span>
+    <span class="nb">echo</span> <span class="s2">"please input used_memory|ops_sec|connected_clients|blocked_clients"</span>
+    <span class="p">;;</span> 
+<span class="k">esac</span>
+</code></pre></div></div>
+
+<h3 id="conf文件">conf文件</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">cat zabbix_redis.conf</span>
+
+<span class="s">UserParameter=redis[*],/opt/script/zabbix/redis.sh $1 $2</span>
+</code></pre></div></div>
+
+  </div>
+		</section>
+	</main></body>
+
+</html>

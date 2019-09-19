@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link href="https://fonts.googleapis.com/css?family=Merriweather:300|Raleway:400,700" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<!-- <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css"> -->
+<link rel="shortcut icon" href="/assets/favicon.ico">
+<title>常见MIME类型设置方法</title>
+<!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>常见MIME类型设置方法 - 求索</title>
+<meta property="og:title" content="常见MIME类型设置方法" />
+<meta name="description" content="常见MIME类型和设置方法 当前列举了常用的MIME类型，查询详细：MIME Type" />
+<meta property="og:description" content="常见MIME类型和设置方法 当前列举了常用的MIME类型，查询详细：MIME Type" />
+<link rel="canonical" href="http://localhost:4000/2015/08/21/mime-type" />
+<meta property="og:url" content="http://localhost:4000/2015/08/21/mime-type" />
+<meta property="og:site_name" content="求索" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-08-21T09:08:58+08:00" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "常见MIME类型设置方法",
+"datePublished": "2015-08-21T09:08:58+08:00",
+"description": "常见MIME类型和设置方法 当前列举了常用的MIME类型，查询详细：MIME Type",
+"url": "http://localhost:4000/2015/08/21/mime-type"}</script>
+<!-- End Jekyll SEO tag -->
+</head>
+
+<body>
+	<main class="container">
+		<section class="about">
+			<a href="/"><img src="/assets/profile.png" alt="Mingxu.Xie"></a>
+			<h2>Mingxu.Xie</h2>
+			<p class="tagline">Devops</p>
+			<ul class="social">
+				<a href="https://github.com/xiemx">
+					<li><i class="icon-github-circled"></i></li>
+				</a>
+				<a href="https://www.linkedin.com/in/xiemx1991">
+					<li><i class="icon-linkedin-squared"></i></li>
+				</a>
+				<a href="https://twitter.com/xiemx1991">
+					<li><i class="icon-twitter-squared"></i></li>
+				</a>
+			</ul>
+			<p>&copy; 尔不必求记，却宜求个明白！</p>
+			<div>
+				<div class="categories">
+					<h4>Categories</h4>
+					<ul>
+						<a href="/">
+							<li>Index</li>
+						</a>
+						<a href="/pages/about.html">
+							<li>About</li>
+						</a>
+						<a href="/pages/archive.html">
+							<li>Archive</li>
+						</a>
+						<a href="/blog/">
+							<li>Blogs</li>
+						</a>
+						<a href="/pages/commands.html">
+							<li>Commands</li>
+						</a>
+					</ul>
+				</div>
+				<div class="tags" style="width:200px;white-space:normal">
+					<h4>Tag Cloud:</h4>
+					<a href="/tag/cluster/" class="set-1">cluster</a> <a href="/tag/command/" class="set-1">command</a> <a href="/tag/deployment/" class="set-1">deployment</a> <a href="/tag/domain/" class="set-1">domain</a> <a href="/tag/http/" class="set-1">http</a> <a href="/tag/iis/" class="set-1">iis</a> <a href="/tag/issue/" class="set-1">issue</a> <a href="/tag/memcache/" class="set-1">memcache</a> <a href="/tag/mime-type/" class="set-1">mime-type</a> <a href="/tag/mongo/" class="set-1">mongo</a> <a href="/tag/monitor/" class="set-1">monitor</a> <a href="/tag/mysql/" class="set-1">mysql</a> <a href="/tag/python/" class="set-1">python</a> <a href="/tag/scripts/" class="set-1">scripts</a> <a href="/tag/shell/" class="set-1">shell</a> <a href="/tag/statuscode/" class="set-1">statusCode</a> <a href="/tag/uwsgi/" class="set-1">uwsgi</a> <a href="/tag/vagrant/" class="set-1">vagrant</a> <a href="/tag/vcenter/" class="set-1">vcenter</a> <a href="/tag/windows/" class="set-2">windows</a> <a href="/tag/zabbix/" class="set-5">zabbix</a> <a href="/tag/zentaopms/" class="set-1">zentaopms</a>
+				</div>
+			</div>
+		</section>
+		<section class="content">
+			<div class="post-container">
+  <a class="post-link" href="/2015/08/21/mime-type">
+    <h2 class="post-title">常见MIME类型设置方法</h2>
+  </a>
+  <div class="post-meta">
+    <ul class="post-categories"><li>http</li><li>mime-type</li></ul>
+    <div class="post-date"><i class="icon-calendar"></i>Aug 21, 2015</div>
+  </div>
+  <div class="post">
+    <h3 id="常见mime类型和设置方法">常见MIME类型和设置方法</h3>
+<p>当前列举了常用的MIME类型，查询详细：<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types">MIME Type</a></p>
+
+<h4 id="mime类型">MIME类型</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">扩展名</th>
+      <th style="text-align: left">文档类型</th>
+      <th style="text-align: right">MIME 类型</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">.aac</td>
+      <td style="text-align: left">AAC audio</td>
+      <td style="text-align: right">audio/aac</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.abw</td>
+      <td style="text-align: left">AbiWord document</td>
+      <td style="text-align: right">application/x-abiword</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.arc</td>
+      <td style="text-align: left">Archive document (multiple files embedded)</td>
+      <td style="text-align: right">application/x-freearc</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.avi</td>
+      <td style="text-align: left">AVI: Audio Video Interleave</td>
+      <td style="text-align: right">video/x-msvideo</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.azw</td>
+      <td style="text-align: left">Amazon Kindle eBook format</td>
+      <td style="text-align: right">application/vnd.amazon.ebook</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.bin</td>
+      <td style="text-align: left">Any kind of binary data</td>
+      <td style="text-align: right">application/octet-stream</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.bmp</td>
+      <td style="text-align: left">Windows OS/2 Bitmap Graphics</td>
+      <td style="text-align: right">image/bmp</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.bz</td>
+      <td style="text-align: left">BZip archive</td>
+      <td style="text-align: right">application/x-bzip</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.bz2</td>
+      <td style="text-align: left">BZip2 archive</td>
+      <td style="text-align: right">application/x-bzip2</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.csh</td>
+      <td style="text-align: left">C-Shell script</td>
+      <td style="text-align: right">application/x-csh</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.css</td>
+      <td style="text-align: left">Cascading Style Sheets (CSS)</td>
+      <td style="text-align: right">text/css</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.csv</td>
+      <td style="text-align: left">Comma-separated values (CSV)</td>
+      <td style="text-align: right">text/csv</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.doc</td>
+      <td style="text-align: left">Microsoft Word</td>
+      <td style="text-align: right">application/msword</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.epub</td>
+      <td style="text-align: left">Electronic publication (EPUB)</td>
+      <td style="text-align: right">application/epub+zip</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.gif</td>
+      <td style="text-align: left">Graphics Interchange Format (GIF)</td>
+      <td style="text-align: right">image/gif</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.html</td>
+      <td style="text-align: left">HyperText Markup Language (HTML)</td>
+      <td style="text-align: right">text/html</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.ico</td>
+      <td style="text-align: left">Icon format</td>
+      <td style="text-align: right">image/vnd.microsoft.icon</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.ics</td>
+      <td style="text-align: left">iCalendar format</td>
+      <td style="text-align: right">text/calendar</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.jar</td>
+      <td style="text-align: left">Java Archive (JAR)</td>
+      <td style="text-align: right">application/java-archive</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.jpeg</td>
+      <td style="text-align: left">JPEG images</td>
+      <td style="text-align: right">image/jpeg</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.js</td>
+      <td style="text-align: left">JavaScript</td>
+      <td style="text-align: right">text/javascript</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.json</td>
+      <td style="text-align: left">JSON format</td>
+      <td style="text-align: right">application/json</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.mjs</td>
+      <td style="text-align: left">JavaScript module</td>
+      <td style="text-align: right">text/javascript</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.mp3</td>
+      <td style="text-align: left">MP3 audio</td>
+      <td style="text-align: right">audio/mpeg</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.mpeg</td>
+      <td style="text-align: left">MPEG Video</td>
+      <td style="text-align: right">video/mpeg</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.oga</td>
+      <td style="text-align: left">OGG audio</td>
+      <td style="text-align: right">audio/ogg</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.ogv</td>
+      <td style="text-align: left">OGG video</td>
+      <td style="text-align: right">video/ogg</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.ogx</td>
+      <td style="text-align: left">OGG</td>
+      <td style="text-align: right">application/ogg</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.otf</td>
+      <td style="text-align: left">OpenType font</td>
+      <td style="text-align: right">font/otf</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.png</td>
+      <td style="text-align: left">Portable Network Graphics</td>
+      <td style="text-align: right">image/png</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.pdf</td>
+      <td style="text-align: left">Adobe Portable Document Format (PDF)</td>
+      <td style="text-align: right">application/pdf</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.rar</td>
+      <td style="text-align: left">RAR archive</td>
+      <td style="text-align: right">application/x-rar-compressed</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.rtf</td>
+      <td style="text-align: left">Rich Text Format (RTF)</td>
+      <td style="text-align: right">application/rtf</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.sh</td>
+      <td style="text-align: left">Bourne shell script</td>
+      <td style="text-align: right">application/x-sh</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.svg</td>
+      <td style="text-align: left">Scalable Vector Graphics (SVG)</td>
+      <td style="text-align: right">image/svg+xml</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.tar</td>
+      <td style="text-align: left">Tape Archive (TAR)</td>
+      <td style="text-align: right">application/x-tar</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.tiff</td>
+      <td style="text-align: left">Tagged Image File Format (TIFF)</td>
+      <td style="text-align: right">image/tiff</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.ttf</td>
+      <td style="text-align: left">TrueType Font</td>
+      <td style="text-align: right">font/ttf</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.txt</td>
+      <td style="text-align: left">Text, (generally ASCII or ISO 8859-n)</td>
+      <td style="text-align: right">text/plain</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.vsd</td>
+      <td style="text-align: left">Microsoft Visio</td>
+      <td style="text-align: right">application/vnd.visio</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.wav</td>
+      <td style="text-align: left">Waveform Audio Format</td>
+      <td style="text-align: right">audio/wav</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.woff</td>
+      <td style="text-align: left">Web Open Font Format (WOFF)</td>
+      <td style="text-align: right">font/woff</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.woff2</td>
+      <td style="text-align: left">Web Open Font Format (WOFF)</td>
+      <td style="text-align: right">font/woff2</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.xhtml</td>
+      <td style="text-align: left">XHTML</td>
+      <td style="text-align: right">application/xhtml+xml</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.xls</td>
+      <td style="text-align: left">Microsoft Excel</td>
+      <td style="text-align: right">application/vnd.ms-excel</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.xml</td>
+      <td style="text-align: left">XML</td>
+      <td style="text-align: right">application/xml</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.zip</td>
+      <td style="text-align: left">ZIP archive</td>
+      <td style="text-align: right">application/zip</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.3gp</td>
+      <td style="text-align: left">3GPP audio/video container</td>
+      <td style="text-align: right">video/3gpp</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.3g2</td>
+      <td style="text-align: left">3GPP2 audio/video container</td>
+      <td style="text-align: right">video/3gpp2</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">.7z</td>
+      <td style="text-align: left">7-zip archive</td>
+      <td style="text-align: right">application/x-7z-compressed</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="设置方法">设置方法</h4>
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># IIS</span>
+默认网站属性--&gt;http 头--&gt;MIME映射--&gt;文件类型--&gt;新类型
+
+<span class="gh"># nginx</span>
+conf/mime.types
+</code></pre></div></div>
+
+  </div>
+		</section>
+	</main></body>
+
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link href="https://fonts.googleapis.com/css?family=Merriweather:300|Raleway:400,700" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<!-- <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css"> -->
+<link rel="shortcut icon" href="/assets/favicon.ico">
+<title>VS-NAT集群构建</title>
+<!-- Begin Jekyll SEO tag v2.1.0 -->
+<title>VS-NAT集群构建 - 求索</title>
+<meta property="og:title" content="VS-NAT集群构建" />
+<meta name="description" content="由于lvs基于内核实现的负载均衡技术，因此主要是在内核层面配置，软件层面需要配置的东西很少。我们是通过软件生成配置文件，再讲配置文件刷到内核中。 ```shell #安装组包 yum groupinstall “Load Balancer”" />
+<meta property="og:description" content="由于lvs基于内核实现的负载均衡技术，因此主要是在内核层面配置，软件层面需要配置的东西很少。我们是通过软件生成配置文件，再讲配置文件刷到内核中。 ```shell #安装组包 yum groupinstall “Load Balancer”" />
+<link rel="canonical" href="http://localhost:4000/2016/02/18/vs-nat-cluster" />
+<meta property="og:url" content="http://localhost:4000/2016/02/18/vs-nat-cluster" />
+<meta property="og:site_name" content="求索" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-02-18T11:02:13+08:00" />
+<script type="application/ld+json">
+{"@context": "http://schema.org",
+"@type": "BlogPosting",
+"headline": "VS-NAT集群构建",
+"datePublished": "2016-02-18T11:02:13+08:00",
+"description": "由于lvs基于内核实现的负载均衡技术，因此主要是在内核层面配置，软件层面需要配置的东西很少。我们是通过软件生成配置文件，再讲配置文件刷到内核中。 ```shell #安装组包 yum groupinstall “Load Balancer”",
+"url": "http://localhost:4000/2016/02/18/vs-nat-cluster"}</script>
+<!-- End Jekyll SEO tag -->
+</head>
+
+<body>
+	<main class="container">
+		<section class="about">
+			<a href="/"><img src="/assets/profile.png" alt="Mingxu.Xie"></a>
+			<h2>Mingxu.Xie</h2>
+			<p class="tagline">Devops</p>
+			<ul class="social">
+				<a href="https://github.com/xiemx">
+					<li><i class="icon-github-circled"></i></li>
+				</a>
+				<a href="https://www.linkedin.com/in/xiemx1991">
+					<li><i class="icon-linkedin-squared"></i></li>
+				</a>
+				<a href="https://twitter.com/xiemx1991">
+					<li><i class="icon-twitter-squared"></i></li>
+				</a>
+			</ul>
+			<p>&copy; 尔不必求记，却宜求个明白！</p>
+			<div>
+				<div class="categories">
+					<h4>Categories</h4>
+					<ul>
+						<a href="/">
+							<li>Index</li>
+						</a>
+						<a href="/pages/about.html">
+							<li>About</li>
+						</a>
+						<a href="/pages/archive.html">
+							<li>Archive</li>
+						</a>
+						<a href="/blog/">
+							<li>Blogs</li>
+						</a>
+						<a href="/pages/commands.html">
+							<li>Commands</li>
+						</a>
+					</ul>
+				</div>
+				<div class="tags" style="width:200px;white-space:normal">
+					<h4>Tag Cloud:</h4>
+					<a href="/tag/cluster/" class="set-1">cluster</a> <a href="/tag/command/" class="set-1">command</a> <a href="/tag/deployment/" class="set-1">deployment</a> <a href="/tag/domain/" class="set-1">domain</a> <a href="/tag/http/" class="set-1">http</a> <a href="/tag/iis/" class="set-1">iis</a> <a href="/tag/issue/" class="set-1">issue</a> <a href="/tag/memcache/" class="set-1">memcache</a> <a href="/tag/mime-type/" class="set-1">mime-type</a> <a href="/tag/mongo/" class="set-1">mongo</a> <a href="/tag/monitor/" class="set-1">monitor</a> <a href="/tag/mysql/" class="set-1">mysql</a> <a href="/tag/python/" class="set-1">python</a> <a href="/tag/scripts/" class="set-1">scripts</a> <a href="/tag/shell/" class="set-1">shell</a> <a href="/tag/statuscode/" class="set-1">statusCode</a> <a href="/tag/uwsgi/" class="set-1">uwsgi</a> <a href="/tag/vagrant/" class="set-1">vagrant</a> <a href="/tag/vcenter/" class="set-1">vcenter</a> <a href="/tag/windows/" class="set-2">windows</a> <a href="/tag/zabbix/" class="set-5">zabbix</a> <a href="/tag/zentaopms/" class="set-1">zentaopms</a>
+				</div>
+			</div>
+		</section>
+		<section class="content">
+			<div class="post-container">
+  <a class="post-link" href="/2016/02/18/vs-nat-cluster">
+    <h2 class="post-title">VS-NAT集群构建</h2>
+  </a>
+  <div class="post-meta">
+    <ul class="post-categories"><li>cluster</li></ul>
+    <div class="post-date"><i class="icon-calendar"></i>Feb 18, 2016</div>
+  </div>
+  <div class="post">
+    <p>由于lvs基于内核实现的负载均衡技术，因此主要是在内核层面配置，软件层面需要配置的东西很少。我们是通过软件生成配置文件，再讲配置文件刷到内核中。</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#安装组包</span>
+yum groupinstall <span class="s2">"Load Balancer"</span>
+
+<span class="c">#启动图形化服务</span>
+/etc/init.d/piranha-gui start
+
+<span class="c">#创建piranha用户密码</span>
+piranha-passwd
+
+<span class="c">#通过图形化创建的配置文件存放在</span>
+/etc/sysconfig/ha/lvs.cf
+
+<span class="c">#将配置刷到内核模块中ip_vs和ip_vs*</span>
+/etc/init.d/pulse start
+
+<span class="c">#测试脚本/bin/testlink</span>
+<span class="o">[</span>root@lvs-f30 ~]# <span class="nb">cat</span> /bin/testlink
+<span class="c">#!/bin/bash</span>
+/usr/bin/links <span class="nt">-dump</span> 1 <span class="nv">$1</span> <span class="o">&gt;</span>/dev/null 2&gt;&amp;1
+<span class="k">if</span> <span class="o">[</span> 0 <span class="nt">-eq</span> <span class="nv">$?</span> <span class="o">]</span> <span class="p">;</span> <span class="k">then
+</span><span class="nb">echo </span>ok
+<span class="k">else
+</span><span class="nb">echo </span>fail
+<span class="k">fi</span>
+
+<span class="o">[</span>root@lvs-f30 ~]# <span class="nb">cat</span> /etc/sysconfig/ha/lvs.cf
+serial_no <span class="o">=</span> 30
+primary <span class="o">=</span> 172.25.30.14
+primary_private <span class="o">=</span> 192.168.122.246
+service <span class="o">=</span> lvs
+backup_active <span class="o">=</span> 1
+backup <span class="o">=</span> 172.25.30.15
+backup_private <span class="o">=</span> 192.168.122.247
+heartbeat <span class="o">=</span> 1
+heartbeat_port <span class="o">=</span> 539
+keepalive <span class="o">=</span> 6
+deadtime <span class="o">=</span> 18
+network <span class="o">=</span> nat
+nat_router <span class="o">=</span> 192.168.122.254 eth2
+nat_nmask <span class="o">=</span> 255.255.255.255
+debug_level <span class="o">=</span> NONE
+monitor_links <span class="o">=</span> 0
+syncdaemon <span class="o">=</span> 0
+syncd_iface <span class="o">=</span> eth2
+
+virtual http <span class="o">{</span>
+
+active <span class="o">=</span> 1
+address <span class="o">=</span> 172.25.30.100 eth0:1
+vip_nmask <span class="o">=</span> 255.255.255.0
+port <span class="o">=</span> 80
+send <span class="o">=</span> <span class="s2">"GET / HTTP/1.0</span><span class="se">\r\n\r\n</span><span class="s2">"</span>
+expect <span class="o">=</span> <span class="s2">"ok"</span>
+use_regex <span class="o">=</span> 0
+send_program <span class="o">=</span> <span class="s2">"/bin/testlink %h"</span>
+load_monitor <span class="o">=</span> none
+scheduler <span class="o">=</span> wlc
+protocol <span class="o">=</span> tcp
+<span class="nb">timeout</span> <span class="o">=</span> 6
+reentry <span class="o">=</span> 15
+quiesce_server <span class="o">=</span> 0
+
+server node1 <span class="o">{</span>
+
+address <span class="o">=</span> 192.168.122.224
+active <span class="o">=</span> 1
+port <span class="o">=</span> 80
+weight <span class="o">=</span> 1
+
+<span class="o">}</span>
+
+server node2 <span class="o">{</span>
+
+address <span class="o">=</span> 192.168.122.245
+active <span class="o">=</span> 1
+port <span class="o">=</span> 80
+weight <span class="o">=</span> 1
+
+​     <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+<p><a href="http://www.xiemx.com/wp-content/uploads/2016/02/lvsnat.png"><img src="/assets/image/lvsnat.png" alt="lvsnat" /></a></p>
+
+  </div>
+		</section>
+	</main></body>
+
+</html>
