@@ -7,6 +7,12 @@
     <loc>https://www.xiemx.com//2015/08/21/2015-08-21-iis-set-urlrewrite/</loc>
     <lastmod>2019-10-17</lastmod>
   </url>  <url>
+    <loc>https://www.xiemx.com//2016/02/18/2016-02-18-vs-nat-cluster/</loc>
+    <lastmod>2019-09-27</lastmod>
+  </url>  <url>
+    <loc>https://www.xiemx.com//2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/</loc>
+    <lastmod>2019-09-27</lastmod>
+  </url>  <url>
     <loc>https://www.xiemx.com//2016/03/25/2016-03-25-zentaopms-deployment/</loc>
     <lastmod>2019-09-27</lastmod>
   </url>  <url>
@@ -16,43 +22,43 @@
     <loc>https://www.xiemx.com//2016/04/13/2016-04-13-deploy-zabbix_agent-to-windows/</loc>
     <lastmod>2019-09-27</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/</loc>
-    <lastmod>2019-09-27</lastmod>
-  </url>  <url>
     <loc>https://www.xiemx.com//2016/09/01/2016-09-01-zabbix-server-configure/</loc>
-    <lastmod>2019-09-27</lastmod>
-  </url>  <url>
-    <loc>https://www.xiemx.com//2016/02/18/2016-02-18-vs-nat-cluster/</loc>
-    <lastmod>2019-09-27</lastmod>
-  </url>  <url>
-    <loc>https://www.xiemx.com//2016/07/27/2016-07-27-domain-status-code/</loc>
     <lastmod>2019-09-27</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2016/02/18/2016-02-18-Three-shared-storage-comparisons/</loc>
     <lastmod>2019-09-27</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2015/10/08/2015-10-08-window-force-delete-file/</loc>
+    <loc>https://www.xiemx.com//2016/07/27/2016-07-27-domain-status-code/</loc>
     <lastmod>2019-09-27</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2016/08/11/2016-08-11-shell-command-watch/</loc>
+    <loc>https://www.xiemx.com//2016/08/09/2016-08-09-zabbix-less-than-25-free-in-the-configuration-cache/</loc>
     <lastmod>2019-09-27</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2016/06/29/2016-06-29-zabbix-monitor-port/</loc>
     <lastmod>2019-09-27</lastmod>
   </url>  <url>
+    <loc>https://www.xiemx.com//2016/08/11/2016-08-11-shell-command-watch/</loc>
+    <lastmod>2019-09-27</lastmod>
+  </url>  <url>
     <loc>https://www.xiemx.com//2016/11/23/2016-11-23-fix-zabbix-item-not-supported/</loc>
     <lastmod>2019-09-27</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2016/06/29/2016-06-29-zabbix-alert-to-wechat-script/</loc>
+    <loc>https://www.xiemx.com//2015/10/08/2015-10-08-window-force-delete-file/</loc>
     <lastmod>2019-09-27</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2016/08/09/2016-08-09-zabbix-less-than-25-free-in-the-configuration-cache/</loc>
+    <loc>https://www.xiemx.com//2016/06/29/2016-06-29-zabbix-alert-to-wechat-script/</loc>
     <lastmod>2019-09-27</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2017/02/09/2017-02-09-vagrantfile/</loc>
     <lastmod>2019-09-27</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/</loc>
+    <lastmod>2019-09-27</lastmod>
+  </url>  <url>
+    <loc>https://www.xiemx.com//2016/12/19/2016-12-19-zabbix-monitor-memcache/</loc>
+    <lastmod>2019-09-27</lastmod>
+  </url>  <url>
+    <loc>https://www.xiemx.com//2016/12/19/2016-12-19-zabbix-monitor-redis/</loc>
     <lastmod>2019-09-27</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/</loc>
@@ -65,12 +71,6 @@
     <lastmod>2019-09-27</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2016/07/26/2016-07-26-uwsgi-invalid-option-x-getopt_long-error/</loc>
-    <lastmod>2019-09-27</lastmod>
-  </url>  <url>
-    <loc>https://www.xiemx.com//2016/12/19/2016-12-19-zabbix-monitor-memcache/</loc>
-    <lastmod>2019-09-27</lastmod>
-  </url>  <url>
-    <loc>https://www.xiemx.com//2016/12/19/2016-12-19-zabbix-monitor-redis/</loc>
     <lastmod>2019-09-27</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2017/09/21/2017-09-21-zabbix-distrubuted-monitor/</loc>
