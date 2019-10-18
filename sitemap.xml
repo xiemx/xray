@@ -44,7 +44,7 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/03/25/2016-03-25-zentaopms-deployment/</loc>
+    <loc>https://www.xiemx.com/2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/</loc>
     
     <lastmod>2019-09-27T06:52:36.187Z</lastmod>
     
@@ -58,21 +58,21 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/12/19/2016-12-19-zabbix-monitor-mongo/</loc>
-    
-    <lastmod>2019-09-27T06:52:36.187Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.xiemx.com/2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/</loc>
-    
-    <lastmod>2019-09-27T06:52:36.187Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.xiemx.com/2016/09/01/2016-09-01-zabbix-server-configure/</loc>
+    
+    <lastmod>2019-09-27T06:52:36.187Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.xiemx.com/2016/03/25/2016-03-25-zentaopms-deployment/</loc>
+    
+    <lastmod>2019-09-27T06:52:36.187Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.xiemx.com/2016/12/19/2016-12-19-zabbix-monitor-mongo/</loc>
     
     <lastmod>2019-09-27T06:52:36.187Z</lastmod>
     
@@ -93,13 +93,6 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/08/11/2016-08-11-shell-command-watch/</loc>
-    
-    <lastmod>2019-09-27T06:52:36.185Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.xiemx.com/2016/08/09/2016-08-09-zabbix-less-than-25-free-in-the-configuration-cache/</loc>
     
     <lastmod>2019-09-27T06:52:36.185Z</lastmod>
@@ -107,7 +100,7 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/11/23/2016-11-23-fix-zabbix-item-not-supported/</loc>
+    <loc>https://www.xiemx.com/2016/08/11/2016-08-11-shell-command-watch/</loc>
     
     <lastmod>2019-09-27T06:52:36.185Z</lastmod>
     
@@ -115,6 +108,13 @@
   
   <url>
     <loc>https://www.xiemx.com/2015/10/08/2015-10-08-window-force-delete-file/</loc>
+    
+    <lastmod>2019-09-27T06:52:36.185Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.xiemx.com/2016/11/23/2016-11-23-fix-zabbix-item-not-supported/</loc>
     
     <lastmod>2019-09-27T06:52:36.185Z</lastmod>
     
@@ -170,13 +170,6 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2017/02/09/2017-02-09-vagrant-mulit-vm/</loc>
-    
-    <lastmod>2019-09-27T06:52:36.184Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.xiemx.com/2017/02/09/2017-02-09-vagrant/</loc>
     
     <lastmod>2019-09-27T06:52:36.184Z</lastmod>
@@ -185,6 +178,13 @@
   
   <url>
     <loc>https://www.xiemx.com/2016/07/26/2016-07-26-uwsgi-invalid-option-x-getopt_long-error/</loc>
+    
+    <lastmod>2019-09-27T06:52:36.184Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.xiemx.com/2017/02/09/2017-02-09-vagrant-mulit-vm/</loc>
     
     <lastmod>2019-09-27T06:52:36.184Z</lastmod>
     
