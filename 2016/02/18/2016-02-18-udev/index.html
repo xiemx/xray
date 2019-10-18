@@ -17,16 +17,21 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>求索</title>
-  <meta property="og:type" content="website">
-<meta property="og:title" content="求索">
-<meta property="og:url" content="https://www.xiemx.com/index.html">
+  <title>UDEV规则 | 求索</title>
+  <meta name="description" content="udev根据系统中的硬件设备的状态动态更新设备，通过对内核产生的设备名增加别名的方式来达到不管设备连接的顺序而维持一个统一的设备名的目的。udev可以根据设备的其他信息如总线（bus），生产商（vendor）等不同来区分不同的设备，并产生设备文件。udev是硬件平台无关的，属于user space的进程，它脱离驱动层的关联而建立在操作系统之上，遵循Linux Standard Base （LSB）">
+<meta name="keywords" content="udev,linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UDEV规则">
+<meta property="og:url" content="https://www.xiemx.com/2016/02/18/2016-02-18-udev/index.html">
 <meta property="og:site_name" content="求索">
+<meta property="og:description" content="udev根据系统中的硬件设备的状态动态更新设备，通过对内核产生的设备名增加别名的方式来达到不管设备连接的顺序而维持一个统一的设备名的目的。udev可以根据设备的其他信息如总线（bus），生产商（vendor）等不同来区分不同的设备，并产生设备文件。udev是硬件平台无关的，属于user space的进程，它脱离驱动层的关联而建立在操作系统之上，遵循Linux Standard Base （LSB）">
 <meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2019-10-17T07:49:29.351Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="求索">
+<meta name="twitter:title" content="UDEV规则">
+<meta name="twitter:description" content="udev根据系统中的硬件设备的状态动态更新设备，通过对内核产生的设备名增加别名的方式来达到不管设备连接的顺序而维持一个统一的设备名的目的。udev可以根据设备的其他信息如总线（bus），生产商（vendor）等不同来区分不同的设备，并产生设备文件。udev是硬件平台无关的，属于user space的进程，它脱离驱动层的关联而建立在操作系统之上，遵循Linux Standard Base （LSB）">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://www.xiemx.com/index.html">
+  <link rel="canonical" href="https://www.xiemx.com/2016/02/18/2016-02-18-udev/index.html">
   
     <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
   
@@ -306,399 +311,186 @@
 </aside>
 
   
-  <main class="main" role="main">
   
-  <div class="content article-list">
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-2016-02-18-udev" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
+    <div class="article-header">
+      
+        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/21/2017-09-21-zabbix-distrubuted-monitor/">zabbix distrubuted monitor</a>
+    <h1 class="article-title" itemprop="name">
+      UDEV规则
     </h1>
   
 
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
+      
+      <div class="article-meta">
+        <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2017/09/21/2017-09-21-zabbix-distrubuted-monitor/" class="article-date">
-	  <time datetime="2017-09-20T18:09:37.000Z" itemprop="datePublished">Sep 21</time>
+	<a href="/2016/02/18/2016-02-18-udev/" class="article-date">
+	  <time datetime="2016-02-17T21:02:23.000Z" itemprop="datePublished">2016-02-18</time>
 	</a>
 </span>
-    
+        
   <span class="article-category">
     <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
   </span>
 
-    
+        
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
+	<a class="article-tag-link" href="/tags/linux/">linux</a>, <a class="article-tag-link" href="/tags/udev/">udev</a>
   </span>
 
 
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/09/21/2017-09-21-zabbix-distrubuted-monitor/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
+        
 
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/09/2017-02-09-vagrant-mulit-vm/">vagrant创建多个虚拟机</a>
-    </h1>
-  
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/02/18/2016-02-18-udev/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>udev根据系统中的硬件设备的状态动态更新设备，通过对内核产生的设备名增加别名的方式来达到不管设备连接的顺序而维持一个统一的设备名的目的。udev可以根据设备的其他信息如总线（bus），生产商（vendor）等不同来区分不同的设备，并产生设备文件。udev是硬件平台无关的，属于user space的进程，它脱离驱动层的关联而建立在操作系统之上，遵循Linux Standard Base （LSB）设备命名方法，但也可以自定义命名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">###/etc/udev/udev.conf</span><br><span class="line">  udev_root=/dev/ # 设置的绝对路径，相当于创建 chroot 的根。</span><br><span class="line">  udev_rules=/etc/udev/rules.d/   #规则的存放地址</span><br><span class="line">  udev_log=err     # 日志的输入级别</span><br></pre></td></tr></table></figure>
 
+<p>匹配键和赋值键操作符解释见下表：</p>
+<p>操作符     匹配或赋值t                         解释</p>
+<p>－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+<p>==            匹配                   相等比较</p>
+<p>!=            匹配                    不等比较</p>
+<p>=             赋值                   分配一个特定的值给该键，他可以覆盖之前的赋值。</p>
+<p>+=            赋值                  追加特定的值给已经存在的键</p>
+<p>:=            赋值                   分配一个特定的值给该键，后面的规则不可能覆盖它。</p>
+<p>udev 规则的匹配键 :</p>
+<p>键                     含义</p>
+<p>－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+<p>ACTION          事件 (uevent) 的行为，例如：add( 添加设备 )、remove( 删除设备 )。</p>
+<p>KERNEL          在内核里看到的设备名字，比如sd*表示任意SCSI磁盘设备</p>
+<p>DEVPATH         内核设备录进，比如/devices/*</p>
+<p>SUBSYSTEM       子系统名字，例如：sda 的子系统为 block。</p>
+<p>BUS             总线的名字，比如IDE,USB</p>
+<p>DRIVER         设备驱动的名字，比如ide-cdrom</p>
+<p>ID           独立于内核名字的设备名字</p>
+<p>SYSFS{ value}       sysfs属性值，他可以表示任意</p>
+<p>ENV{ key}       环境变量，可以表示任意</p>
+<p>PROGRAM       可执行的外部程序，如果程序返回0值，该键则认为为真(true)</p>
+<p>RESULT         上一个PROGRAM调用返回的标准输出。</p>
+<p>NAME         根据这个规则创建的设备文件的文件名。注意：仅仅第一行的NAME描述是有效的，后面的均忽略,如果你想使用使用两个以上的名字来访问一个设备的话，可以考虑SYMLINK键。</p>
+<p>SYMLINK       为 /dev/下的设备文件产生符号链接。由于 udev 只能为某个设备产生一个设备文件，所以为了不覆盖系统默认的 udev 规则所产生的文件，推荐使用符号链接。</p>
+<p>OWNER         设备文件的属组</p>
+<p>GROUP         设备文件所在的组。</p>
+<p>MODE         设备文件的权限，采用8进制</p>
+<p>RUN         为设备而执行的程序列表</p>
+<p>LABEL         在配置文件里为内部控制而采用的名字标签(下下面的GOTO服务)</p>
+<p>GOTO         跳到匹配的规则（通过LABEL来标识），有点类似程序语言中的GOTO</p>
+<p>IMPORT{ type}     导入一个文件或者一个程序执行后而生成的规则集到当前文件</p>
+<p>WAIT_FOR_SYSFS   等待一个特定的设备文件的创建。主要是用作时序和依赖问题</p>
+<p>OPTIONS         特定的选项</p>
+<p>last_rule 对这类设备终端规则执行</p>
+<p>ignore_device 忽略当前规则</p>
+<p>ignore_remove 忽略接下来的并移走请求</p>
+<p>all_partitions 为所有的磁盘分区创建设备文件</p>
+<p>例：</p>
+<p>  KERNEL==”<em>”, OWNER=”root” GROUP=”root”, MODE=”0600″ KERNEL==”tty”, NAME=”%k”, GROUP=”tty”, MODE=”0666″, OPTIONS=”last_rule” KERNEL==”scd[0-9]</em>”, SYMLINK+=”cdrom cdrom-%k” KERNEL==”hd[a-z]”, BUS==”ide”, SYSFS{removable}==”1″, SYSFS{device/media}==”cdrom”, SYMLINK+=”cdrom cdrom-%k” ACTION==”add”, SUBSYSTEM==”scsi_device”, RUN+=”/sbin/modprobe sg”</p>
+<p>上面的例子给出了5个规则，每一个都是KERNEL或者ACTION键开头：</p>
+<p>*第一个规则是缺省的，他匹配任意被内核识别到的设备，然后设定这些设备的属组是root，组是root，访问权限模式是0600(-rw——-)。这也是一个安全的缺省设置保证所有的设备在默认情况下只有root可以读写。</p>
+<p>*第二个规则也是比较典型的规则了。它匹配终端设备(tty)，然后设置新的权限为0600，所在的组是tty。它也设置了一个特别的设备文件名:%K。在这里例子里，%k代表设备的内核名字。那也就意味着内核识别出这些设备是什么名字，就创建什么样的设备文件名。</p>
+<p>*第三行开始的KERNEL==”scd[0-9]*”,表示 SCSI CD-ROM 驱动. 它创建一对设备符号连接：cdrom和cdrom-%k。</p>
+<p>*第四行，开始的 KERNEL==”hd[a-z]“, 表示ATA CDROM驱动器。这个规则创建和上面的规则相同的符号连接。ATA CDROM驱动器需要sysfs值以来区别别的ATA设备，因为SCSI CDROM可以被内核唯一识别。.</p>
+<p>*第五行以 ACTION==”add”开始，它告诉udev增加 /sbin/modprobe sg 到命令列表，当任意SCSI设备增加到系统后，这些命令将执行。其效果就是计算机应该会增加sg内核模块来侦测新的SCSI设备。</p>
+<p>udev 规则所需要信息的查询</p>
+<p>常用的查上面匹配键信息的命令</p>
+<p>udevinfo -a -p $(udevinfo  -q path -n /dev/sda1 )</p>
+<p>上面的命令两次使用udevinfo：</p>
+<p>第一次是返回sysfs设备路径(他通常和我们看到的Linux设备文件名所在路径－－/dev/hda－－不同)；</p>
+<p>第二次才是查询这个设备路径，结果将是非常常的syfs信息汇总</p>
+<p>udevinfo -a -p /sys/class/net/eth0</p>
+<p>scsi_id -g -s /block/sda</p>
+<p>scsi_id -g -x -s /block/sda/sda3</p>
+<p>ata_id /dev/hda</p>
+<p>udev 信息的测试和生效</p>
+<p>根据上面文件中的内容写规则后，怎么测试</p>
+<p>udevtest /block/sda</p>
+<p>start_dev #命令重启 udev守护进程</p>
+<p>本操作会对所有的设备重新查询规则目录下所有的规则文件，然后执行所匹配的规则里的行为。</p>
+<p>通常使用该命令让新的规则文件立即生效。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.xiemx.com/2016/02/18/2016-02-18-udev/" title="UDEV规则" target="_blank" rel="external">https://www.xiemx.com/2016/02/18/2016-02-18-udev/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span class="text-dark">Mingxu.xie</span><small class="ml-1x">DevOps</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
   </div>
+</div>
+
+
+    </div>
+  </article>
   
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/02/09/2017-02-09-vagrant-mulit-vm/" class="article-date">
-	  <time datetime="2017-02-08T22:02:30.000Z" itemprop="datePublished">Feb 9</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vagrant/">vagrant</a>
-  </span>
-
     
 
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/02/09/2017-02-09-vagrant-mulit-vm/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/09/2017-02-09-vagrant/">vagrant使用</a>
-    </h1>
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
   
-
-  </div>
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2016/03/25/2016-03-25-zentaopms-deployment/" title="Zentaopms部署"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2016/02/18/2016-02-18-Three-shared-storage-comparisons/" title="三种共享存储比较"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
   
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/02/09/2017-02-09-vagrant/" class="article-date">
-	  <time datetime="2017-02-08T21:02:54.000Z" itemprop="datePublished">Feb 9</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vagrant/">vagrant</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vagrant/">vagrant</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/02/09/2017-02-09-vagrant/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/09/2017-02-09-vagrantfile/">Vagrantfile配置</a>
-    </h1>
   
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/02/09/2017-02-09-vagrantfile/" class="article-date">
-	  <time datetime="2017-02-08T21:02:02.000Z" itemprop="datePublished">Feb 9</time>
-	</a>
-</span>
+  <div class="bar-right">
     
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vagrant/">vagrant</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vagrant/">vagrant</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/02/09/2017-02-09-vagrantfile/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/">vcenter扩容Linux虚拟机磁盘</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/" class="article-date">
-	  <time datetime="2017-01-19T03:01:34.000Z" itemprop="datePublished">Jan 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vcenter/">vcenter</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vcenter/">vcenter</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/">vcenter扩容window磁盘</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/" class="article-date">
-	  <time datetime="2017-01-11T19:01:41.000Z" itemprop="datePublished">Jan 12</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/windows/">windows</a>►<a class="article-category-link" href="/categories/windows/vcenter/">vcenter</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vcenter/">vcenter</a>, <a class="article-tag-link" href="/tags/windows/">windows</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/19/2016-12-19-zabbix-monitor-redis/">zabbix监控redis</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/19/2016-12-19-zabbix-monitor-redis/" class="article-date">
-	  <time datetime="2016-12-18T21:12:43.000Z" itemprop="datePublished">Dec 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/scripts/">scripts</a>, <a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/19/2016-12-19-zabbix-monitor-redis/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/19/2016-12-19-zabbix-monitor-mongo/">zabbix监控mongo</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/19/2016-12-19-zabbix-monitor-mongo/" class="article-date">
-	  <time datetime="2016-12-18T21:12:27.000Z" itemprop="datePublished">Dec 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/mongo/">mongo</a>, <a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/19/2016-12-19-zabbix-monitor-mongo/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/19/2016-12-19-zabbix-monitor-memcache/">zabbix监控memcache</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/19/2016-12-19-zabbix-monitor-memcache/" class="article-date">
-	  <time datetime="2016-12-18T21:12:02.000Z" itemprop="datePublished">Dec 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/memcache/">memcache</a>, <a class="article-tag-link" href="/tags/monitor/">monitor</a>, <a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/19/2016-12-19-zabbix-monitor-memcache/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/">zabbix 监控ssl证书过期时间</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/" class="article-date">
-	  <time datetime="2016-12-05T02:12:45.000Z" itemprop="datePublished">Dec 5</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq"></div>
     
   </div>
-
+  </div>
+</nav>
   
-    
-    <nav class="bar bar-footer clearfix" data-stick-bottom>
-        <div class="bar-inner">
-        <ul class="pager pull-left">
-            
-            <li class="prev disabled">
-                <a href="javascript:;">
-                    <i class="icon icon-angle-left"></i>
-                    Prev
-                </a>
-            </li>
-            
-            
-            <li class="next">
-                <a href="/page/2/">
-                    Next
-                    <i class="icon icon-angle-right"></i>
-                </a>
-            </li>
-            
-        </ul>
-        <div class="total-article bar-right">Page 1 of 3</div>
-        </div>
-    </nav>
-    
- 
+
+
 </main>
 
   <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">

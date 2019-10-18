@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>求索</title>
+  
+  <subtitle>尔不必求记，却宜求个明白！</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://www.xiemx.com/"/>
+  <updated>2019-09-27T06:52:36.183Z</updated>
+  <id>https://www.xiemx.com/</id>
+  
+  <author>
+    <name>Mingxu.xie</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>zabbix distrubuted monitor</title>
+    <link href="https://www.xiemx.com//2017/09/21/2017-09-21-zabbix-distrubuted-monitor/"/>
+    <id>https://www.xiemx.com//2017/09/21/2017-09-21-zabbix-distrubuted-monitor/</id>
+    <published>2017-09-20T18:09:37.000Z</published>
+    <updated>2019-09-27T06:52:36.183Z</updated>
+    
+    <content type="html"><![CDATA[<p>zabbix 分布式监控2种模式</p><ul><li>node模式</li><li>proxy模式</li></ul><p>PS: node模式官方在2.4版本之后已经弃用，重点讨论proxy模式</p><h3 id="proxy-模式"><a href="#proxy-模式" class="headerlink" title="proxy 模式"></a>proxy 模式</h3><p>Zabbix proxy可以代替Zabbix服务器收集性能和可用性数据，一个代理可以承担一些收集数据的负载。使用代理是实现集中式和分布式监控的最简单方法。proxy需要使用单独的数据库来缓存agent数据，在发给server防止出现因网络问题造成的数据丢失。zabbix proxy只是一个数据收集组件，不会触发任何trigger／alert.</p><p><img src="/images/img_59c35cd9ab71b.png" alt="img"></p><h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul><li>Monitor remote locations</li><li>Monitor locations having unreliable communications</li><li>Offload the Zabbix server when monitoring thousands of devices</li><li>Simplify the maintenance of distributed monitoring</li></ul><h3 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">同安装zabbix server 类似，不赘述,需要其他功能也可以在编译时自行开启。</span></span><br><span class="line"></span><br><span class="line">./configure --prefix=/opt/zabbix_proxy/ --enable-proxy --with-mysql --with-libcurl</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line">create databases zabbix</span><br><span class="line">grant all to zabbix.* to zabbix@'%' identified by "zabbix";</span><br><span class="line"><span class="meta">#</span><span class="bash">导入schema.sql</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">配置文件中hostname需要和zabbix上添加的保持一致</span></span><br><span class="line"><span class="meta">#</span><span class="bash">其它参考server设置参数</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">ps：设置适当的配置同步时间，默认一小时。建议设置短一点，这样如果有新机器加入配置修改都可以快速同步并监控。</span></span><br><span class="line">ConfigFrequency=600</span><br></pre></td></tr></table></figure><p>zabbix server 配置</p><p><img src="/images/img_59c35d1d930c1.png" alt="img"></p><p>添加主机时选择指定的proxy</p><p><img src="/images/img_59c35d389b1c5.png" alt="img"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;zabbix 分布式监控2种模式&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;node模式&lt;/li&gt;
+&lt;li&gt;proxy模式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;PS: node模式官方在2.4版本之后已经弃用，重点讨论proxy模式&lt;/p&gt;
+&lt;h3 id=&quot;proxy-模式&quot;&gt;&lt;a href=&quot;#
+      
+    
+    </summary>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/categories/zabbix/"/>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/tags/zabbix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vagrant创建多个虚拟机</title>
+    <link href="https://www.xiemx.com//2017/02/09/2017-02-09-vagrant-mulit-vm/"/>
+    <id>https://www.xiemx.com//2017/02/09/2017-02-09-vagrant-mulit-vm/</id>
+    <published>2017-02-08T22:02:30.000Z</published>
+    <updated>2019-09-27T06:52:36.184Z</updated>
+    
+    <content type="html"><![CDATA[<p>建立多台VM，並且让他们之间能够相通信，一台是应用服务器、一台是DB服务器,参考如下</p><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Vagrant.configure("2") do |config|</span><br><span class="line">  config.vm.define :web do |web|</span><br><span class="line"><span class="code">    web.vm.provider "virtualbox" do |v|</span></span><br><span class="line"><span class="code">          v.customize ["modifyvm", :id, "--name", "web", "--memory", "512"]</span></span><br><span class="line"><span class="code">    end</span></span><br><span class="line"><span class="code">    web.vm.box = "base"</span></span><br><span class="line"><span class="code">    web.vm.hostname = "xiemx-website"</span></span><br><span class="line"><span class="code">    web.vm.network :private_network, ip: "10.11.1.1"</span></span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  config.vm.define :db do |db|</span><br><span class="line"><span class="code">    db.vm.provider "virtualbox" do |v|</span></span><br><span class="line"><span class="code">          v.customize ["modifyvm", :id, "--name", "db", "--memory", "512"]</span></span><br><span class="line"><span class="code">    end</span></span><br><span class="line"><span class="code">    db.vm.box = "base"</span></span><br><span class="line"><span class="code">    db.vm.hostname = "xiemx-db"</span></span><br><span class="line"><span class="code">    db.vm.network :private_network, ip: "10.11.1.2"</span></span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;建立多台VM，並且让他们之间能够相通信，一台是应用服务器、一台是DB服务器,参考如下&lt;/p&gt;
+&lt;figure class=&quot;highlight markdown&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1
+      
+    
+    </summary>
+    
+    
+      <category term="vagrant" scheme="https://www.xiemx.com/categories/vagrant/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>vagrant使用</title>
+    <link href="https://www.xiemx.com//2017/02/09/2017-02-09-vagrant/"/>
+    <id>https://www.xiemx.com//2017/02/09/2017-02-09-vagrant/</id>
+    <published>2017-02-08T21:02:54.000Z</published>
+    <updated>2019-09-27T06:52:36.184Z</updated>
+    
+    <content type="html"><![CDATA[<p>删除文档，参考官方：<a href="https://www.vagrantup.com/docs/cli/" target="_blank" rel="noopener">https://www.vagrantup.com/docs/cli/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;删除文档，参考官方：&lt;a href=&quot;https://www.vagrantup.com/docs/cli/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://www.vagrantup.com/docs/cli/&lt;/a&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+    
+      <category term="vagrant" scheme="https://www.xiemx.com/categories/vagrant/"/>
+    
+    
+      <category term="vagrant" scheme="https://www.xiemx.com/tags/vagrant/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Vagrantfile配置</title>
+    <link href="https://www.xiemx.com//2017/02/09/2017-02-09-vagrantfile/"/>
+    <id>https://www.xiemx.com//2017/02/09/2017-02-09-vagrantfile/</id>
+    <published>2017-02-08T21:02:02.000Z</published>
+    <updated>2019-09-27T06:52:36.185Z</updated>
+    
+    <content type="html"><![CDATA[<p>删除原始文档，参考官方文档：<a href="https://www.vagrantup.com/docs/vagrantfile/" target="_blank" rel="noopener">https://www.vagrantup.com/docs/vagrantfile/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;删除原始文档，参考官方文档：&lt;a href=&quot;https://www.vagrantup.com/docs/vagrantfile/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://www.vagrantup.com/docs/vagrant
+      
+    
+    </summary>
+    
+    
+      <category term="vagrant" scheme="https://www.xiemx.com/categories/vagrant/"/>
+    
+    
+      <category term="vagrant" scheme="https://www.xiemx.com/tags/vagrant/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vcenter扩容Linux虚拟机磁盘</title>
+    <link href="https://www.xiemx.com//2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/"/>
+    <id>https://www.xiemx.com//2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/</id>
+    <published>2017-01-19T03:01:34.000Z</published>
+    <updated>2019-09-27T06:52:36.184Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/images/img_58802ffca93b9.png" alt="img"></p><p><img src="/images/img_5880322f10890.png" alt="img"></p><p>磁盘扩容100G<br>1.vcenter扩容磁盘<br>vcenter增加步骤参考：<a href="/2017/01/12/vcenter-expand-disk-to-windows">vcenter扩容window磁盘</a></p><p>2.Linux需要rescan磁盘，重新读到大小</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">方法1:</span><br><span class="line">reboot</span><br><span class="line">方法2:</span><br><span class="line">[root@localhost ~]# echo 1 &gt; /sys/block/sdc/device/rescan</span><br></pre></td></tr></table></figure><p>3.fdisk创建新分区<br>    注意创建新的磁盘后内核可能无法识别到分区表，需要运行partprobe刷新下分区表信息</p><p>4.lvm动态扩容<br>lvm参考：<a href="http://www.xiemx.com/2015/11/29/linux动态磁盘管理（lvm）/">lvm动态磁盘管理</a></p><p>完成后：</p><p><img src="/images/img_588031f4a62e1.png" alt="img"></p><p><img src="/images/img_58803215d9370.png" alt="img"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;img src=&quot;/images/img_58802ffca93b9.png&quot; alt=&quot;img&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/img_5880322f10890.png&quot; alt=&quot;img&quot;&gt;&lt;/p&gt;
+&lt;p&gt;磁盘扩容100G&lt;br&gt;1.vcent
+      
+    
+    </summary>
+    
+    
+      <category term="vcenter" scheme="https://www.xiemx.com/categories/vcenter/"/>
+    
+    
+      <category term="vcenter" scheme="https://www.xiemx.com/tags/vcenter/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vcenter扩容window磁盘</title>
+    <link href="https://www.xiemx.com//2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/"/>
+    <id>https://www.xiemx.com//2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/</id>
+    <published>2017-01-11T19:01:41.000Z</published>
+    <updated>2019-09-27T06:52:36.184Z</updated>
+    
+    <content type="html"><![CDATA[<p>1.vcenter中增加磁盘大小，原本是80G现在扩容100G</p><p><img src="/images/img_587733a5ae0ba.png" alt="img"></p><p>2.Linux系统中重新扫描磁盘</p><p><img src="/images/img_5877340a43dea.png" alt="img"></p><p><img src="/images/img_5877344e51cd6.png" alt="img"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;1.vcenter中增加磁盘大小，原本是80G现在扩容100G&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/img_587733a5ae0ba.png&quot; alt=&quot;img&quot;&gt;&lt;/p&gt;
+&lt;p&gt;2.Linux系统中重新扫描磁盘&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/imag
+      
+    
+    </summary>
+    
+    
+      <category term="windows" scheme="https://www.xiemx.com/categories/windows/"/>
+    
+      <category term="vcenter" scheme="https://www.xiemx.com/categories/windows/vcenter/"/>
+    
+    
+      <category term="windows" scheme="https://www.xiemx.com/tags/windows/"/>
+    
+      <category term="vcenter" scheme="https://www.xiemx.com/tags/vcenter/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>zabbix监控redis</title>
+    <link href="https://www.xiemx.com//2016/12/19/2016-12-19-zabbix-monitor-redis/"/>
+    <id>https://www.xiemx.com//2016/12/19/2016-12-19-zabbix-monitor-redis/</id>
+    <published>2016-12-18T21:12:43.000Z</published>
+    <updated>2019-09-27T06:52:36.184Z</updated>
+    
+    <content type="html"><![CDATA[<p>可配合zabbix自动发现，来完成自动监控</p><h3 id="scripts"><a href="#scripts" class="headerlink" title="scripts"></a>scripts</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">cat redis.sh</span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">redis_conn="/usr/local/bin/redis-cli"</span><br><span class="line">port=$1</span><br><span class="line"></span><br><span class="line">case $2 in </span><br><span class="line">  "used_memory")</span><br><span class="line">    used_memory=`$redis_conn -p $port info | grep used_memory:|awk -F':' '&#123;print $2&#125;'`</span><br><span class="line">    echo $used_memory</span><br><span class="line">    ;;</span><br><span class="line">  "ops_sec")</span><br><span class="line">    ops=`$redis_conn -p $port info|grep instantaneous_ops_per_sec:|awk -F':' '&#123;print $2&#125;'`</span><br><span class="line">    echo $ops</span><br><span class="line">    ;;</span><br><span class="line">  "connected_clients")</span><br><span class="line">    connected_clients=`$redis_conn -p $port info|grep connected_clients: | awk -F ':' '&#123;print $2&#125;'`</span><br><span class="line">    echo $connected_clients</span><br><span class="line">    ;;</span><br><span class="line">  "blocked_clients")</span><br><span class="line">    blocked_clients=`$redis_conn -p $port info|grep blocked_clients:|awk -F':' '&#123;print $2&#125;'`</span><br><span class="line">    echo $blocked_clients</span><br><span class="line">    ;; </span><br><span class="line">  *)</span><br><span class="line">    echo "please input used_memory|ops_sec|connected_clients|blocked_clients"</span><br><span class="line">    ;; </span><br><span class="line">esac</span><br></pre></td></tr></table></figure><h3 id="conf文件"><a href="#conf文件" class="headerlink" title="conf文件"></a>conf文件</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">cat</span> <span class="string">zabbix_redis.conf</span></span><br><span class="line"></span><br><span class="line"><span class="string">UserParameter=redis[*],/opt/script/zabbix/redis.sh</span> <span class="string">$1</span> <span class="string">$2</span></span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;可配合zabbix自动发现，来完成自动监控&lt;/p&gt;
+&lt;h3 id=&quot;scripts&quot;&gt;&lt;a href=&quot;#scripts&quot; class=&quot;headerlink&quot; title=&quot;scripts&quot;&gt;&lt;/a&gt;scripts&lt;/h3&gt;&lt;figure class=&quot;highlight
+      
+    
+    </summary>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/categories/zabbix/"/>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/tags/zabbix/"/>
+    
+      <category term="scripts" scheme="https://www.xiemx.com/tags/scripts/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>zabbix监控mongo</title>
+    <link href="https://www.xiemx.com//2016/12/19/2016-12-19-zabbix-monitor-mongo/"/>
+    <id>https://www.xiemx.com//2016/12/19/2016-12-19-zabbix-monitor-mongo/</id>
+    <published>2016-12-18T21:12:27.000Z</published>
+    <updated>2019-09-27T06:52:36.187Z</updated>
+    
+    <content type="html"><![CDATA[<p>可配合zabbix自动发现，自动监控服务</p><h3 id="script"><a href="#script" class="headerlink" title="script"></a>script</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">cat mongo.sh</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">case $1 in </span><br><span class="line"><span class="meta">#</span><span class="bash">  use_memory)</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    used_memory=`<span class="built_in">echo</span> <span class="string">"db.serverStatus().mem"</span>|mongo admin|grep resident|awk -F<span class="string">':'</span> <span class="string">'&#123;print $2&#125;'</span>|tr -d <span class="string">" ,"</span>`</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    <span class="built_in">echo</span> <span class="variable">$used_memory</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">    ;;</span></span><br><span class="line"><span class="meta">#</span><span class="bash">  </span></span><br><span class="line"><span class="meta">#</span><span class="bash">  use_vmemory)</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    used_vmemory=`<span class="built_in">echo</span> <span class="string">"db.serverStatus().mem"</span>|mongo admin|grep virtual|awk -F<span class="string">':'</span> <span class="string">'&#123;print $2&#125;'</span>|tr -d <span class="string">" ,"</span>`</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    <span class="built_in">echo</span> <span class="variable">$used_vmemory</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">    ;;</span></span><br><span class="line"><span class="meta">#</span><span class="bash">  </span></span><br><span class="line"><span class="meta">#</span><span class="bash">  used_conn)</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    used_conn=`<span class="built_in">echo</span> <span class="string">"db.serverStatus().connections"</span>|mongo admin|grep current|awk -F<span class="string">':'</span> <span class="string">'&#123;print $2&#125;'</span>|tr -d <span class="string">' ,'</span>`</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    <span class="built_in">echo</span> <span class="variable">$used_conn</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">    ;;</span></span><br><span class="line"><span class="meta">#</span><span class="bash">  </span></span><br><span class="line"><span class="meta">#</span><span class="bash">  available_conn)</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    available=`<span class="built_in">echo</span> <span class="string">"db.serverStatus().connections"</span>|mongo admin|grep available|awk -F<span class="string">':'</span> <span class="string">'&#123;print $2&#125;'</span>|tr -d <span class="string">' ,'</span>`</span></span><br><span class="line"><span class="meta">#</span><span class="bash">    <span class="built_in">echo</span> <span class="variable">$availabe</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">  ;;</span></span><br><span class="line">  </span><br><span class="line">  insert)</span><br><span class="line">    insert=`mongostat -n1 | tail -n 1|awk '&#123;print $1&#125;'|tr -d ' *,'`</span><br><span class="line">    echo $insert</span><br><span class="line">    ;;</span><br><span class="line">  </span><br><span class="line">  query)</span><br><span class="line">    query=`mongostat -n1 | tail -n 1|awk '&#123;print $2&#125;'|tr -d ' *,'`</span><br><span class="line">    echo $query</span><br><span class="line">    ;;</span><br><span class="line">  </span><br><span class="line">  update)</span><br><span class="line">    update=`mongostat -n1 | tail -n 1|awk '&#123;print $3&#125;'|tr -d ' *,'`</span><br><span class="line">    echo $update</span><br><span class="line">    ;;</span><br><span class="line">  </span><br><span class="line">  delete)</span><br><span class="line">    delete=`mongostat -n1 | tail -n 1|awk '&#123;print $4&#125;'|tr -d ' *,'`</span><br><span class="line">    echo $delete</span><br><span class="line">    ;;</span><br><span class="line">  getmore)</span><br><span class="line">    getmore=`mongostat -n1 | tail -n 1|awk '&#123;print $5&#125;'|tr -d ' *,'`  </span><br><span class="line">    echo $getmore</span><br><span class="line">    ;;</span><br><span class="line">  command)</span><br><span class="line">    command=`mongostat -n1 | tail -n 1|awk '&#123;print $6&#125;'|awk -F'|' '&#123;print $1&#125;'|tr -d ' *,'`</span><br><span class="line">    echo $command</span><br><span class="line">    ;;</span><br><span class="line">  vsize)</span><br><span class="line">    vsize=`mongostat -n1 | tail -n 1|awk '&#123;print $10&#125;'|tr -d ' *,G'`</span><br><span class="line">    echo $vsize</span><br><span class="line">    ;;</span><br><span class="line">  res)</span><br><span class="line">    res=`mongostat -n1 | tail -n 1|awk '&#123;print $11&#125;'|tr -d ' *,G'`</span><br><span class="line">    echo $res</span><br><span class="line">    ;;</span><br><span class="line">  qr)</span><br><span class="line">    qr=`mongostat -n1 | tail -n 1|awk '&#123;print $12&#125;'|awk -F'|' '&#123;print $1&#125;'|tr -d ' *,'`</span><br><span class="line">    echo $qr</span><br><span class="line">    ;;</span><br><span class="line">  qw)</span><br><span class="line">    qw=`mongostat -n1 | tail -n 1|awk '&#123;print $12&#125;'|awk -F'|' '&#123;print $2&#125;'|tr -d ' *,'`</span><br><span class="line">    echo $qw</span><br><span class="line">    ;;</span><br><span class="line">  ar)</span><br><span class="line">    ar=`mongostat -n1 | tail -n 1|awk '&#123;print $13&#125;'|awk -F'|' '&#123;print $1&#125;'|tr -d ' *,'`</span><br><span class="line">    echo $ar</span><br><span class="line">    ;;</span><br><span class="line">  aw)</span><br><span class="line">    aw=`mongostat -n1 | tail -n 1|awk '&#123;print $13&#125;'|awk -F'|' '&#123;print $2&#125;'|tr -d ' *,'`</span><br><span class="line">    echo $aw</span><br><span class="line">    ;;</span><br><span class="line">  conn)</span><br><span class="line">    conn=`mongostat -n1 | tail -n 1|awk '&#123;print $16&#125;'|tr -d ' *,'`</span><br><span class="line">    echo $conn</span><br><span class="line">    ;;</span><br><span class="line"></span><br><span class="line">  *)</span><br><span class="line">    echo "please input  insert|query|update|delete"</span><br><span class="line">    ;;</span><br><span class="line">esac</span><br></pre></td></tr></table></figure><h3 id="conf配置文件"><a href="#conf配置文件" class="headerlink" title="conf配置文件"></a>conf配置文件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat zabbix_mongo.conf</span><br><span class="line">UserParameter=mongo[*],/opt/script/zabbix/mongo.sh $1</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;可配合zabbix自动发现，自动监控服务&lt;/p&gt;
+&lt;h3 id=&quot;script&quot;&gt;&lt;a href=&quot;#script&quot; class=&quot;headerlink&quot; title=&quot;script&quot;&gt;&lt;/a&gt;script&lt;/h3&gt;&lt;figure class=&quot;highlight shel
+      
+    
+    </summary>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/categories/zabbix/"/>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/tags/zabbix/"/>
+    
+      <category term="mongo" scheme="https://www.xiemx.com/tags/mongo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>zabbix监控memcache</title>
+    <link href="https://www.xiemx.com//2016/12/19/2016-12-19-zabbix-monitor-memcache/"/>
+    <id>https://www.xiemx.com//2016/12/19/2016-12-19-zabbix-monitor-memcache/</id>
+    <published>2016-12-18T21:12:02.000Z</published>
+    <updated>2019-09-27T06:52:36.184Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="script"><a href="#script" class="headerlink" title="script"></a>script</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">cat memcached.sh</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">port=$1</span><br><span class="line">mem_conn="/bin/nc 127.0.0.1 $port"</span><br><span class="line"></span><br><span class="line">case $2 in </span><br><span class="line">  conn)</span><br><span class="line">    conn=`echo -e "stats\nquit"|$mem_conn|grep curr_connections | awk '&#123;print $3&#125;' `</span><br><span class="line">    echo $conn</span><br><span class="line">    ;;</span><br><span class="line">  bytes)</span><br><span class="line">    bytes=`echo -e "stats\nquit"|$mem_conn|grep bytes|awk '&#123;print $3&#125;'`</span><br><span class="line">    echo `echo $bytes |tr -d " "`</span><br><span class="line">    ;;</span><br><span class="line">  cmd_get)</span><br><span class="line">    cmd_get=`echo -e "stats\nquit"|$mem_conn|grep cmd_get| awk '&#123;print $3&#125;' `</span><br><span class="line">    echo $cmd_get</span><br><span class="line">    ;;</span><br><span class="line">  cmd_set)</span><br><span class="line">    cmd_set=`echo -e "stats\nquit"|$mem_conn|grep cmd_set| awk '&#123;print $3&#125;' `</span><br><span class="line">    echo $cmd_set</span><br><span class="line">    ;;</span><br><span class="line">  get_hits)</span><br><span class="line">    get_hits=`echo -e "stats\nquit"|$mem_conn|grep get_hits| awk '&#123;print $3&#125;' `</span><br><span class="line">    echo $get_hits</span><br><span class="line">    ;;</span><br><span class="line">  read_qps_sec)</span><br><span class="line">    count1=`echo -e "stats\nquit"|$mem_conn|grep cmd_get| awk '&#123;print $3&#125;'|tr -d '\r' `</span><br><span class="line">    sleep 1</span><br><span class="line">    count2=`echo -e "stats\nquit"|$mem_conn|grep cmd_get| awk '&#123;print $3&#125;'|tr -d '\r' `</span><br><span class="line">    count=` expr $count2 - $count1`</span><br><span class="line">    echo $count</span><br><span class="line">    ;;</span><br><span class="line">  write_qps_sec)</span><br><span class="line">    count1=`echo -e "stats\nquit"|$mem_conn|grep cmd_set| awk '&#123;print $3&#125;' `</span><br><span class="line">    sleep 1</span><br><span class="line">    count2=`echo -e "stats\nquit"|$mem_conn|grep cmd_set| awk '&#123;print $3&#125;' `</span><br><span class="line">    count=`echo $count2 $count1|awk '&#123;printf($1-$2)&#125;'`</span><br><span class="line">    echo $count</span><br><span class="line">    ;;</span><br><span class="line">  </span><br><span class="line">  hit_target)</span><br><span class="line">    cmd_get=`echo -e "stats\nquit"|$mem_conn|grep cmd_get| awk '&#123;print $3&#125;' `</span><br><span class="line">    get_hits=`echo -e "stats\nquit"|$mem_conn|grep get_hits| awk '&#123;print $3&#125;' `</span><br><span class="line">    hit_target=`echo $get_hits $cmd_get|awk '&#123;printf($1*100/$2)&#125;'`</span><br><span class="line">    echo $hit_target</span><br><span class="line">    ;;</span><br><span class="line">  *)</span><br><span class="line">    echo "please input conn|bytes|cmd_get|cmd_set|get_hits|read_qps_sec|write_qps_sec|hit_target"</span><br><span class="line">    ;;</span><br><span class="line">esac</span><br></pre></td></tr></table></figure><h3 id="配置文件放到zabbix的conf-d-目录下，"><a href="#配置文件放到zabbix的conf-d-目录下，" class="headerlink" title="配置文件放到zabbix的conf.d/目录下，"></a>配置文件放到zabbix的conf.d/目录下，</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat zabbix_memcache.conf</span><br><span class="line">UserParameter=memcache[*],/opt/script/zabbix/memcached.sh $1 $2</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;script&quot;&gt;&lt;a href=&quot;#script&quot; class=&quot;headerlink&quot; title=&quot;script&quot;&gt;&lt;/a&gt;script&lt;/h3&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gut
+      
+    
+    </summary>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/categories/zabbix/"/>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/tags/zabbix/"/>
+    
+      <category term="monitor" scheme="https://www.xiemx.com/tags/monitor/"/>
+    
+      <category term="memcache" scheme="https://www.xiemx.com/tags/memcache/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>zabbix 监控ssl证书过期时间</title>
+    <link href="https://www.xiemx.com//2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/"/>
+    <id>https://www.xiemx.com//2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/</id>
+    <published>2016-12-05T02:12:45.000Z</published>
+    <updated>2019-09-27T06:52:36.187Z</updated>
+    
+    <content type="html"><![CDATA[<p>脚本是参考网上修改过的版本，注意要指定servername参数，以免抓取到其它站点的证书。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mingxu.xie@t-slq-ops-1:/opt/script/zabbix# cat check_ssl_cert.sh </span><br><span class="line"><span class="meta">#</span><span class="bash">/bin/bash</span></span><br><span class="line">host=1</span><br><span class="line">port=2</span><br><span class="line">end_date=openssl s_client -host $host -port $port -servername $host -showcerts &amp;lt;/dev/null 2&gt;/dev/null|sed -n '/BEGIN CERTIFICATE/,/END CERT/p' |openssl x509 -text 2&gt;/dev/null |sed -n 's/ *Not After : *//p'</span><br><span class="line">if [ -n "end_date" ];then</span><br><span class="line">    end_date_seconds=`date '+%s' --date "end_date"now_seconds=date '+%s'`</span><br><span class="line">    echo "(end_date_seconds-now_seconds)/24/3600" | bc</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;脚本是参考网上修改过的版本，注意要指定servername参数，以免抓取到其它站点的证书。&lt;/p&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1
+      
+    
+    </summary>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/categories/zabbix/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>zabbix触发器函数</title>
+    <link href="https://www.xiemx.com//2016/12/05/2016-12-05-zabbix-trigger-function/"/>
+    <id>https://www.xiemx.com//2016/12/05/2016-12-05-zabbix-trigger-function/</id>
+    <published>2016-12-05T01:12:36.000Z</published>
+    <updated>2019-09-27T06:52:36.183Z</updated>
+    
+    <content type="html"><![CDATA[<p>不再一一列出，参考官方文档</p><p><a href="https://www.zabbix.com/documentation/4.0/manual/appendix/triggers/functions" target="_blank" rel="noopener">https://www.zabbix.com/documentation/4.0/manual/appendix/triggers/functions</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;不再一一列出，参考官方文档&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.zabbix.com/documentation/4.0/manual/appendix/triggers/functions&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;
+      
+    
+    </summary>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/categories/zabbix/"/>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/tags/zabbix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Zabbix自定义Item Not Supported,页面出现不支持解决
+</title>
+    <link href="https://www.xiemx.com//2016/11/23/2016-11-23-fix-zabbix-item-not-supported/"/>
+    <id>https://www.xiemx.com//2016/11/23/2016-11-23-fix-zabbix-item-not-supported/</id>
+    <published>2016-11-22T20:11:59.000Z</published>
+    <updated>2019-09-27T06:52:36.185Z</updated>
+    
+    <content type="html"><![CDATA[<p>使用Zabbix的时候往往会自定义Item。<br>但是经常会遇到自定义的<code>Item Not Supported</code>了。<br>Zabbix Agent默认的超时时间是<code>3</code>秒。往往我们自定义的Item由于各种原因返回时间会比较长。建议修改一个适合自己实际的值。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/zabbix/zabbix_agent.conf</span><br><span class="line"><span class="meta">#</span><span class="bash">Range: 1-30</span></span><br><span class="line">Timeout=8</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">##修改完毕后重启zabbix-agent</span></span></span><br><span class="line">/etc/init.d/zabbix-agent restart</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;使用Zabbix的时候往往会自定义Item。&lt;br&gt;但是经常会遇到自定义的&lt;code&gt;Item Not Supported&lt;/code&gt;了。&lt;br&gt;Zabbix Agent默认的超时时间是&lt;code&gt;3&lt;/code&gt;秒。往往我们自定义的Item由于各种原因返回时间会比较长。
+      
+    
+    </summary>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/categories/zabbix/"/>
+    
+      <category term="issue" scheme="https://www.xiemx.com/categories/zabbix/issue/"/>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/tags/zabbix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>zabbix-server.conf文件详解</title>
+    <link href="https://www.xiemx.com//2016/09/01/2016-09-01-zabbix-server-configure/"/>
+    <id>https://www.xiemx.com//2016/09/01/2016-09-01-zabbix-server-configure/</id>
+    <published>2016-08-31T21:09:48.000Z</published>
+    <updated>2019-09-27T06:52:36.187Z</updated>
+    
+    <content type="html"><![CDATA[<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line">AlertScriptsPath 默认值：/usr/local/share/zabbix/alertscripts 说明：告警脚本目录</span><br><span class="line"></span><br><span class="line">AllowRoot 默认值：0 说明：是否允许使用root启动，0:不允许，1:允许，默认情况下她会使用zabbix用户来启动zabbix进程，不推荐使用root</span><br><span class="line"></span><br><span class="line">CacheSize 取值范围： 128K-8G 默认值：8M 说明：配置缓存，用于存储host，item，trigger数据，2.2.3版本之前最大支持2G，目前最大支持8G，一般用不了多少的。</span><br><span class="line"></span><br><span class="line">CacheUpdateFrequency 取值范围：1-3600 默认值：60 说明：多少秒更新一次配置缓存</span><br><span class="line"></span><br><span class="line">DBHost 默认值：localhost 说明：数据库主机地址</span><br><span class="line"></span><br><span class="line">DBName 默认值：无 必填：是</span><br><span class="line"></span><br><span class="line">DBPassword： 默认值：空 说明：数据库密码</span><br><span class="line"></span><br><span class="line">DBPort 取值范围：1024-65535 默认值:3306 说明：SQLite作为DB，这个选项请忽略，如果使用socket链接，也请忽略。</span><br><span class="line"></span><br><span class="line">DBSchema 说明：Schema名称. 用于 IBM DB2 、 PostgreSQL.</span><br><span class="line"></span><br><span class="line">DBSocket 默认值：/tmp/mysql.sock 说明：mysql sock文件路径</span><br><span class="line"></span><br><span class="line">DebugLevel 取值范围：0-5 默认值：3 说明: 指定debug级别 0 - 基本信息 1 - critical信息 2 - error信息 3 - warnings信息 4 - 调试日志，日志内容很多，慎重使用 5 - 用于调试web和vmware监控</span><br><span class="line"></span><br><span class="line">ExternalScripts 默认值： /usr/local/share/zabbix/externalscripts 说明： 外部脚本目录</span><br><span class="line"></span><br><span class="line">Fping6Location 默认值：/usr/sbin/fping6 说明：fping6路径，不懂fping的人可以百度一下，如果zabbix非root启动，请给fping6 SUID</span><br><span class="line"></span><br><span class="line">FpingLocation 默认值：/usr/sbin/fping 说明:和上面的一样</span><br><span class="line"></span><br><span class="line">HistoryCacheSize 取值范围：128K-2G 默认值：8M 说明： 历史记录缓存大小，用于存储历史记录</span><br><span class="line"></span><br><span class="line">HistoryTextCacheSize 取值范围：128K-2G 默认值：16M 说明：文本类型历史记录的缓存大小，存储character, text 、log历史记录.</span><br><span class="line"></span><br><span class="line">HousekeepingFrequency 取值范围：0-24 默认值：1 说明：housekeep执行频率，默认每小时回去删除一些过期数据。如果server重启，那么30分钟之后才执行一次，接下来，每隔一小时在执行一次。</span><br><span class="line"></span><br><span class="line">Include 说明：include配置文件，可以使用正则表达式，例如：/usr/local/zabbix-2.4.4/conf/ttlsa.com/*.conf</span><br><span class="line"></span><br><span class="line">JavaGateway 说明：Zabbix Java gateway的主机名，需要启动Java pollers</span><br><span class="line"></span><br><span class="line">JavaGatewayPort 取值范围：1024-32767 默认值：10052 Zabbix Java gateway监听端口</span><br><span class="line"></span><br><span class="line">ListenIP 默认值：0.0.0.0 说明：监听地址，留空则会在所有的地址上监听，可以监听多个IP地址，ip之间使用逗号分隔，例如：127.0.0.1,10.10.0.2</span><br><span class="line"></span><br><span class="line">ListenPort 取值范围：1024-32767 默认值：10051 说明：监听端口</span><br><span class="line"></span><br><span class="line">LoadModule 说明：加载模块，格式: LoadModule=，文件必须在指定的LoadModulePath目录下，如果需要加载多个模块，那么写多个即可。</span><br><span class="line"></span><br><span class="line">LoadModulePath 模块目录，参考上面</span><br><span class="line"></span><br><span class="line">LogFile 日志文件，例如：/data/logs/zabbix/zabbix-server.log</span><br><span class="line"></span><br><span class="line">LogFileSize 取值范围：0-1024 默认值：1 0表示禁用日志自动rotation，如果日志达到了限制，并且rotation失败，老日志文件将会被清空掉，重新生成一个新日志。</span><br><span class="line"></span><br><span class="line">LogSlowQueries 取值范围：0-3600000 默认值：0 多慢的数据库查询将会被记录，单位：毫秒，0表示不记录慢查询。只有在DebugLevel=3时，这个配置才有效。</span><br><span class="line"></span><br><span class="line">MaxHousekeeperDelete 取值范围： 0-1000000 默认值：5000 housekeeping一次删除的数据不能大于MaxHousekeeperDelete</span><br><span class="line"></span><br><span class="line">PidFile 默认值：/tmp/zabbix_server.pid PID文件</span><br><span class="line"></span><br><span class="line">ProxyConfigFrequency 取值范围：1-604800 默认值：3600 proxy被动模式下，server多少秒同步配置文件至proxy。</span><br><span class="line"></span><br><span class="line">ProxyDataFrequency 取值范围：1-3600 默认值:1 被动模式下，zabbix server间隔多少秒向proxy请求历史数据</span><br><span class="line"></span><br><span class="line">SenderFrequency 取值范围：5-3600 默认值：30 间隔多少秒，再尝试发送为发送的报警</span><br><span class="line"></span><br><span class="line">SNMPTrapperFile 默认值：/tmp/zabbix_traps.tmp SNMP trap发送到server的数据临时存放文件。</span><br><span class="line"></span><br><span class="line">SourceIP 出口IP地址</span><br><span class="line"></span><br><span class="line">SSHKeyLocation SSH公钥私钥路径</span><br><span class="line"></span><br><span class="line">SSLCertLocation SSL证书目录，用于web监控</span><br><span class="line"></span><br><span class="line">SSLKeyLocation SSL认证私钥路径、用于web监控</span><br><span class="line"></span><br><span class="line">SSLCALocation SSL认证,CA路径，如果为空，将会使用系统默认的CA</span><br><span class="line"></span><br><span class="line">StartDBSyncers 取值范围：1-100 默认值：4 预先foke DB Syncers的数量，1.8.5以前最大值为64</span><br><span class="line"></span><br><span class="line">StartDiscoverers 取值范围：0-250 默认值：1 pre-forked discoverers的数量，1.8.5版本以前最大可为255</span><br><span class="line"></span><br><span class="line">StartHTTPPollers 取值范围：0-1000 默认值：1 pre-forked HTTP pollers的数量，1.8.5以前最大255</span><br><span class="line"></span><br><span class="line">StartIPMIPollers 取值范围：0-1000 默认值：0 pre-forked IPMI pollers的数量，1.8.5之前，最大为255</span><br><span class="line"></span><br><span class="line">Timeout 取值范围：1-30 默认值：3 agent，snmp，external check的超时时间，单位为秒</span><br><span class="line"></span><br><span class="line">TmpDir 默认值：/tmp</span><br><span class="line"></span><br><span class="line">TrapperTimeout 取值范围：1-300 默认值：300 处理trapper数据的超时时间</span><br><span class="line"></span><br><span class="line">TrendCacheSize 取值范围：128K-2G 默认值：4M 历史数据缓存大小</span><br><span class="line"></span><br><span class="line">UnavailableDelay 取值范围：1-3600 默认值：60 间隔多少秒再次检测主机是否可用</span><br><span class="line"></span><br><span class="line">UnreachableDelay 取值范围：1-3600 默认值：15 间隔多少秒再次检测主机是否可达。</span><br><span class="line"></span><br><span class="line">UnreachablePeriod 取值范围：1-3600 默认值：45 检测到主机不可用，多久将它置为不可达</span><br><span class="line"></span><br><span class="line">User 默认值：zabbix 启动zabbix server的用户，在配置禁止root启动，并且当前shell用户是root得情况下有效。如果当前用户是xiemx，那么zabbix server的运行用户是xiemx</span><br><span class="line"></span><br><span class="line">ValueCacheSize 取值范围：0,128K-64G 默认值：8M 0表示禁用，history value缓存大小，当缓存超标了，将会每隔5分钟往server日志里面记录。养成看日志的好习惯。</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;figure class=&quot;highlight markdown&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span cl
+      
+    
+    </summary>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/categories/zabbix/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>watch重复执行某个命令</title>
+    <link href="https://www.xiemx.com//2016/08/11/2016-08-11-shell-command-watch/"/>
+    <id>https://www.xiemx.com//2016/08/11/2016-08-11-shell-command-watch/</id>
+    <published>2016-08-10T20:08:29.000Z</published>
+    <updated>2019-09-27T06:52:36.185Z</updated>
+    
+    <content type="html"><![CDATA[<p>当需要重复执行一个命令时，可使用<code>watch</code></p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ watch</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line"> watch [options] command</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  -b, --beep             beep if command has a non-zero exit</span><br><span class="line">  -c, --color            interpret ANSI color and style sequences</span><br><span class="line">  -d, --differences[=&lt;permanent&gt;]</span><br><span class="line">                         highlight changes between updates</span><br><span class="line">  -e, --errexit          exit if command has a non-zero exit</span><br><span class="line">  -g, --chgexit          exit when output from command changes</span><br><span class="line">  -n, --interval &lt;secs&gt;  seconds to wait between updates</span><br><span class="line">  -p, --precise          attempt run command in precise intervals</span><br><span class="line">  -t, --no-title         turn off header</span><br><span class="line">  -x, --exec             pass command to exec instead of "sh -c"</span><br><span class="line"></span><br><span class="line"> -h, --help     display this help and exit</span><br><span class="line"> -v, --version  output version information and exit</span><br><span class="line"></span><br><span class="line">For more details see watch(1).</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">##每秒执行一次ls命令</span></span></span><br><span class="line">watch -n 1 ls</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;当需要重复执行一个命令时，可使用&lt;code&gt;watch&lt;/code&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;
+      
+    
+    </summary>
+    
+    
+      <category term="command" scheme="https://www.xiemx.com/categories/command/"/>
+    
+    
+      <category term="shell" scheme="https://www.xiemx.com/tags/shell/"/>
+    
+      <category term="command" scheme="https://www.xiemx.com/tags/command/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>zabbix Less than 25% free in the configuration cache解决</title>
+    <link href="https://www.xiemx.com//2016/08/09/2016-08-09-zabbix-less-than-25-free-in-the-configuration-cache/"/>
+    <id>https://www.xiemx.com//2016/08/09/2016-08-09-zabbix-less-than-25-free-in-the-configuration-cache/</id>
+    <published>2016-08-08T19:08:20.000Z</published>
+    <updated>2019-09-27T06:52:36.185Z</updated>
+    
+    <content type="html"><![CDATA[<p>在zabbix server默认配置下，出现告警</p><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Less than 25% free in the configuration cache</span><br></pre></td></tr></table></figure><p>可增加zabbix配置缓存解决</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim zabbix_server.conf</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#将缓存从8M提升到16M，可以调到最高8G</span></span></span><br><span class="line">CacheSize=16M</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#重启zabbix server</span></span></span><br><span class="line">service zabbix_server restart</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;在zabbix server默认配置下，出现告警&lt;/p&gt;
+&lt;figure class=&quot;highlight markdown&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/categories/zabbix/"/>
+    
+    
+      <category term="issue" scheme="https://www.xiemx.com/tags/issue/"/>
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/tags/zabbix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>域名状态含义</title>
+    <link href="https://www.xiemx.com//2016/07/27/2016-07-27-domain-status-code/"/>
+    <id>https://www.xiemx.com//2016/07/27/2016-07-27-domain-status-code/</id>
+    <published>2016-07-27T03:07:26.000Z</published>
+    <updated>2019-09-27T06:52:36.186Z</updated>
+    
+    <content type="html"><![CDATA[<p>新注册的域名，可能出现以下状态：</p><table><thead><tr><th align="left">域名状态</th><th align="left">含义</th></tr></thead><tbody><tr><td align="left">addPeriod</td><td align="left">注册局设置域名新注册期（域名新注册 5 天内会出现的状态，不影响域名使用，5 天后自动解除）。</td></tr><tr><td align="left">·ok</td><td align="left">普通状态（可正常使用。没有需要立即进行的操作，也没有设置任何保护措施。有其他状态时，OK 状态不显示，但并不代表不正常。</td></tr></tbody></table><p>出于对域名注册信息的保护，域名在进行某些安全锁定后，会出现以下状态：</p><table><thead><tr><th align="left">域名状态</th><th align="left">含义</th></tr></thead><tbody><tr><td align="left">·clientDeleteProhibited</td><td align="left">注册商设置禁止删除（保护域名的一种状态，域名不能被删除）。</td></tr><tr><td align="left">serverDeleteProhibited</td><td align="left">注册局设置禁止删除（保护域名的一种状态，域名不能被删除）。</td></tr><tr><td align="left">·clientUpdateProhibited</td><td align="left">注册商设置禁止更新（域名信息，包括注册人/管理联系人/技术联系人/付费联系人/DNS 等不能被修改，但可设置或修改解析记录）。</td></tr><tr><td align="left">·serverUpdateProhibited</td><td align="left">注册局设置禁止更新（域名信息，包括注册人/管理联系人/技术联系人/付费联系人/DNS 等不能被修改，但可设置或修改解析记录）。</td></tr><tr><td align="left">·clientTransferProhibited</td><td align="left">注册商设置禁止转移（保护域名的一种状态，域名不能转移注册商）。</td></tr><tr><td align="left">·serverTransferProhibited</td><td align="left">注册局设置禁止转移（保护域名的一种状态，域名不能转移注册商。有的域名新注册及转移注册商 60 天内会被注册局设置成该状态，60 天后自动解除；有的则为域名涉及仲裁或诉讼案被注册局设置，仲裁或诉讼案结束会被解除）。</td></tr></tbody></table><p>其他禁止解析、禁止续费的状态：</p><table><thead><tr><th align="left">域名状态</th><th align="left">含义</th></tr></thead><tbody><tr><td align="left">·pendingVerification</td><td align="left">注册信息审核期（该域名注册后未进行实名审核，需尽早在域名付费后 5 天内提交资料审核，5 天后仍未实名审核的，将进入 ServerHold 状态）。</td></tr><tr><td align="left">·clientHold</td><td align="left">注册商设置暂停解析（处于该状态域名解析暂停，需联系注册商解除该状态）。</td></tr><tr><td align="left">·serverHold</td><td align="left">注册局设置暂停解析（处于该状态域名解析暂停，.cn 国内中英文域名注册成功后未通过实名审核时多出现该种状态，需在域名有效期内完成实名审核后解除）。</td></tr><tr><td align="left">·inactive</td><td align="left">非激活状态（注册时未填写域名 DNS，不能进行解析，需在注册商处设置域名 DNS）。</td></tr><tr><td align="left">·clientRenewProhibited/serverRenewProhibited</td><td align="left">注册商或注册局设置禁止续费（域名不能续费，处于该状态通常表示该域名处于仲裁或法院争议期，需联系注册商确认原因）。</td></tr><tr><td align="left">·pendingTransfer</td><td align="left">注册局设置转移过程中（域名正在转移注册商过程中）。</td></tr><tr><td align="left">·redemptionPeriod</td><td align="left">注册局设置赎回期（域名处于赎回期，可联系注册商高价赎回）。</td></tr><tr><td align="left">·pendingDelete</td><td align="left">注册局设置待删除/赎回期（对于国际域名，该状态表示域名已过赎回期等待被删除，删除后开放重新注册；对于国内域名，该状态表示域名处于赎回期，可联系注册商高价赎回）。</td></tr></tbody></table>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;新注册的域名，可能出现以下状态：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&quot;left&quot;&gt;域名状态&lt;/th&gt;
+&lt;th align=&quot;left&quot;&gt;含义&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td align=&quot;left&quot;
+      
+    
+    </summary>
+    
+    
+      <category term="domain" scheme="https://www.xiemx.com/categories/domain/"/>
+    
+    
+      <category term="domain" scheme="https://www.xiemx.com/tags/domain/"/>
+    
+      <category term="statusCode" scheme="https://www.xiemx.com/tags/statusCode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>uwsgi 报错 invalid option --“x” getopt_long() error</title>
+    <link href="https://www.xiemx.com//2016/07/26/2016-07-26-uwsgi-invalid-option-x-getopt_long-error/"/>
+    <id>https://www.xiemx.com//2016/07/26/2016-07-26-uwsgi-invalid-option-x-getopt_long-error/</id>
+    <published>2016-07-26T03:07:34.000Z</published>
+    <updated>2019-09-27T06:52:36.184Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="报错："><a href="#报错：" class="headerlink" title="报错："></a>报错：</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">uwsgi: invalid option — ‘x’</span><br><span class="line">getopt_long() error</span><br></pre></td></tr></table></figure><h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>这个问题是因为编译uwsgi的时候少了libxml2库导致的，应该先安装库再编译，否则会少了xml的支持。</p><ol><li><p>uninstall uwsgi</p></li><li><p>install  libxml*  </p></li><li><p>install uwsgi</p></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;报错：&quot;&gt;&lt;a href=&quot;#报错：&quot; class=&quot;headerlink&quot; title=&quot;报错：&quot;&gt;&lt;/a&gt;报错：&lt;/h3&gt;&lt;figure class=&quot;highlight markdown&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre
+      
+    
+    </summary>
+    
+    
+      <category term="uwsgi" scheme="https://www.xiemx.com/categories/uwsgi/"/>
+    
+      <category term="python" scheme="https://www.xiemx.com/categories/uwsgi/python/"/>
+    
+    
+      <category term="python" scheme="https://www.xiemx.com/tags/python/"/>
+    
+      <category term="issue" scheme="https://www.xiemx.com/tags/issue/"/>
+    
+      <category term="uwsgi" scheme="https://www.xiemx.com/tags/uwsgi/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>zabbix微信报警脚本</title>
+    <link href="https://www.xiemx.com//2016/06/29/2016-06-29-zabbix-alert-to-wechat-script/"/>
+    <id>https://www.xiemx.com//2016/06/29/2016-06-29-zabbix-alert-to-wechat-script/</id>
+    <published>2016-06-29T02:06:55.000Z</published>
+    <updated>2019-09-27T06:52:36.185Z</updated>
+    
+    <content type="html"><![CDATA[<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"></span><br><span class="line">__author__ = <span class="string">'xiemx'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> json,requests</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Weixin</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_token</span><span class="params">(self)</span>:</span></span><br><span class="line">        CorpID = <span class="string">'-------4fa4'</span></span><br><span class="line">        Secret = <span class="string">'Aew6oxx-----------FaTClkjXlmw_zH'</span></span><br><span class="line">        token_url = <span class="string">'https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=&#123;&#125;&amp;corpsecret=&#123;&#125;'</span>.format(CorpID, Secret)</span><br><span class="line">        response = requests.get(token_url, verify=<span class="literal">False</span>).content</span><br><span class="line">        p = json.loads(response)</span><br><span class="line">        token = p[<span class="string">'access_token'</span>]</span><br><span class="line">        <span class="keyword">return</span> token</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">send_msg</span><span class="params">(self, user_id, msg)</span>:</span></span><br><span class="line">        token = self.get_token()</span><br><span class="line">        url = <span class="string">'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=&#123;&#125;'</span>.format(token)</span><br><span class="line">        send_content=&#123;</span><br><span class="line">            <span class="string">"touser"</span>: user_id,</span><br><span class="line">            <span class="string">"msgtype"</span>: <span class="string">"text"</span>,</span><br><span class="line">            <span class="string">"agentid"</span>: <span class="string">"2"</span>,</span><br><span class="line">            <span class="string">"text"</span>: &#123;</span><br><span class="line">               <span class="string">"content"</span>: msg</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">"safe"</span>:<span class="string">"0"</span></span><br><span class="line">            &#125;</span><br><span class="line">        </span><br><span class="line">        p = requests.post(url, verify=<span class="literal">False</span>, data=json.dumps(send_content))</span><br><span class="line">        <span class="keyword">print</span> p.content</span><br><span class="line">        logging.debug(<span class="string">"weixin send success"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    user_id = sys.argv[<span class="number">1</span>]</span><br><span class="line">    msg = sys.argv[<span class="number">2</span>] + <span class="string">'\n'</span> + sys.argv[<span class="number">3</span>]</span><br><span class="line">    weixin = Weixin()</span><br><span class="line">    weixin.send_msg(user_id, msg)</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span clas
+      
+    
+    </summary>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/categories/zabbix/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>zabbix监控指定端口</title>
+    <link href="https://www.xiemx.com//2016/06/29/2016-06-29-zabbix-monitor-port/"/>
+    <id>https://www.xiemx.com//2016/06/29/2016-06-29-zabbix-monitor-port/</id>
+    <published>2016-06-29T02:06:32.000Z</published>
+    <updated>2019-09-27T06:52:36.185Z</updated>
+    
+    <content type="html"><![CDATA[<p>1.登陆zabbix主界面</p><p>选择：配置-模板</p><p>选择模板组，这里我选择的是Template App Agentless，原因该自带模板组内包含各种常用服务的模板</p><p>单击该模板组 项目</p><p><img src="/images/img_577330bdc322e.png" alt="img">点击右上角的 创建项目</p><p><img src="/images/img_577330e1e5d06.png" alt="img">这里添加的是mysql服务，按照如图配置</p><p><img src="/images/img_577330f8871b5.png" alt="img">单击下方 存档 保存。</p><p>如图点击 触发器</p><p><img src="/images/img_5773310c679a1.png" alt="img">如图，点击右上方 创建触发器</p><p><img src="/images/img_5773313591d94.png" alt="img">按照如图配置</p><p><img src="/images/img_57733153a13cb.png" alt="img">点击 存档 保存，完毕。</p><p>以上是将自定义模板服务添加到Template App Agentless模板组</p><p>最后将Template App Agentless模板组添加到你需要监控的客户端主机内</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;1.登陆zabbix主界面&lt;/p&gt;
+&lt;p&gt;选择：配置-模板&lt;/p&gt;
+&lt;p&gt;选择模板组，这里我选择的是Template App Agentless，原因该自带模板组内包含各种常用服务的模板&lt;/p&gt;
+&lt;p&gt;单击该模板组 项目&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/i
+      
+    
+    </summary>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/categories/zabbix/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>window系统上部署Zabbix_agent</title>
+    <link href="https://www.xiemx.com//2016/04/13/2016-04-13-deploy-zabbix_agent-to-windows/"/>
+    <id>https://www.xiemx.com//2016/04/13/2016-04-13-deploy-zabbix_agent-to-windows/</id>
+    <published>2016-04-13T01:04:53.000Z</published>
+    <updated>2019-09-27T06:52:36.187Z</updated>
+    
+    <content type="html"><![CDATA[<p>1.获取windows的agent客户端，解压文件至指定位置</p><pre><code>![img](/images/img_570da13048078.png)</code></pre><p>2.修改conf文件中的</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Server=server端的IP地址</span><br><span class="line"></span><br><span class="line">ServerActive=server端的IP地址</span><br><span class="line"></span><br><span class="line">HostName=服务器在监控端上的监控名，可见名称可以不写默认为主机名称</span><br></pre></td></tr></table></figure><p><img src="/images/img_570da1465a8dc.png" alt="img"></p><p>3.命令行模式下安装Zabbix_agent监控程序</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 进入解压后的文件夹下</span></span><br><span class="line"></span><br><span class="line">cd  C:\zabbix_agents\bin\win64</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">安装程序</span></span><br><span class="line"></span><br><span class="line">zabbix_agentd.exe –c c:\zabbix\zabbix_agentd.conf -i</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">启动程序</span></span><br><span class="line"></span><br><span class="line">zabbix_agentd.exe –c c:\zabbix\zabbix_agentd.conf -s</span><br></pre></td></tr></table></figure><p><img src="/images/img_570da15f9ead1.png" alt="img"></p><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">参数含义：</span><br><span class="line">-c    指定配置文件所在位置</span><br><span class="line">-i     安装客户端</span><br><span class="line">-s    启动客户端</span><br><span class="line">-x    停止客户端</span><br><span class="line">-d    卸载客户端</span><br></pre></td></tr></table></figure><p>4.监控端添加agent服务器注意主机名为conf文件中定义的名称，否则会导致某些监控项目异常</p><p><img src="/images/img_570da173ef401.png" alt="img"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;1.获取windows的agent客户端，解压文件至指定位置&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;![img](/images/img_570da13048078.png)&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;2.修改conf文件中的&lt;/p&gt;
+&lt;figure class=&quot;highli
+      
+    
+    </summary>
+    
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/categories/zabbix/"/>
+    
+    
+      <category term="windows" scheme="https://www.xiemx.com/tags/windows/"/>
+    
+      <category term="zabbix" scheme="https://www.xiemx.com/tags/zabbix/"/>
+    
+  </entry>
+  
+</feed>

@@ -17,16 +17,20 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>求索</title>
-  <meta property="og:type" content="website">
-<meta property="og:title" content="求索">
-<meta property="og:url" content="https://www.xiemx.com/index.html">
+  <title>zabbix-server.conf文件详解 | 求索</title>
+  <meta name="description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101Alert">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zabbix-server.conf文件详解">
+<meta property="og:url" content="https://www.xiemx.com/2016/09/01/2016-09-01-zabbix-server-configure/index.html">
 <meta property="og:site_name" content="求索">
+<meta property="og:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101Alert">
 <meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2019-09-27T06:52:36.187Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="求索">
+<meta name="twitter:title" content="zabbix-server.conf文件详解">
+<meta name="twitter:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101Alert">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://www.xiemx.com/index.html">
+  <link rel="canonical" href="https://www.xiemx.com/2016/09/01/2016-09-01-zabbix-server-configure/index.html">
   
     <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
   
@@ -306,399 +310,118 @@
 </aside>
 
   
-  <main class="main" role="main">
   
-  <div class="content article-list">
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-2016-09-01-zabbix-server-configure" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
+    <div class="article-header">
+      
+        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/21/2017-09-21-zabbix-distrubuted-monitor/">zabbix distrubuted monitor</a>
+    <h1 class="article-title" itemprop="name">
+      zabbix-server.conf文件详解
     </h1>
   
 
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
+      
+      <div class="article-meta">
+        <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2017/09/21/2017-09-21-zabbix-distrubuted-monitor/" class="article-date">
-	  <time datetime="2017-09-20T18:09:37.000Z" itemprop="datePublished">Sep 21</time>
+	<a href="/2016/09/01/2016-09-01-zabbix-server-configure/" class="article-date">
+	  <time datetime="2016-08-31T21:09:48.000Z" itemprop="datePublished">2016-09-01</time>
 	</a>
 </span>
-    
+        
   <span class="article-category">
     <i class="icon icon-folder"></i>
     <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
   </span>
 
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/09/01/2016-09-01-zabbix-server-configure/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line">AlertScriptsPath 默认值：/usr/local/share/zabbix/alertscripts 说明：告警脚本目录</span><br><span class="line"></span><br><span class="line">AllowRoot 默认值：0 说明：是否允许使用root启动，0:不允许，1:允许，默认情况下她会使用zabbix用户来启动zabbix进程，不推荐使用root</span><br><span class="line"></span><br><span class="line">CacheSize 取值范围： 128K-8G 默认值：8M 说明：配置缓存，用于存储host，item，trigger数据，2.2.3版本之前最大支持2G，目前最大支持8G，一般用不了多少的。</span><br><span class="line"></span><br><span class="line">CacheUpdateFrequency 取值范围：1-3600 默认值：60 说明：多少秒更新一次配置缓存</span><br><span class="line"></span><br><span class="line">DBHost 默认值：localhost 说明：数据库主机地址</span><br><span class="line"></span><br><span class="line">DBName 默认值：无 必填：是</span><br><span class="line"></span><br><span class="line">DBPassword： 默认值：空 说明：数据库密码</span><br><span class="line"></span><br><span class="line">DBPort 取值范围：1024-65535 默认值:3306 说明：SQLite作为DB，这个选项请忽略，如果使用socket链接，也请忽略。</span><br><span class="line"></span><br><span class="line">DBSchema 说明：Schema名称. 用于 IBM DB2 、 PostgreSQL.</span><br><span class="line"></span><br><span class="line">DBSocket 默认值：/tmp/mysql.sock 说明：mysql sock文件路径</span><br><span class="line"></span><br><span class="line">DebugLevel 取值范围：0-5 默认值：3 说明: 指定debug级别 0 - 基本信息 1 - critical信息 2 - error信息 3 - warnings信息 4 - 调试日志，日志内容很多，慎重使用 5 - 用于调试web和vmware监控</span><br><span class="line"></span><br><span class="line">ExternalScripts 默认值： /usr/local/share/zabbix/externalscripts 说明： 外部脚本目录</span><br><span class="line"></span><br><span class="line">Fping6Location 默认值：/usr/sbin/fping6 说明：fping6路径，不懂fping的人可以百度一下，如果zabbix非root启动，请给fping6 SUID</span><br><span class="line"></span><br><span class="line">FpingLocation 默认值：/usr/sbin/fping 说明:和上面的一样</span><br><span class="line"></span><br><span class="line">HistoryCacheSize 取值范围：128K-2G 默认值：8M 说明： 历史记录缓存大小，用于存储历史记录</span><br><span class="line"></span><br><span class="line">HistoryTextCacheSize 取值范围：128K-2G 默认值：16M 说明：文本类型历史记录的缓存大小，存储character, text 、log历史记录.</span><br><span class="line"></span><br><span class="line">HousekeepingFrequency 取值范围：0-24 默认值：1 说明：housekeep执行频率，默认每小时回去删除一些过期数据。如果server重启，那么30分钟之后才执行一次，接下来，每隔一小时在执行一次。</span><br><span class="line"></span><br><span class="line">Include 说明：include配置文件，可以使用正则表达式，例如：/usr/local/zabbix-2.4.4/conf/ttlsa.com/*.conf</span><br><span class="line"></span><br><span class="line">JavaGateway 说明：Zabbix Java gateway的主机名，需要启动Java pollers</span><br><span class="line"></span><br><span class="line">JavaGatewayPort 取值范围：1024-32767 默认值：10052 Zabbix Java gateway监听端口</span><br><span class="line"></span><br><span class="line">ListenIP 默认值：0.0.0.0 说明：监听地址，留空则会在所有的地址上监听，可以监听多个IP地址，ip之间使用逗号分隔，例如：127.0.0.1,10.10.0.2</span><br><span class="line"></span><br><span class="line">ListenPort 取值范围：1024-32767 默认值：10051 说明：监听端口</span><br><span class="line"></span><br><span class="line">LoadModule 说明：加载模块，格式: LoadModule=，文件必须在指定的LoadModulePath目录下，如果需要加载多个模块，那么写多个即可。</span><br><span class="line"></span><br><span class="line">LoadModulePath 模块目录，参考上面</span><br><span class="line"></span><br><span class="line">LogFile 日志文件，例如：/data/logs/zabbix/zabbix-server.log</span><br><span class="line"></span><br><span class="line">LogFileSize 取值范围：0-1024 默认值：1 0表示禁用日志自动rotation，如果日志达到了限制，并且rotation失败，老日志文件将会被清空掉，重新生成一个新日志。</span><br><span class="line"></span><br><span class="line">LogSlowQueries 取值范围：0-3600000 默认值：0 多慢的数据库查询将会被记录，单位：毫秒，0表示不记录慢查询。只有在DebugLevel=3时，这个配置才有效。</span><br><span class="line"></span><br><span class="line">MaxHousekeeperDelete 取值范围： 0-1000000 默认值：5000 housekeeping一次删除的数据不能大于MaxHousekeeperDelete</span><br><span class="line"></span><br><span class="line">PidFile 默认值：/tmp/zabbix_server.pid PID文件</span><br><span class="line"></span><br><span class="line">ProxyConfigFrequency 取值范围：1-604800 默认值：3600 proxy被动模式下，server多少秒同步配置文件至proxy。</span><br><span class="line"></span><br><span class="line">ProxyDataFrequency 取值范围：1-3600 默认值:1 被动模式下，zabbix server间隔多少秒向proxy请求历史数据</span><br><span class="line"></span><br><span class="line">SenderFrequency 取值范围：5-3600 默认值：30 间隔多少秒，再尝试发送为发送的报警</span><br><span class="line"></span><br><span class="line">SNMPTrapperFile 默认值：/tmp/zabbix_traps.tmp SNMP trap发送到server的数据临时存放文件。</span><br><span class="line"></span><br><span class="line">SourceIP 出口IP地址</span><br><span class="line"></span><br><span class="line">SSHKeyLocation SSH公钥私钥路径</span><br><span class="line"></span><br><span class="line">SSLCertLocation SSL证书目录，用于web监控</span><br><span class="line"></span><br><span class="line">SSLKeyLocation SSL认证私钥路径、用于web监控</span><br><span class="line"></span><br><span class="line">SSLCALocation SSL认证,CA路径，如果为空，将会使用系统默认的CA</span><br><span class="line"></span><br><span class="line">StartDBSyncers 取值范围：1-100 默认值：4 预先foke DB Syncers的数量，1.8.5以前最大值为64</span><br><span class="line"></span><br><span class="line">StartDiscoverers 取值范围：0-250 默认值：1 pre-forked discoverers的数量，1.8.5版本以前最大可为255</span><br><span class="line"></span><br><span class="line">StartHTTPPollers 取值范围：0-1000 默认值：1 pre-forked HTTP pollers的数量，1.8.5以前最大255</span><br><span class="line"></span><br><span class="line">StartIPMIPollers 取值范围：0-1000 默认值：0 pre-forked IPMI pollers的数量，1.8.5之前，最大为255</span><br><span class="line"></span><br><span class="line">Timeout 取值范围：1-30 默认值：3 agent，snmp，external check的超时时间，单位为秒</span><br><span class="line"></span><br><span class="line">TmpDir 默认值：/tmp</span><br><span class="line"></span><br><span class="line">TrapperTimeout 取值范围：1-300 默认值：300 处理trapper数据的超时时间</span><br><span class="line"></span><br><span class="line">TrendCacheSize 取值范围：128K-2G 默认值：4M 历史数据缓存大小</span><br><span class="line"></span><br><span class="line">UnavailableDelay 取值范围：1-3600 默认值：60 间隔多少秒再次检测主机是否可用</span><br><span class="line"></span><br><span class="line">UnreachableDelay 取值范围：1-3600 默认值：15 间隔多少秒再次检测主机是否可达。</span><br><span class="line"></span><br><span class="line">UnreachablePeriod 取值范围：1-3600 默认值：45 检测到主机不可用，多久将它置为不可达</span><br><span class="line"></span><br><span class="line">User 默认值：zabbix 启动zabbix server的用户，在配置禁止root启动，并且当前shell用户是root得情况下有效。如果当前用户是xiemx，那么zabbix server的运行用户是xiemx</span><br><span class="line"></span><br><span class="line">ValueCacheSize 取值范围：0,128K-64G 默认值：8M 0表示禁用，history value缓存大小，当缓存超标了，将会每隔5分钟往server日志里面记录。养成看日志的好习惯。</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
     
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
-  </span>
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.xiemx.com/2016/09/01/2016-09-01-zabbix-server-configure/" title="zabbix-server.conf文件详解" target="_blank" rel="external">https://www.xiemx.com/2016/09/01/2016-09-01-zabbix-server-configure/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
 
 
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/09/21/2017-09-21-zabbix-distrubuted-monitor/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/09/2017-02-09-vagrant-mulit-vm/">vagrant创建多个虚拟机</a>
-    </h1>
-  
-
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span class="text-dark">Mingxu.xie</span><small class="ml-1x">DevOps</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
   </div>
+</div>
+
+
+    </div>
+  </article>
   
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/02/09/2017-02-09-vagrant-mulit-vm/" class="article-date">
-	  <time datetime="2017-02-08T22:02:30.000Z" itemprop="datePublished">Feb 9</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vagrant/">vagrant</a>
-  </span>
-
     
 
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/02/09/2017-02-09-vagrant-mulit-vm/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/09/2017-02-09-vagrant/">vagrant使用</a>
-    </h1>
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
   
-
-  </div>
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2016/11/23/2016-11-23-fix-zabbix-item-not-supported/" title="Zabbix自定义Item Not Supported,页面出现不支持解决
+"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2016/08/11/2016-08-11-shell-command-watch/" title="watch重复执行某个命令"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
   
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/02/09/2017-02-09-vagrant/" class="article-date">
-	  <time datetime="2017-02-08T21:02:54.000Z" itemprop="datePublished">Feb 9</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vagrant/">vagrant</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vagrant/">vagrant</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/02/09/2017-02-09-vagrant/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/09/2017-02-09-vagrantfile/">Vagrantfile配置</a>
-    </h1>
   
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/02/09/2017-02-09-vagrantfile/" class="article-date">
-	  <time datetime="2017-02-08T21:02:02.000Z" itemprop="datePublished">Feb 9</time>
-	</a>
-</span>
+  <div class="bar-right">
     
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vagrant/">vagrant</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vagrant/">vagrant</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/02/09/2017-02-09-vagrantfile/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/">vcenter扩容Linux虚拟机磁盘</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/" class="article-date">
-	  <time datetime="2017-01-19T03:01:34.000Z" itemprop="datePublished">Jan 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vcenter/">vcenter</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vcenter/">vcenter</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/">vcenter扩容window磁盘</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/" class="article-date">
-	  <time datetime="2017-01-11T19:01:41.000Z" itemprop="datePublished">Jan 12</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/windows/">windows</a>►<a class="article-category-link" href="/categories/windows/vcenter/">vcenter</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vcenter/">vcenter</a>, <a class="article-tag-link" href="/tags/windows/">windows</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/19/2016-12-19-zabbix-monitor-redis/">zabbix监控redis</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/19/2016-12-19-zabbix-monitor-redis/" class="article-date">
-	  <time datetime="2016-12-18T21:12:43.000Z" itemprop="datePublished">Dec 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/scripts/">scripts</a>, <a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/19/2016-12-19-zabbix-monitor-redis/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/19/2016-12-19-zabbix-monitor-mongo/">zabbix监控mongo</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/19/2016-12-19-zabbix-monitor-mongo/" class="article-date">
-	  <time datetime="2016-12-18T21:12:27.000Z" itemprop="datePublished">Dec 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/mongo/">mongo</a>, <a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/19/2016-12-19-zabbix-monitor-mongo/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/19/2016-12-19-zabbix-monitor-memcache/">zabbix监控memcache</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/19/2016-12-19-zabbix-monitor-memcache/" class="article-date">
-	  <time datetime="2016-12-18T21:12:02.000Z" itemprop="datePublished">Dec 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/memcache/">memcache</a>, <a class="article-tag-link" href="/tags/monitor/">monitor</a>, <a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/19/2016-12-19-zabbix-monitor-memcache/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/">zabbix 监控ssl证书过期时间</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/" class="article-date">
-	  <time datetime="2016-12-05T02:12:45.000Z" itemprop="datePublished">Dec 5</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq"></div>
     
   </div>
-
+  </div>
+</nav>
   
-    
-    <nav class="bar bar-footer clearfix" data-stick-bottom>
-        <div class="bar-inner">
-        <ul class="pager pull-left">
-            
-            <li class="prev disabled">
-                <a href="javascript:;">
-                    <i class="icon icon-angle-left"></i>
-                    Prev
-                </a>
-            </li>
-            
-            
-            <li class="next">
-                <a href="/page/2/">
-                    Next
-                    <i class="icon icon-angle-right"></i>
-                </a>
-            </li>
-            
-        </ul>
-        <div class="total-article bar-right">Page 1 of 3</div>
-        </div>
-    </nav>
-    
- 
+
+
 </main>
 
   <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">

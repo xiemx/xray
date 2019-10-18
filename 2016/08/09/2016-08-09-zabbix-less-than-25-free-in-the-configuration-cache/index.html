@@ -17,16 +17,21 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>求索</title>
-  <meta property="og:type" content="website">
-<meta property="og:title" content="求索">
-<meta property="og:url" content="https://www.xiemx.com/index.html">
+  <title>zabbix Less than 25% free in the configuration cache解决 | 求索</title>
+  <meta name="description" content="在zabbix server默认配置下，出现告警 1Less than 25% free in the configuration cache  可增加zabbix配置缓存解决 123456vim zabbix_server.conf##将缓存从8M提升到16M，可以调到最高8GCacheSize=16M##重启zabbix serverservice zabbix_server restart">
+<meta name="keywords" content="issue,zabbix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zabbix Less than 25% free in the configuration cache解决">
+<meta property="og:url" content="https://www.xiemx.com/2016/08/09/2016-08-09-zabbix-less-than-25-free-in-the-configuration-cache/index.html">
 <meta property="og:site_name" content="求索">
+<meta property="og:description" content="在zabbix server默认配置下，出现告警 1Less than 25% free in the configuration cache  可增加zabbix配置缓存解决 123456vim zabbix_server.conf##将缓存从8M提升到16M，可以调到最高8GCacheSize=16M##重启zabbix serverservice zabbix_server restart">
 <meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2019-09-27T06:52:36.185Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="求索">
+<meta name="twitter:title" content="zabbix Less than 25% free in the configuration cache解决">
+<meta name="twitter:description" content="在zabbix server默认配置下，出现告警 1Less than 25% free in the configuration cache  可增加zabbix配置缓存解决 123456vim zabbix_server.conf##将缓存从8M提升到16M，可以调到最高8GCacheSize=16M##重启zabbix serverservice zabbix_server restart">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://www.xiemx.com/index.html">
+  <link rel="canonical" href="https://www.xiemx.com/2016/08/09/2016-08-09-zabbix-less-than-25-free-in-the-configuration-cache/index.html">
   
     <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
   
@@ -306,399 +311,126 @@
 </aside>
 
   
-  <main class="main" role="main">
   
-  <div class="content article-list">
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-2016-08-09-zabbix-less-than-25-free-in-the-configuration-cache" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
+    <div class="article-header">
+      
+        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/21/2017-09-21-zabbix-distrubuted-monitor/">zabbix distrubuted monitor</a>
+    <h1 class="article-title" itemprop="name">
+      zabbix Less than 25% free in the configuration cache解决
     </h1>
   
 
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
+      
+      <div class="article-meta">
+        <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2017/09/21/2017-09-21-zabbix-distrubuted-monitor/" class="article-date">
-	  <time datetime="2017-09-20T18:09:37.000Z" itemprop="datePublished">Sep 21</time>
+	<a href="/2016/08/09/2016-08-09-zabbix-less-than-25-free-in-the-configuration-cache/" class="article-date">
+	  <time datetime="2016-08-08T19:08:20.000Z" itemprop="datePublished">2016-08-09</time>
 	</a>
 </span>
-    
+        
   <span class="article-category">
     <i class="icon icon-folder"></i>
     <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
   </span>
 
-    
+        
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
+	<a class="article-tag-link" href="/tags/issue/">issue</a>, <a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
   </span>
 
 
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/09/21/2017-09-21-zabbix-distrubuted-monitor/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
+        
 
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/09/2017-02-09-vagrant-mulit-vm/">vagrant创建多个虚拟机</a>
-    </h1>
-  
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/08/09/2016-08-09-zabbix-less-than-25-free-in-the-configuration-cache/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>在zabbix server默认配置下，出现告警</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Less than 25% free in the configuration cache</span><br></pre></td></tr></table></figure>
 
+<p>可增加zabbix配置缓存解决</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim zabbix_server.conf</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#将缓存从8M提升到16M，可以调到最高8G</span></span></span><br><span class="line">CacheSize=16M</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#重启zabbix server</span></span></span><br><span class="line">service zabbix_server restart</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.xiemx.com/2016/08/09/2016-08-09-zabbix-less-than-25-free-in-the-configuration-cache/" title="zabbix Less than 25% free in the configuration cache解决" target="_blank" rel="external">https://www.xiemx.com/2016/08/09/2016-08-09-zabbix-less-than-25-free-in-the-configuration-cache/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span class="text-dark">Mingxu.xie</span><small class="ml-1x">DevOps</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
   </div>
+</div>
+
+
+    </div>
+  </article>
   
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/02/09/2017-02-09-vagrant-mulit-vm/" class="article-date">
-	  <time datetime="2017-02-08T22:02:30.000Z" itemprop="datePublished">Feb 9</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vagrant/">vagrant</a>
-  </span>
-
     
 
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/02/09/2017-02-09-vagrant-mulit-vm/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/09/2017-02-09-vagrant/">vagrant使用</a>
-    </h1>
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
   
-
-  </div>
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2016/08/11/2016-08-11-shell-command-watch/" title="watch重复执行某个命令"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2016/07/27/2016-07-27-domain-status-code/" title="域名状态含义"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
   
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/02/09/2017-02-09-vagrant/" class="article-date">
-	  <time datetime="2017-02-08T21:02:54.000Z" itemprop="datePublished">Feb 9</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vagrant/">vagrant</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vagrant/">vagrant</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/02/09/2017-02-09-vagrant/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/09/2017-02-09-vagrantfile/">Vagrantfile配置</a>
-    </h1>
   
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/02/09/2017-02-09-vagrantfile/" class="article-date">
-	  <time datetime="2017-02-08T21:02:02.000Z" itemprop="datePublished">Feb 9</time>
-	</a>
-</span>
+  <div class="bar-right">
     
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vagrant/">vagrant</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vagrant/">vagrant</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/02/09/2017-02-09-vagrantfile/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/">vcenter扩容Linux虚拟机磁盘</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/" class="article-date">
-	  <time datetime="2017-01-19T03:01:34.000Z" itemprop="datePublished">Jan 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vcenter/">vcenter</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vcenter/">vcenter</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/">vcenter扩容window磁盘</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/" class="article-date">
-	  <time datetime="2017-01-11T19:01:41.000Z" itemprop="datePublished">Jan 12</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/windows/">windows</a>►<a class="article-category-link" href="/categories/windows/vcenter/">vcenter</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vcenter/">vcenter</a>, <a class="article-tag-link" href="/tags/windows/">windows</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/19/2016-12-19-zabbix-monitor-redis/">zabbix监控redis</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/19/2016-12-19-zabbix-monitor-redis/" class="article-date">
-	  <time datetime="2016-12-18T21:12:43.000Z" itemprop="datePublished">Dec 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/scripts/">scripts</a>, <a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/19/2016-12-19-zabbix-monitor-redis/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/19/2016-12-19-zabbix-monitor-mongo/">zabbix监控mongo</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/19/2016-12-19-zabbix-monitor-mongo/" class="article-date">
-	  <time datetime="2016-12-18T21:12:27.000Z" itemprop="datePublished">Dec 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/mongo/">mongo</a>, <a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/19/2016-12-19-zabbix-monitor-mongo/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/19/2016-12-19-zabbix-monitor-memcache/">zabbix监控memcache</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/19/2016-12-19-zabbix-monitor-memcache/" class="article-date">
-	  <time datetime="2016-12-18T21:12:02.000Z" itemprop="datePublished">Dec 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/memcache/">memcache</a>, <a class="article-tag-link" href="/tags/monitor/">monitor</a>, <a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/19/2016-12-19-zabbix-monitor-memcache/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/">zabbix 监控ssl证书过期时间</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/" class="article-date">
-	  <time datetime="2016-12-05T02:12:45.000Z" itemprop="datePublished">Dec 5</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq"></div>
     
   </div>
-
+  </div>
+</nav>
   
-    
-    <nav class="bar bar-footer clearfix" data-stick-bottom>
-        <div class="bar-inner">
-        <ul class="pager pull-left">
-            
-            <li class="prev disabled">
-                <a href="javascript:;">
-                    <i class="icon icon-angle-left"></i>
-                    Prev
-                </a>
-            </li>
-            
-            
-            <li class="next">
-                <a href="/page/2/">
-                    Next
-                    <i class="icon icon-angle-right"></i>
-                </a>
-            </li>
-            
-        </ul>
-        <div class="total-article bar-right">Page 1 of 3</div>
-        </div>
-    </nav>
-    
- 
+
+
 </main>
 
   <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">

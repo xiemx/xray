@@ -17,16 +17,23 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>求索</title>
-  <meta property="og:type" content="website">
-<meta property="og:title" content="求索">
-<meta property="og:url" content="https://www.xiemx.com/index.html">
+  <title>URLRewriter设置Config和IIS配置做伪静态 | 求索</title>
+  <meta name="description" content="一、首先检查config文件里面是否包含这两个节点 1234567891011121314&amp;lt;configSections&amp;gt;  &amp;lt;section name=&quot;RewriterConfig&quot; requirePermission=&quot;false&quot; type=&quot;URLRewriter.Config.RewriterConfigSerializerSectionHandler, URLRew">
+<meta name="keywords" content="windows,iis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="URLRewriter设置Config和IIS配置做伪静态">
+<meta property="og:url" content="https://www.xiemx.com/2015/08/21/2015-08-21-iis-set-urlrewrite/index.html">
 <meta property="og:site_name" content="求索">
+<meta property="og:description" content="一、首先检查config文件里面是否包含这两个节点 1234567891011121314&amp;lt;configSections&amp;gt;  &amp;lt;section name=&quot;RewriterConfig&quot; requirePermission=&quot;false&quot; type=&quot;URLRewriter.Config.RewriterConfigSerializerSectionHandler, URLRew">
 <meta property="og:locale" content="zh">
+<meta property="og:image" content="https://www.xiemx.com/images/image-20190917165314461.png">
+<meta property="og:updated_time" content="2019-10-17T07:34:07.555Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="求索">
+<meta name="twitter:title" content="URLRewriter设置Config和IIS配置做伪静态">
+<meta name="twitter:description" content="一、首先检查config文件里面是否包含这两个节点 1234567891011121314&amp;lt;configSections&amp;gt;  &amp;lt;section name=&quot;RewriterConfig&quot; requirePermission=&quot;false&quot; type=&quot;URLRewriter.Config.RewriterConfigSerializerSectionHandler, URLRew">
+<meta name="twitter:image" content="https://www.xiemx.com/images/image-20190917165314461.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://www.xiemx.com/index.html">
+  <link rel="canonical" href="https://www.xiemx.com/2015/08/21/2015-08-21-iis-set-urlrewrite/index.html">
   
     <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
   
@@ -35,6 +42,8 @@
   
   <link rel="stylesheet" href="/css/style.css">
   
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitment@0.0.3/style/default.min.css">
   
   
   
@@ -306,399 +315,141 @@
 </aside>
 
   
-  <main class="main" role="main">
   
-  <div class="content article-list">
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-2015-08-21-iis-set-urlrewrite" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
+    <div class="article-header">
+      
+        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/21/2017-09-21-zabbix-distrubuted-monitor/">zabbix distrubuted monitor</a>
+    <h1 class="article-title" itemprop="name">
+      URLRewriter设置Config和IIS配置做伪静态
     </h1>
   
 
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
+      
+      <div class="article-meta">
+        <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2017/09/21/2017-09-21-zabbix-distrubuted-monitor/" class="article-date">
-	  <time datetime="2017-09-20T18:09:37.000Z" itemprop="datePublished">Sep 21</time>
+	<a href="/2015/08/21/2015-08-21-iis-set-urlrewrite/" class="article-date">
+	  <time datetime="2015-08-21T02:08:51.000Z" itemprop="datePublished">2015-08-21</time>
 	</a>
 </span>
-    
+        
   <span class="article-category">
     <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
+    <a class="article-category-link" href="/categories/iis/">iis</a>►<a class="article-category-link" href="/categories/iis/windows/">windows</a>
   </span>
 
-    
+        
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
+	<a class="article-tag-link" href="/tags/iis/">iis</a>, <a class="article-tag-link" href="/tags/windows/">windows</a>
   </span>
 
 
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/09/21/2017-09-21-zabbix-distrubuted-monitor/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
+        
 
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/09/2017-02-09-vagrant-mulit-vm/">vagrant创建多个虚拟机</a>
-    </h1>
-  
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2015/08/21/2015-08-21-iis-set-urlrewrite/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>一、首先检查config文件里面是否包含这两个节点</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configSections</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">section</span> <span class="attr">name</span>=<span class="string">"RewriterConfig"</span> <span class="attr">requirePermission</span>=<span class="string">"false"</span> <span class="attr">type</span>=<span class="string">"URLRewriter.Config.RewriterConfigSerializerSectionHandler, URLRewriter"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">configSections</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">system.web</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">httpModules</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">type</span>=<span class="string">"URLRewriter.ModuleRewriter, URLRewriter"</span> <span class="attr">name</span>=<span class="string">"ModuleRewriter"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">httpModules</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">system.web</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+<p>二、配置IIS。</p>
+<p> 1.打开IIS，选择网站。右键，点击属性</p>
+<p> 2.选择主目录，点击配置按钮</p>
+<p> 3.在弹出的应用程序配置中，点击添加</p>
+<p> 4.在弹出的添加/编辑应用程序扩展名映射中，填写可执行文件</p>
+<p>​    点击浏览，选择aspnet_isapi.dll这个DLL，它一般在：C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727文件夹中(也就是你的系统盘中）</p>
+<p> 5.在扩展名中填写.html</p>
+<p> 6.在动作里选择限制为，他的框就可以填写了！请填写：GET,POST</p>
+<p> 7.不要勾选把确认文件是否存在，然后点击确定</p>
+<p><img src="/images/image-20190917165314461.png" alt="image-20190917165314461"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.xiemx.com/2015/08/21/2015-08-21-iis-set-urlrewrite/" title="URLRewriter设置Config和IIS配置做伪静态" target="_blank" rel="external">https://www.xiemx.com/2015/08/21/2015-08-21-iis-set-urlrewrite/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span class="text-dark">Mingxu.xie</span><small class="ml-1x">DevOps</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
   </div>
+</div>
+
+
+    </div>
+  </article>
   
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/02/09/2017-02-09-vagrant-mulit-vm/" class="article-date">
-	  <time datetime="2017-02-08T22:02:30.000Z" itemprop="datePublished">Feb 9</time>
-	</a>
-</span>
     
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vagrant/">vagrant</a>
-  </span>
+  <section id="comments">
+  	
 
     
+  </section>
 
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/02/09/2017-02-09-vagrant-mulit-vm/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
 
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/09/2017-02-09-vagrant/">vagrant使用</a>
-    </h1>
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
   
-
-  </div>
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2015/10/08/2015-10-08-window-force-delete-file/" title="window系统文件或目录无法删除解决方法"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2015/08/21/2015-08-21-mime-type/" title="常见MIME类型设置方法"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
   
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/02/09/2017-02-09-vagrant/" class="article-date">
-	  <time datetime="2017-02-08T21:02:54.000Z" itemprop="datePublished">Feb 9</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vagrant/">vagrant</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vagrant/">vagrant</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/02/09/2017-02-09-vagrant/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/09/2017-02-09-vagrantfile/">Vagrantfile配置</a>
-    </h1>
   
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/02/09/2017-02-09-vagrantfile/" class="article-date">
-	  <time datetime="2017-02-08T21:02:02.000Z" itemprop="datePublished">Feb 9</time>
-	</a>
-</span>
+  <div class="bar-right">
     
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vagrant/">vagrant</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vagrant/">vagrant</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/02/09/2017-02-09-vagrantfile/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/">vcenter扩容Linux虚拟机磁盘</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/" class="article-date">
-	  <time datetime="2017-01-19T03:01:34.000Z" itemprop="datePublished">Jan 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/vcenter/">vcenter</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vcenter/">vcenter</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/01/19/2017-01-19-vcenter-expand-disk-to-linux/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/">vcenter扩容window磁盘</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/" class="article-date">
-	  <time datetime="2017-01-11T19:01:41.000Z" itemprop="datePublished">Jan 12</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/windows/">windows</a>►<a class="article-category-link" href="/categories/windows/vcenter/">vcenter</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/vcenter/">vcenter</a>, <a class="article-tag-link" href="/tags/windows/">windows</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/01/12/2017-01-12-vcenter-expand-disk-to-windows/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/19/2016-12-19-zabbix-monitor-redis/">zabbix监控redis</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/19/2016-12-19-zabbix-monitor-redis/" class="article-date">
-	  <time datetime="2016-12-18T21:12:43.000Z" itemprop="datePublished">Dec 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/scripts/">scripts</a>, <a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/19/2016-12-19-zabbix-monitor-redis/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/19/2016-12-19-zabbix-monitor-mongo/">zabbix监控mongo</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/19/2016-12-19-zabbix-monitor-mongo/" class="article-date">
-	  <time datetime="2016-12-18T21:12:27.000Z" itemprop="datePublished">Dec 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/mongo/">mongo</a>, <a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/19/2016-12-19-zabbix-monitor-mongo/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/19/2016-12-19-zabbix-monitor-memcache/">zabbix监控memcache</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/19/2016-12-19-zabbix-monitor-memcache/" class="article-date">
-	  <time datetime="2016-12-18T21:12:02.000Z" itemprop="datePublished">Dec 19</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/memcache/">memcache</a>, <a class="article-tag-link" href="/tags/monitor/">monitor</a>, <a class="article-tag-link" href="/tags/zabbix/">zabbix</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/19/2016-12-19-zabbix-monitor-memcache/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/">zabbix 监控ssl证书过期时间</a>
-    </h1>
-  
-
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/" class="article-date">
-	  <time datetime="2016-12-05T02:12:45.000Z" itemprop="datePublished">Dec 5</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/zabbix/">zabbix</a>
-  </span>
-
-    
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/12/05/2016-12-05-zabbix-monitor-ssl-cert/#comments" class="article-comment-link">Comments</a></span>
-    
-  </p>
-</article>
-
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq"></div>
     
   </div>
-
+  </div>
+</nav>
   
-    
-    <nav class="bar bar-footer clearfix" data-stick-bottom>
-        <div class="bar-inner">
-        <ul class="pager pull-left">
-            
-            <li class="prev disabled">
-                <a href="javascript:;">
-                    <i class="icon icon-angle-left"></i>
-                    Prev
-                </a>
-            </li>
-            
-            
-            <li class="next">
-                <a href="/page/2/">
-                    Next
-                    <i class="icon icon-angle-right"></i>
-                </a>
-            </li>
-            
-        </ul>
-        <div class="total-article bar-right">Page 1 of 3</div>
-        </div>
-    </nav>
-    
- 
+
+
 </main>
 
   <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
@@ -755,6 +506,28 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 
 
    
+
+
+
+
+   
+    
+<script src="//cdn.jsdelivr.net/npm/gitment@0.0.3/dist/gitment.browser.min.js"></script>
+<script>
+var gitment = new Gitment({
+  // id默认为当前页面url，如果url后带参数或锚点，gitment要重新初始化
+  // https://github.com/imsun/gitment/issues/55
+  // 解决方案：id:window.location.pathname,或者将id设置为当前页面标题
+  id: 'URLRewriter设置Config和IIS配置做伪静态', 
+  owner: 'xiemx', // 可以是你的GitHub用户名，也可以是github id
+  repo: 'Comment',
+  oauth: {
+    client_id: 'ccf366da75afeaf5215a',
+    client_secret: 'ab4c80318537cc3fae0a62dcbd11fd206b57ac6e',
+  }
+})
+gitment.render('comments')
+</script>
 
 
 
