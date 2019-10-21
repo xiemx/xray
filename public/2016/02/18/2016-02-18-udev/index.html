@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>UDEV规则 | 求索</title>
+  <meta name="description" content="udev根据系统中的硬件设备的状态动态更新设备，通过对内核产生的设备名增加别名的方式来达到不管设备连接的顺序而维持一个统一的设备名的目的。udev可以根据设备的其他信息如总线（bus），生产商（vendor）等不同来区分不同的设备，并产生设备文件。udev是硬件平台无关的，属于user space的进程，它脱离驱动层的关联而建立在操作系统之上，遵循Linux Standard Base （LSB）">
+<meta name="keywords" content="linux,udev">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UDEV规则">
+<meta property="og:url" content="https://blog.xiemx.com/2016/02/18/2016-02-18-udev/index.html">
+<meta property="og:site_name" content="求索">
+<meta property="og:description" content="udev根据系统中的硬件设备的状态动态更新设备，通过对内核产生的设备名增加别名的方式来达到不管设备连接的顺序而维持一个统一的设备名的目的。udev可以根据设备的其他信息如总线（bus），生产商（vendor）等不同来区分不同的设备，并产生设备文件。udev是硬件平台无关的，属于user space的进程，它脱离驱动层的关联而建立在操作系统之上，遵循Linux Standard Base （LSB）">
+<meta property="og:locale" content="zh">
+<meta property="og:image" content="https://blog.xiemx.com/images/image-20191018151450374.png">
+<meta property="og:updated_time" content="2019-10-18T07:37:58.286Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UDEV规则">
+<meta name="twitter:description" content="udev根据系统中的硬件设备的状态动态更新设备，通过对内核产生的设备名增加别名的方式来达到不管设备连接的顺序而维持一个统一的设备名的目的。udev可以根据设备的其他信息如总线（bus），生产商（vendor）等不同来区分不同的设备，并产生设备文件。udev是硬件平台无关的，属于user space的进程，它脱离驱动层的关联而建立在操作系统之上，遵循Linux Standard Base （LSB）">
+<meta name="twitter:image" content="https://blog.xiemx.com/images/image-20191018151450374.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.xiemx.com/2016/02/18/2016-02-18-udev/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiemx" target="_blank">
+          <img class="img-circle img-rotate" src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.xie</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shanghai, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <font color="#C91406">尔</font><font color="#B60119">不</font><font color="#A3002C">必</font><font color="#90003F">求</font><font color="#7D0052">记</font><font color="#6A0065">，</font><font color="#570078">却</font><font color="#44008B">宜</font><font color="#31009E">求</font><font color="#1E00B1">个</font><font color="#0B00C4">明</font><font color="#0000D7">白</font><font color="#0000EA">！</font>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.27px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.64px;">cluster</a> <a href="/tags/command/" style="font-size: 13.64px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.45px;">database</a> <a href="/tags/debug/" style="font-size: 13.91px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/django/" style="font-size: 13.09px;">django</a> <a href="/tags/dns/" style="font-size: 13.09px;">dns</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.55px;">http</a> <a href="/tags/iis/" style="font-size: 13.36px;">iis</a> <a href="/tags/ingress/" style="font-size: 13px;">ingress</a> <a href="/tags/iptables/" style="font-size: 13px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.09px;">issue</a> <a href="/tags/k8s/" style="font-size: 13px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.09px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.18px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.09px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.18px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.09px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.73px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/nginx/" style="font-size: 13.36px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/php/" style="font-size: 13.36px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/postgresql/" style="font-size: 13px;">postgresql</a> <a href="/tags/proxy/" style="font-size: 13px;">proxy</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.45px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.55px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.18px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.09px;">tcp</a> <a href="/tags/tomcat/" style="font-size: 13.36px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.09px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.09px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.09px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.09px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.09px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/webserver/" style="font-size: 13.82px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/window/" style="font-size: 13px;">window</a> <a href="/tags/windows/" style="font-size: 13.64px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.64px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/16/2019-09-16-k8s-ingress-nginx/" class="title">k8s ingress-nginx动态balance实现解析</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-15T23:09:52.000Z" itemprop="datePublished">2019-09-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/postgresql/">postgresql</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/07/08/2019-07-08-postgresql-replica-status/" class="title">PostgreSQL查看复制状态</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-08T03:07:36.000Z" itemprop="datePublished">2019-07-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/http/">http</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/13/2019-05-13-http-cache/" class="title">http cache</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-13T03:05:02.000Z" itemprop="datePublished">2019-05-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/mysql/">mysql</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/06/2019-05-06-mysqldump-error/" class="title">Mysqldump error</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-06T03:05:56.000Z" itemprop="datePublished">2019-05-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/redis/">redis</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/06/2019-05-06-redis-dump/" class="title">redis-dump使用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-06T03:05:33.000Z" itemprop="datePublished">2019-05-06</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-2016-02-18-udev" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UDEV规则
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2016/02/18/2016-02-18-udev/" class="article-date">
+	  <time datetime="2016-02-17T21:02:23.000Z" itemprop="datePublished">2016-02-18</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/linux/">linux</a>, <a class="article-tag-link" href="/tags/udev/">udev</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/02/18/2016-02-18-udev/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>udev根据系统中的硬件设备的状态动态更新设备，通过对内核产生的设备名增加别名的方式来达到不管设备连接的顺序而维持一个统一的设备名的目的。udev可以根据设备的其他信息如总线（bus），生产商（vendor）等不同来区分不同的设备，并产生设备文件。udev是硬件平台无关的，属于user space的进程，它脱离驱动层的关联而建立在操作系统之上，遵循Linux Standard Base （LSB）设备命名方法，但也可以自定义命名</p>
+<h3 id="工作流程图"><a href="#工作流程图" class="headerlink" title="工作流程图"></a>工作流程图</h3><p><img src="/images/image-20191018151450374.png" alt="image-20191018151450374"></p>
+<h3 id="配置文件、rule参数"><a href="#配置文件、rule参数" class="headerlink" title="配置文件、rule参数"></a>配置文件、rule参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">[mingxu.xie@cn-aux-cc udev]$ ll -R</span><br><span class="line">.:</span><br><span class="line">total 8</span><br><span class="line">drwxr-xr-x 2 root root 4096 Jun  6 02:58 rules.d</span><br><span class="line">-rw-r--r-- 1 root root  218 Mar 19  2014 udev.conf</span><br><span class="line"></span><br><span class="line">./rules.d:</span><br><span class="line">total 32</span><br><span class="line">-rw-r--r-- 1 root root  640 Jul 31  2016 51-ec2-hvm-devices.rules</span><br><span class="line">-rw-r--r-- 1 root root  641 Jul 31  2016 52-ec2-vcpu.rules</span><br><span class="line">-rw-r--r-- 1 root root  740 Jul 31  2016 53-ec2-network-interfaces.rules</span><br><span class="line">-rw-r--r-- 1 root root  680 Jul 31  2016 60-cdrom_id.rules</span><br><span class="line">-rw-r--r-- 1 root root  326 Apr 26  2016 60-raw.rules</span><br><span class="line">-rw-r--r-- 1 root root 1343 Jul 31  2016 70-ec2-nvme-devices.rules</span><br><span class="line">-rw-r--r-- 1 root root 1424 Jul 31  2016 75-persistent-net-generator.rules</span><br><span class="line">-rwxr-xr-x 1 root root  343 Aug 21  2016 80-docker.rules</span><br><span class="line"></span><br><span class="line"># 主配置 /etc/udev/udev.conf </span><br><span class="line">udev_root=&quot;/dev/&quot;</span><br><span class="line">udev_rules=&quot;/etc/udev/rules.d/&quot;</span><br><span class="line"></span><br><span class="line">#rule规则的文件命名第一段为执行顺序，同rc脚本</span><br><span class="line">[mingxu.xie@cn-aux-cc udev]$ cat rules.d/53-ec2-network-interfaces.rules</span><br><span class="line"># Copyright (C) 2012 Amazon.com, Inc. or its affiliates.</span><br><span class="line"># All Rights Reserved.</span><br><span class="line">#</span><br><span class="line"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;).</span><br><span class="line"># You may not use this file except in compliance with the License.</span><br><span class="line"># A copy of the License is located at</span><br><span class="line">#</span><br><span class="line">#    http://aws.amazon.com/apache2.0/</span><br><span class="line">#</span><br><span class="line"># or in the &quot;license&quot; file accompanying this file. This file is</span><br><span class="line"># distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS</span><br><span class="line"># OF ANY KIND, either express or implied. See the License for the</span><br><span class="line"># specific language governing permissions and limitations under the</span><br><span class="line"># License.</span><br><span class="line"></span><br><span class="line">ACTION==&quot;add&quot;, SUBSYSTEM==&quot;net&quot;, KERNEL==&quot;eth*&quot;, IMPORT&#123;program&#125;=&quot;/bin/sleep 1&quot;</span><br><span class="line">SUBSYSTEM==&quot;net&quot;, KERNEL==&quot;eth*&quot;, RUN+=&quot;/etc/sysconfig/network-scripts/ec2net.hotplug&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">#监听一个docker run -it --rm nginx bash容器启动的设备变化情况，如下</span><br><span class="line">[mingxu.xie@cn-aux-cc udev]$ udevadm monitor</span><br><span class="line">monitor will print the received events for:</span><br><span class="line">UDEV - the event which udev sends out after rule processing</span><br><span class="line">KERNEL - the kernel uevent</span><br><span class="line"></span><br><span class="line">KERNEL[240932.229041] add      /devices/virtual/bdi/253:8 (bdi)</span><br><span class="line">KERNEL[240932.229579] add      /devices/virtual/block/dm-8 (block)</span><br><span class="line">UDEV  [240932.229612] add      /devices/virtual/bdi/253:8 (bdi)</span><br><span class="line">UDEV  [240932.229641] add      /devices/virtual/block/dm-8 (block)</span><br><span class="line">KERNEL[240932.248388] change   /devices/virtual/block/dm-8 (block)</span><br><span class="line">UDEV  [240932.272904] change   /devices/virtual/block/dm-8 (block)</span><br><span class="line">KERNEL[240932.425971] remove   /devices/virtual/block/dm-8 (block)</span><br><span class="line">UDEV  [240932.428073] remove   /devices/virtual/block/dm-8 (block)</span><br><span class="line">KERNEL[240932.456141] remove   /devices/virtual/bdi/253:8 (bdi)</span><br><span class="line">KERNEL[240932.456261] remove   /devices/virtual/block/dm-8 (block)</span><br><span class="line">UDEV  [240932.456380] remove   /devices/virtual/bdi/253:8 (bdi)</span><br><span class="line">UDEV  [240932.456419] remove   /devices/virtual/block/dm-8 (block)</span><br><span class="line">KERNEL[240932.469307] add      /devices/virtual/bdi/253:8 (bdi)</span><br><span class="line">KERNEL[240932.469384] add      /devices/virtual/block/dm-8 (block)</span><br><span class="line">UDEV  [240932.469657] add      /devices/virtual/bdi/253:8 (bdi)</span><br><span class="line">UDEV  [240932.469691] add      /devices/virtual/block/dm-8 (block)</span><br><span class="line">KERNEL[240932.488228] change   /devices/virtual/block/dm-8 (block)</span><br><span class="line">UDEV  [240932.504203] change   /devices/virtual/block/dm-8 (block)</span><br><span class="line">KERNEL[240932.636785] remove   /devices/virtual/block/dm-8 (block)</span><br><span class="line">UDEV  [240932.638755] remove   /devices/virtual/block/dm-8 (block)</span><br><span class="line">KERNEL[240932.676137] remove   /devices/virtual/bdi/253:8 (bdi)</span><br><span class="line">KERNEL[240932.676245] remove   /devices/virtual/block/dm-8 (block)</span><br><span class="line">UDEV  [240932.676367] remove   /devices/virtual/bdi/253:8 (bdi)</span><br><span class="line">UDEV  [240932.676420] remove   /devices/virtual/block/dm-8 (block)</span><br><span class="line">KERNEL[240932.683098] add      /devices/virtual/bdi/253:8 (bdi)</span><br><span class="line">KERNEL[240932.683204] add      /devices/virtual/block/dm-8 (block)</span><br><span class="line">UDEV  [240932.683384] add      /devices/virtual/bdi/253:8 (bdi)</span><br><span class="line">UDEV  [240932.683582] add      /devices/virtual/block/dm-8 (block)</span><br><span class="line">KERNEL[240932.696227] change   /devices/virtual/block/dm-8 (block)</span><br><span class="line">UDEV  [240932.712517] change   /devices/virtual/block/dm-8 (block)</span><br><span class="line">KERNEL[240932.793677] add      /devices/virtual/net/veth4d1712b (net)</span><br><span class="line">KERNEL[240932.793699] add      /devices/virtual/net/veth4d1712b/queues/rx-0 (queues)</span><br><span class="line">KERNEL[240932.793727] add      /devices/virtual/net/veth4d1712b/queues/tx-0 (queues)</span><br><span class="line">KERNEL[240932.793908] add      /devices/virtual/net/veth17f6e3e (net)</span><br><span class="line">KERNEL[240932.793930] add      /devices/virtual/net/veth17f6e3e/queues/rx-0 (queues)</span><br><span class="line">KERNEL[240932.793942] add      /devices/virtual/net/veth17f6e3e/queues/tx-0 (queues)</span><br><span class="line">UDEV  [240932.827598] add      /devices/virtual/net/veth4d1712b (net)</span><br><span class="line">UDEV  [240932.827843] add      /devices/virtual/net/veth4d1712b/queues/rx-0 (queues)</span><br><span class="line">UDEV  [240932.828121] add      /devices/virtual/net/veth4d1712b/queues/tx-0 (queues)</span><br><span class="line">KERNEL[240932.849171] add      /kernel/slab/:A-0000200/cgroup/vm_area_struct(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.849196] add      /kernel/slab/:A-0000064/cgroup/anon_vma_chain(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.849211] add      /kernel/slab/:A-0000200/cgroup/vm_area_struct(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.849225] add      /kernel/slab/anon_vma/cgroup/anon_vma(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.849238] add      /kernel/slab/:aA-0000192/cgroup/dentry(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.849252] add      /kernel/slab/proc_inode_cache/cgroup/proc_inode_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.849269] add      /kernel/slab/:A-0000064/cgroup/anon_vma_chain(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.849436] add      /kernel/slab/:0000064/cgroup/kmalloc-64(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.849455] add      /kernel/slab/shmem_inode_cache/cgroup/shmem_inode_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.849709] add      /kernel/slab/proc_inode_cache/cgroup/proc_inode_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.850033] add      /kernel/slab/anon_vma/cgroup/anon_vma(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.850374] add      /kernel/slab/shmem_inode_cache/cgroup/shmem_inode_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.850527] add      /kernel/slab/:aA-0000192/cgroup/dentry(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.852368] add      /kernel/slab/:0000064/cgroup/kmalloc-64(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.854849] add      /kernel/slab/:0000192/cgroup/kmalloc-192(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.854871] add      /kernel/slab/:0001024/cgroup/kmalloc-1024(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.855103] add      /kernel/slab/radix_tree_node/cgroup/radix_tree_node(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.855120] add      /kernel/slab/:0000192/cgroup/kmalloc-192(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.855133] add      /kernel/slab/:A-0000192/cgroup/cred_jar(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.855145] add      /kernel/slab/:A-0002048/cgroup/mm_struct(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.855158] add      /kernel/slab/mqueue_inode_cache/cgroup/mqueue_inode_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.855170] add      /kernel/slab/sock_inode_cache/cgroup/sock_inode_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.855359] add      /kernel/slab/:A-0009664/cgroup/task_struct(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.855395] add      /kernel/slab/:A-0002048/cgroup/mm_struct(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.855410] add      /kernel/slab/:A-0000704/cgroup/files_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.855445] add      /kernel/slab/mqueue_inode_cache/cgroup/mqueue_inode_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.855461] add      /kernel/slab/sighand_cache/cgroup/sighand_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.855474] add      /kernel/slab/:0001024/cgroup/kmalloc-1024(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.855487] add      /kernel/slab/:A-0001024/cgroup/signal_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.855499] add      /kernel/slab/:A-0000128/cgroup/pid(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.855512] add      /kernel/slab/radix_tree_node/cgroup/radix_tree_node(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.856010] add      /kernel/slab/sock_inode_cache/cgroup/sock_inode_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.856029] add      /kernel/slab/:A-0009664/cgroup/task_struct(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.856045] add      /kernel/slab/sighand_cache/cgroup/sighand_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.856077] add      /kernel/slab/:0000256/cgroup/kmalloc-256(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.856092] add      /kernel/slab/:A-0000704/cgroup/files_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.856104] add      /kernel/slab/:0000512/cgroup/kmalloc-512(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.856188] add      /kernel/slab/:A-0000128/cgroup/pid(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.857080] add      /kernel/slab/:A-0000192/cgroup/cred_jar(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.857105] add      /kernel/slab/:A-0001024/cgroup/signal_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.857126] add      /kernel/slab/:0000256/cgroup/kmalloc-256(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.857140] add      /kernel/slab/:0000512/cgroup/kmalloc-512(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.862157] add      /kernel/slab/xfs_inode/cgroup/xfs_inode(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.862348] add      /kernel/slab/xfs_inode/cgroup/xfs_inode(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240932.863008] add      /kernel/slab/inode_cache/cgroup/inode_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.863179] add      /kernel/slab/inode_cache/cgroup/inode_cache(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240932.932564] add      /devices/virtual/net/veth17f6e3e (net)</span><br><span class="line">UDEV  [240932.932779] add      /devices/virtual/net/veth17f6e3e/queues/rx-0 (queues)</span><br><span class="line">UDEV  [240932.932880] add      /devices/virtual/net/veth17f6e3e/queues/tx-0 (queues)</span><br><span class="line">KERNEL[240932.960183] remove   /devices/virtual/net/veth4d1712b (net)</span><br><span class="line">UDEV  [240932.982851] remove   /devices/virtual/net/veth4d1712b (net)</span><br><span class="line">KERNEL[240933.089679] add      /kernel/slab/:0000008/cgroup/kmalloc-8(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240933.089933] add      /kernel/slab/:0000008/cgroup/kmalloc-8(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240933.150833] add      /kernel/slab/:0002048/cgroup/kmalloc-2048(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">KERNEL[240933.150863] add      /kernel/slab/:0000096/cgroup/kmalloc-96(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240933.151052] add      /kernel/slab/:0002048/cgroup/kmalloc-2048(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br><span class="line">UDEV  [240933.151130] add      /kernel/slab/:0000096/cgroup/kmalloc-96(990:53b4e439f50242461e4c1246718e12d769d3bc4752c0f0ed5bc4f317bb4feb3d) (cgroup)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.xiemx.com/2016/02/18/2016-02-18-udev/" title="UDEV规则" target="_blank" rel="external">https://blog.xiemx.com/2016/02/18/2016-02-18-udev/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span class="text-dark">Mingxu.xie</span><small class="ml-1x">DevOps</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2016/02/18/2016-02-18-mysql-proxy-amoeba/" title="Mysql数据库代理amoeba"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2016/02/18/2016-02-18-Three-shared-storage-comparisons/" title="三种共享存储比较"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2019 Mingxu.xie
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+</body>
+</html>

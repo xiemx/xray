@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>Linux进程管理 | 求索</title>
+  <meta name="description" content="当我们运行程序时，Linux会为程序创建一个特殊的环境，该环境包含程序运行需要的所有资源，以保证程序能够独立运行，不受其他程序的干扰。 在系统中我们调用一个指令，Linux 就会创建一个新的进程。例如使用 ls 命令遍历目录中的文件时，就创建了一个进程。进程就是程序的实例。 系统通过一个五位数字跟踪程序的运行状态，这个数字称为 pid 或进程ID。每个进程都拥有唯一的 pid。两个 pid 一样的">
+<meta name="keywords" content="tool,linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux进程管理">
+<meta property="og:url" content="https://blog.xiemx.com/2015/11/15/2015-11-15-linux-process-manager/index.html">
+<meta property="og:site_name" content="求索">
+<meta property="og:description" content="当我们运行程序时，Linux会为程序创建一个特殊的环境，该环境包含程序运行需要的所有资源，以保证程序能够独立运行，不受其他程序的干扰。 在系统中我们调用一个指令，Linux 就会创建一个新的进程。例如使用 ls 命令遍历目录中的文件时，就创建了一个进程。进程就是程序的实例。 系统通过一个五位数字跟踪程序的运行状态，这个数字称为 pid 或进程ID。每个进程都拥有唯一的 pid。两个 pid 一样的">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2019-10-19T12:10:20.320Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux进程管理">
+<meta name="twitter:description" content="当我们运行程序时，Linux会为程序创建一个特殊的环境，该环境包含程序运行需要的所有资源，以保证程序能够独立运行，不受其他程序的干扰。 在系统中我们调用一个指令，Linux 就会创建一个新的进程。例如使用 ls 命令遍历目录中的文件时，就创建了一个进程。进程就是程序的实例。 系统通过一个五位数字跟踪程序的运行状态，这个数字称为 pid 或进程ID。每个进程都拥有唯一的 pid。两个 pid 一样的">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.xiemx.com/2015/11/15/2015-11-15-linux-process-manager/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiemx" target="_blank">
+          <img class="img-circle img-rotate" src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.xie</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shanghai, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <font color="#C91406">尔</font><font color="#B60119">不</font><font color="#A3002C">必</font><font color="#90003F">求</font><font color="#7D0052">记</font><font color="#6A0065">，</font><font color="#570078">却</font><font color="#44008B">宜</font><font color="#31009E">求</font><font color="#1E00B1">个</font><font color="#0B00C4">明</font><font color="#0000D7">白</font><font color="#0000EA">！</font>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.27px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.64px;">cluster</a> <a href="/tags/command/" style="font-size: 13.64px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.45px;">database</a> <a href="/tags/debug/" style="font-size: 13.91px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/django/" style="font-size: 13.09px;">django</a> <a href="/tags/dns/" style="font-size: 13.09px;">dns</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.55px;">http</a> <a href="/tags/iis/" style="font-size: 13.36px;">iis</a> <a href="/tags/ingress/" style="font-size: 13px;">ingress</a> <a href="/tags/iptables/" style="font-size: 13px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.09px;">issue</a> <a href="/tags/k8s/" style="font-size: 13px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.09px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.18px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.09px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.18px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.09px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.73px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/nginx/" style="font-size: 13.36px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/php/" style="font-size: 13.36px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/postgresql/" style="font-size: 13px;">postgresql</a> <a href="/tags/proxy/" style="font-size: 13px;">proxy</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.45px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.55px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.18px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.09px;">tcp</a> <a href="/tags/tomcat/" style="font-size: 13.36px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.09px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.09px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.09px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.09px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.09px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/webserver/" style="font-size: 13.82px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/window/" style="font-size: 13px;">window</a> <a href="/tags/windows/" style="font-size: 13.64px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.64px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/16/2019-09-16-k8s-ingress-nginx/" class="title">k8s ingress-nginx动态balance实现解析</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-15T23:09:52.000Z" itemprop="datePublished">2019-09-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/postgresql/">postgresql</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/07/08/2019-07-08-postgresql-replica-status/" class="title">PostgreSQL查看复制状态</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-08T03:07:36.000Z" itemprop="datePublished">2019-07-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/http/">http</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/13/2019-05-13-http-cache/" class="title">http cache</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-13T03:05:02.000Z" itemprop="datePublished">2019-05-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/mysql/">mysql</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/06/2019-05-06-mysqldump-error/" class="title">Mysqldump error</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-06T03:05:56.000Z" itemprop="datePublished">2019-05-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/redis/">redis</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/06/2019-05-06-redis-dump/" class="title">redis-dump使用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-06T03:05:33.000Z" itemprop="datePublished">2019-05-06</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-2015-11-15-linux-process-manager" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux进程管理
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2015/11/15/2015-11-15-linux-process-manager/" class="article-date">
+	  <time datetime="2015-11-14T20:11:14.000Z" itemprop="datePublished">2015-11-15</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/linux/">linux</a>, <a class="article-tag-link" href="/tags/tool/">tool</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2015/11/15/2015-11-15-linux-process-manager/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>当我们运行程序时，Linux会为程序创建一个特殊的环境，该环境包含程序运行需要的所有资源，以保证程序能够独立运行，不受其他程序的干扰。</p>
+<p>在系统中我们调用一个指令，Linux 就会创建一个新的进程。例如使用 ls 命令遍历目录中的文件时，就创建了一个进程。进程就是程序的实例。</p>
+<p>系统通过一个五位数字跟踪程序的运行状态，这个数字称为 pid 或进程ID。每个进程都拥有唯一的 pid。两个 pid 一样的进程不能同时存在，Linux用 pid 来跟踪程序的运行状态。</p>
+<h3 id="进程查看"><a href="#进程查看" class="headerlink" title="进程查看"></a>进程查看</h3><h4 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">[<span class="symbol">root@</span>localhost ~]# ps aux</span><br><span class="line">USER PID  %CPU   %MEM    VSZ    RSS    TTY    STAT    START   TIME   COMMAND</span><br><span class="line">root      <span class="number">1</span>       <span class="number">0.0</span>        <span class="number">0.0</span>        <span class="number">19356</span>   <span class="number">1540</span>     ?        Ss         <span class="number">02</span>:<span class="number">09</span>         <span class="number">0</span>:<span class="number">01</span>      /sbin/init</span><br><span class="line">root      <span class="number">2</span>      <span class="number">0.0</span>         <span class="number">0.0</span>        <span class="number">0</span>           <span class="number">0</span>           ?        S           <span class="number">02</span>:<span class="number">09</span>         <span class="number">0</span>:<span class="number">00</span>     [kthreadd]</span><br><span class="line">root      <span class="number">3</span>      <span class="number">0.0</span>         <span class="number">0.0</span>        <span class="number">0</span>           <span class="number">0</span>           ?        S           <span class="number">02</span>:<span class="number">09</span>         <span class="number">0</span>:<span class="number">00</span>     [migration/<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">[<span class="symbol">root@</span>localhost ~]# ps -ef</span><br><span class="line">UID     PID     PPID    C    STIME    TTY    TIME       CMD</span><br><span class="line">root      <span class="number">1</span>         <span class="number">0</span>            <span class="number">0</span>     <span class="number">02</span>:<span class="number">09</span>        ?      <span class="number">00</span>:<span class="number">00</span>:<span class="number">01</span>     /sbin/init</span><br><span class="line">root     <span class="number">2</span>         <span class="number">0</span>            <span class="number">0</span>     <span class="number">02</span>:<span class="number">09</span>        ?      <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>     [kthreadd]</span><br><span class="line">root     <span class="number">3</span>         <span class="number">2</span>            <span class="number">0</span>     <span class="number">02</span>:<span class="number">09</span>        ?      <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>     [migration/<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">[<span class="symbol">root@</span>localhost ~]# ps -le</span><br><span class="line">F  S   UID PID PPID  C   PRI   NI   ADDR   SZ       WCHAN   TTY   TIME         CMD</span><br><span class="line"><span class="number">4</span>  S     <span class="number">0</span>      <span class="number">1</span>       <span class="number">0</span>       <span class="number">0</span>   <span class="number">80</span>      <span class="number">0</span>       -          <span class="number">4839</span>    poll_s       ?         <span class="number">00</span>:<span class="number">00</span>:<span class="number">01</span>    init</span><br><span class="line"><span class="number">1</span>  S     <span class="number">0</span>      <span class="number">2</span>       <span class="number">0</span>       <span class="number">0</span>   <span class="number">80</span>      <span class="number">0</span>       -           <span class="number">0</span>          kthrea       ?         <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>   kthreadd</span><br><span class="line"><span class="number">1</span>  S     <span class="number">0</span>      <span class="number">3</span>       <span class="number">2</span>       <span class="number">0</span>   <span class="number">-40</span>      -       -           <span class="number">0</span>          migrat      ?         <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>    migration/<span class="number">0</span></span><br><span class="line"></span><br><span class="line">USER 用户名 </span><br><span class="line">UID 用户ID（User ID） </span><br><span class="line">PID 进程ID（Process ID） </span><br><span class="line">PPID 父进程的进程ID（Parent Process id） </span><br><span class="line">SID 会话ID（Session id） </span><br><span class="line">%CPU 进程的cpu占用率 </span><br><span class="line">%MEM 进程的内存占用率 </span><br><span class="line">VSZ 进程所使用的虚存的大小（Virtual Size） </span><br><span class="line">RSS 进程使用的实际内存的大小 </span><br><span class="line">TTY 与进程关联的终端（tty） </span><br><span class="line">STAT 进程的状态：进程状态使用字符表示的（STAT的状态码） </span><br><span class="line">START 进程启动时间和日期 </span><br><span class="line">TIME 进程使用的总cpu时间 </span><br><span class="line">COMMAND 正在执行的命令行命令 </span><br><span class="line">NI 优先级(Nice) </span><br><span class="line">PRI 进程优先级编号(Priority)</span><br><span class="line">进程状态（S字段）： D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程</span><br></pre></td></tr></table></figure>
+
+<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="symbol">root@</span>localhost ~]# top</span><br><span class="line">top - <span class="number">02</span>:<span class="number">45</span>:<span class="number">58</span> up <span class="number">36</span> min, <span class="number">4</span> users, load average: <span class="number">0.00</span>, <span class="number">0.00</span>, <span class="number">0.00</span></span><br><span class="line">Tasks: <span class="number">175</span> total, <span class="number">1</span> running, <span class="number">174</span> sleeping, <span class="number">0</span> stopped, <span class="number">0</span> zombie</span><br><span class="line">Cpu(s): <span class="number">0.3</span>%us, <span class="number">0.3</span>%sy, <span class="number">0.0</span>%ni, <span class="number">99.3</span>%id, <span class="number">0.0</span>%wa, <span class="number">0.0</span>%hi, <span class="number">0.0</span>%si, <span class="number">0.0</span>%st</span><br><span class="line">Mem: <span class="number">1907580</span>k total, <span class="number">528968</span>k used, <span class="number">1378612</span>k free, <span class="number">26060</span>k buffers</span><br><span class="line">Swap: <span class="number">2097144</span>k total, <span class="number">0</span>k used, <span class="number">2097144</span>k free, <span class="number">173020</span>k cached</span><br><span class="line">PID   USER   PR   NI    VIRT     RES    SHR     S    %CPU %MEM TIME+     COMMAND</span><br><span class="line"><span class="number">2603</span>  root      <span class="number">20</span>    <span class="number">0</span>      <span class="number">15028</span>   <span class="number">1372</span>    <span class="number">1000</span>    R   <span class="number">0.3</span>       <span class="number">0.1</span>         <span class="number">0</span>:<span class="number">00.21</span>     top</span><br><span class="line"><span class="number">1</span>          root      <span class="number">20</span>    <span class="number">0</span>     <span class="number">19356</span>    <span class="number">1540</span>    <span class="number">1228</span>    S    <span class="number">0.0</span>      <span class="number">0.1</span>          <span class="number">0</span>:<span class="number">01.04</span>     init</span><br><span class="line"><span class="number">2</span>         root      <span class="number">20</span>    <span class="number">0</span>      <span class="number">0</span>            <span class="number">0</span>          <span class="number">0</span>           S   <span class="number">0.0</span>       <span class="number">0.0</span>        <span class="number">0</span>:<span class="number">00.00</span>    kthreadd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">第一行显示系统运行时间，用户数，系统负载<span class="number">1</span>分钟 ，<span class="number">5</span>分钟，<span class="number">15</span>分钟的情况</span><br><span class="line">第二行显示经常总数，不同stat下的进程数量 </span><br><span class="line">第三行显示cpu使用情况 第四行显示物理内存使用情况 第五行显示swap交换分区使用情况</span><br></pre></td></tr></table></figure>
+
+<h4 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h4>  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[<span class="symbol">root@</span>localhost ~]# kill -l</span><br><span class="line"><span class="number">1</span>) SIGHUP <span class="number">2</span>) SIGINT <span class="number">3</span>) SIGQUIT <span class="number">4</span>) SIGILL <span class="number">5</span>) SIGTRAP</span><br><span class="line"><span class="number">6</span>) SIGABRT <span class="number">7</span>) SIGBUS <span class="number">8</span>) SIGFPE <span class="number">9</span>) SIGKILL <span class="number">10</span>) SIGUSR1</span><br><span class="line"><span class="number">11</span>) SIGSEGV <span class="number">12</span>) SIGUSR2 <span class="number">13</span>) SIGPIPE <span class="number">14</span>) SIGALRM <span class="number">15</span>) SIGTERM</span><br><span class="line"><span class="number">16</span>) SIGSTKFLT <span class="number">17</span>) SIGCHLD <span class="number">18</span>) SIGCONT <span class="number">19</span>) SIGSTOP <span class="number">20</span>) SIGTSTP</span><br><span class="line"><span class="number">21</span>) SIGTTIN <span class="number">22</span>) SIGTTOU <span class="number">23</span>) SIGURG <span class="number">24</span>) SIGXCPU <span class="number">25</span>) SIGXFSZ</span><br><span class="line"><span class="number">26</span>) SIGVTALRM <span class="number">27</span>) SIGPROF <span class="number">28</span>) SIGWINCH <span class="number">29</span>) SIGIO <span class="number">30</span>) SIGPWR</span><br><span class="line"><span class="number">31</span>) SIGSYS <span class="number">34</span>) SIGRTMIN <span class="number">35</span>) SIGRTMIN+<span class="number">1</span> <span class="number">36</span>) SIGRTMIN+<span class="number">2</span> <span class="number">37</span>) SIGRTMIN+<span class="number">3</span></span><br><span class="line"><span class="number">38</span>) SIGRTMIN+<span class="number">4</span> <span class="number">39</span>) SIGRTMIN+<span class="number">5</span> <span class="number">40</span>) SIGRTMIN+<span class="number">6</span> <span class="number">41</span>) SIGRTMIN+<span class="number">7</span> <span class="number">42</span>) SIGRTMIN+<span class="number">8</span></span><br><span class="line"><span class="number">43</span>) SIGRTMIN+<span class="number">9</span> <span class="number">44</span>) SIGRTMIN+<span class="number">10</span> <span class="number">45</span>) SIGRTMIN+<span class="number">11</span> <span class="number">46</span>) SIGRTMIN+<span class="number">12</span> <span class="number">47</span>) SIGRTMIN+<span class="number">13</span></span><br><span class="line"><span class="number">48</span>) SIGRTMIN+<span class="number">14</span> <span class="number">49</span>) SIGRTMIN+<span class="number">15</span> <span class="number">50</span>) SIGRTMAX<span class="number">-14</span> <span class="number">51</span>) SIGRTMAX<span class="number">-13</span> <span class="number">52</span>) SIGRTMAX<span class="number">-12</span></span><br><span class="line"><span class="number">53</span>) SIGRTMAX<span class="number">-11</span> <span class="number">54</span>) SIGRTMAX<span class="number">-10</span> <span class="number">55</span>) SIGRTMAX<span class="number">-9</span> <span class="number">56</span>) SIGRTMAX<span class="number">-8</span> <span class="number">57</span>) SIGRTMAX<span class="number">-7</span></span><br><span class="line"><span class="number">58</span>) SIGRTMAX<span class="number">-6</span> <span class="number">59</span>) SIGRTMAX<span class="number">-5</span> <span class="number">60</span>) SIGRTMAX<span class="number">-4</span> <span class="number">61</span>) SIGRTMAX<span class="number">-3</span> <span class="number">62</span>) SIGRTMAX<span class="number">-2</span></span><br><span class="line"><span class="number">63</span>) SIGRTMAX<span class="number">-1</span> <span class="number">64</span>) SIGRTMAX</span><br></pre></td></tr></table></figure>
+
+<p>Linux中信号有64种，通过kill命令我们可以对进程发送这些信号来告知这些进程，做什么操作。常用的以下四种</p>
+<p>1) SIGHUP<br>这个信号用于通知它重新读取配置文件但不关闭进程，相当于reload。<br>2) SIGINT<br>程序终止(interrupt)信号, 在用户键入INTR字符(通常是Ctrl-C)时发出，用于通知前台进程组终止进程。<br>9) SIGKILL<br>用来立即结束程序的运行. 本信号不能被阻塞、处理和忽略。如果管理员发现某个进程终止不了，可尝试发送这个信号<br>15) SIGTERM<br>程序结束(terminate)信号, 与SIGKILL不同的是该信号可以被阻塞和处理。通常用来要求程序自己正常退出，shell命令kill缺省产生这个信号。如果进程终止不了，我们才会尝试SIGKILL。<br>  例：kill -1 2205 ——告知PID为2205的进程重载下配置文件 kill -9 2205 ——直接杀死2205进程 kill -15 2205 ——通知2205进程关闭，进程会在收到信号后结束工作后自行关闭，有些进程会屏蔽15信号如bash，此时我们只能通过9信号强制结束。</p>
+<h4 id="进程优先级"><a href="#进程优先级" class="headerlink" title="进程优先级"></a>进程优先级</h4><p>假设系统中有多个进程同时在排队是，cpu应该有限处理哪个进程哪？这就取决于进程的优先级，优先级高的优先处理。进程在创建是我们可以通过nice命令指定他的优先级，对于已经开始的进程我们可以通过renice来修改他的优先级。</p>
+<p>优先级范围：-20~19 数字越小优先级越高，默认创建的进程优先级为0。</p>
+<p>例：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">nice -n <span class="number">10</span> vim —— 创建一个优先级为<span class="number">10</span>的vim进程</span><br><span class="line">[<span class="symbol">root@</span>localhost ~]# ps -el | grep vim</span><br><span class="line">F S UID PID PPID C PRI NI ADDR SZ WCHAN TTY TIME CMD</span><br><span class="line"><span class="number">0</span> T <span class="number">0</span> <span class="number">6891</span> <span class="number">2563</span> <span class="number">0</span> <span class="number">90</span> <span class="number">10</span> - <span class="number">35930</span> signal pts/<span class="number">2</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> vim</span><br><span class="line"></span><br><span class="line">renice -n <span class="number">-10</span> <span class="number">6891</span> ——调整<span class="number">6891</span>进程的有限级为<span class="number">-10</span></span><br><span class="line">[<span class="symbol">root@</span>localhost ~]# renice -n <span class="number">-10</span> <span class="number">6891</span></span><br><span class="line"><span class="number">6891</span>: old priority <span class="number">10</span>, new priority <span class="number">-10</span></span><br><span class="line"></span><br><span class="line">root用户可以自由调整经常的优先级，普通用户只能调低不能调高。</span><br><span class="line">  </span><br><span class="line">[<span class="symbol">testuser@</span>localhost root]$ renice -n <span class="number">5</span> <span class="number">6925</span></span><br><span class="line"><span class="number">6925</span>: old priority <span class="number">0</span>, new priority <span class="number">5</span></span><br><span class="line">  </span><br><span class="line">[<span class="symbol">testuser@</span>localhost root]$ renice -n <span class="number">2</span> <span class="number">6925</span></span><br><span class="line">renice: <span class="number">6925</span>: setpriority: Permission denied</span><br></pre></td></tr></table></figure>
+
+<h4 id="前台进程-后台进程"><a href="#前台进程-后台进程" class="headerlink" title="前台进程/后台进程"></a>前台进程/后台进程</h4><p>由于一个终端在处理工作时只能处理一个，当我们想在处理第二个进程时会由于终端被占用而无法处理。这时我们可以将前台的这个进程放到后台去运行，把前台的终端空出让我们运行新的进程。</p>
+<p>命令：</p>
+<ul>
+<li>command &amp;让进程在后台运行</li>
+<li>jobs –l 查看后台运行的进程</li>
+<li>fg %n 让后台运行的进程n到前台来</li>
+<li>bg %n 让后台的进程n运行</li>
+</ul>
+<p>以上的%n是通过jobs -l 查看到的工作编号不是pid。</p>
+<p>例：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">vim &amp; ——在后台运行vim进程</span><br><span class="line">jobs -l ——查看后台所有进程</span><br><span class="line">fg %<span class="number">1</span> ——将后台<span class="number">1</span>号进程移动到前台来运行</span><br><span class="line">bg %<span class="number">2</span> —— 让后台的<span class="number">2</span>号进程开始运行</span><br><span class="line">ctrl+z ——暂停当前的进程放到后台，但不运行</span><br><span class="line"></span><br><span class="line">[<span class="symbol">root@</span>localhost ~]# vim &amp;</span><br><span class="line">[<span class="number">2</span>] <span class="number">6987</span></span><br><span class="line">  </span><br><span class="line">[<span class="symbol">root@</span>localhost ~]# vi /etc/resolv.conf</span><br><span class="line">[<span class="number">3</span>]+ Stopped vi /etc/resolv.conf</span><br><span class="line"></span><br><span class="line">[<span class="symbol">root@</span>localhost ~]# jobs -l</span><br><span class="line">[<span class="number">1</span>] <span class="number">6891</span> Stopped nice -n <span class="number">10</span> vim</span><br><span class="line">[<span class="number">2</span>]- <span class="number">6987</span> Stopped (tty output) vim</span><br><span class="line">[<span class="number">3</span>]+ <span class="number">6989</span> Stopped vi /etc/resolv.conf</span><br><span class="line"></span><br><span class="line">[<span class="symbol">root@</span>localhost ~]# bg %<span class="number">2</span></span><br><span class="line">[<span class="number">2</span>]- vim &amp;</span><br><span class="line"></span><br><span class="line">[<span class="symbol">root@</span>localhost ~]# fg %<span class="number">3</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.xiemx.com/2015/11/15/2015-11-15-linux-process-manager/" title="Linux进程管理" target="_blank" rel="external">https://blog.xiemx.com/2015/11/15/2015-11-15-linux-process-manager/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span class="text-dark">Mingxu.xie</span><small class="ml-1x">DevOps</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2015/11/15/2015-11-15-linux-boot-workflow/" title="Linux启动过程"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2015/11/09/2015-11-09-linux-yum-repo/" title="Linux包管理yum仓库配置"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2019 Mingxu.xie
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+</body>
+</html>
