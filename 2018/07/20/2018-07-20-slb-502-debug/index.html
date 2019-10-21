@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>SLB 502报错Debug | 求索</title>
+  <meta name="description" content="用户自定义站点502问题分析  现象：自定义域名用户反馈，打开网站返回502，如图    根据response header判断，请求到达captain，怀疑captain返回的502页面。查看nginx proxy_pass得知后端的地址为bobcat.sxldns.com. 12set $bobcat_backend &quot;bobcat.sxldns.com&quot;;proxy_pass http://">
+<meta name="keywords" content="debug,linux,nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SLB 502报错Debug">
+<meta property="og:url" content="https://blog.xiemx.com/2018/07/20/2018-07-20-slb-502-debug/index.html">
+<meta property="og:site_name" content="求索">
+<meta property="og:description" content="用户自定义站点502问题分析  现象：自定义域名用户反馈，打开网站返回502，如图    根据response header判断，请求到达captain，怀疑captain返回的502页面。查看nginx proxy_pass得知后端的地址为bobcat.sxldns.com. 12set $bobcat_backend &quot;bobcat.sxldns.com&quot;;proxy_pass http://">
+<meta property="og:locale" content="zh">
+<meta property="og:image" content="https://blog.xiemx.com/images/img_5b5183b84d4dd.png">
+<meta property="og:image" content="https://blog.xiemx.com/images/img_5b5184bfd49e3.png">
+<meta property="og:image" content="https://blog.xiemx.com/images/img_5b5184fb1c8d4.png">
+<meta property="og:image" content="https://blog.xiemx.com/images/img_5b518515e4fe7.png">
+<meta property="og:updated_time" content="2019-10-19T08:11:47.770Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SLB 502报错Debug">
+<meta name="twitter:description" content="用户自定义站点502问题分析  现象：自定义域名用户反馈，打开网站返回502，如图    根据response header判断，请求到达captain，怀疑captain返回的502页面。查看nginx proxy_pass得知后端的地址为bobcat.sxldns.com. 12set $bobcat_backend &quot;bobcat.sxldns.com&quot;;proxy_pass http://">
+<meta name="twitter:image" content="https://blog.xiemx.com/images/img_5b5183b84d4dd.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.xiemx.com/2018/07/20/2018-07-20-slb-502-debug/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+     <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiemx" target="_blank">
+          <img class="img-circle img-rotate" src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.xie</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shanghai, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <font color="#C91406">尔</font><font color="#B60119">不</font><font color="#A3002C">必</font><font color="#90003F">求</font><font color="#7D0052">记</font><font color="#6A0065">，</font><font color="#570078">却</font><font color="#44008B">宜</font><font color="#31009E">求</font><font color="#1E00B1">个</font><font color="#0B00C4">明</font><font color="#0000D7">白</font><font color="#0000EA">！</font>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/cluster/">cluster</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/command/">command</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/domain/">domain</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/http/mime-type/">mime-type</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iis/">iis</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iis/windows/">windows</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/k8s/">k8s</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/keepalived/">keepalived</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/nginx/">nginx</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/nginx/debug/">debug</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/lvs/">lvs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/memcached/">memcached</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/memcached/redis/">redis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/mssql/">mssql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/php/debug/">debug</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/postgresql/">postgresql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/python/uwsgi/">uwsgi</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/shell/linux/">linux</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/statsd/">statsd</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/statsd/graphite/">graphite</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/storage/">storage</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tomcat/">tomcat</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/uwsgi/">uwsgi</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/uwsgi/python/">python</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant/">vagrant</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/vcenter/">vcenter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/window/">window</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/windows/">windows</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/windows/vcenter/">vcenter</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/zabbix/">zabbix</a><span class="category-list-count">12</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/zabbix/issue/">issue</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/zentaopms/">zentaopms</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/zentaopms/deployment/">deployment</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMS/">CMS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/acl/">acl</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/amoeba/">amoeba</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/">bash</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/binlog/">binlog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cache/">cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster/">cluster</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/command/">command</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commands/">commands</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debug/">debug</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deployment/">deployment</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/domain/">domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphite/">graphite</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iis/">iis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ingress/">ingress</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/">iptables</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iscsi/">iscsi</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/issue/">issue</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/">k8s</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keepalived/">keepalived</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kernal/">kernal</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kickstart/">kickstart</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">27</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lvm/">lvm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lvs/">lvs</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/magent/">magent</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/memcache/">memcache</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/memcached/">memcached</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mime-type/">mime-type</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongo/">mongo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/monitor/">monitor</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mssql/">mssql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysqlcheck/">mysqlcheck</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ntp/">ntp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phpmyadmin/">phpmyadmin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/proxy/">proxy</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pxe/">pxe</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rbash/">rbash</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/repcache/">repcache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rhcs/">rhcs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scripts/">scripts</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket/">socket</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssh/">ssh</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/statsd/">statsd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/statusCode/">statusCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/store/">store</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcp/">tcp</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/">tool</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/twemproxy/">twemproxy</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/udev/">udev</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uwsgi/">uwsgi</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vagrant/">vagrant</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vcenter/">vcenter</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webserver/">webserver</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/">websocket</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/window/">window</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/">windows</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yum/">yum</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zabbix/">zabbix</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zentaopms/">zentaopms</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cluster/" style="font-size: 13.88px;">cluster</a> <a href="/tags/command/" style="font-size: 13.63px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/database/" style="font-size: 13.63px;">database</a> <a href="/tags/debug/" style="font-size: 13.63px;">debug</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/django/" style="font-size: 13px;">django</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.75px;">http</a> <a href="/tags/iis/" style="font-size: 13px;">iis</a> <a href="/tags/ingress/" style="font-size: 13px;">ingress</a> <a href="/tags/iptables/" style="font-size: 13px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.13px;">issue</a> <a href="/tags/k8s/" style="font-size: 13px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.13px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.25px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/memcache/" style="font-size: 13.13px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.25px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.13px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.88px;">mysql</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/nginx/" style="font-size: 13.38px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/php/" style="font-size: 13.38px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/postgresql/" style="font-size: 13px;">postgresql</a> <a href="/tags/proxy/" style="font-size: 13px;">proxy</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.75px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.25px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.13px;">tcp</a> <a href="/tags/tomcat/" style="font-size: 13.5px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.13px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.13px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.13px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.13px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.13px;">vcenter</a> <a href="/tags/webserver/" style="font-size: 13.5px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/window/" style="font-size: 13px;">window</a> <a href="/tags/windows/" style="font-size: 13.25px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.75px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archive/2019/09/">September 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2019/05/">May 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2018/07/">July 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2018/01/">January 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2017/09/">September 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2017/07/">July 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2017/03/">March 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2017/02/">February 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2017/01/">January 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/12/">December 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/08/">August 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/07/">July 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/06/">June 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/05/">May 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/04/">April 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/03/">March 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/02/">February 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/01/">January 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2015/11/">November 2015</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2015/10/">October 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2015/09/">September 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2015/08/">August 2015</a><span class="archive-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/16/2019-09-16-k8s-ingress-nginx/" class="title">k8s ingress-nginx动态balance实现解析</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-15T23:09:52.000Z" itemprop="datePublished">2019-09-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/postgresql/">postgresql</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/07/08/2019-07-08-postgresql-replica-status/" class="title">PostgreSQL查看复制状态</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-08T03:07:36.000Z" itemprop="datePublished">2019-07-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/http/">http</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/13/2019-05-13-http-cache/" class="title">http cache</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-13T03:05:02.000Z" itemprop="datePublished">2019-05-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/mysql/">mysql</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/06/2019-05-06-mysqldump-error/" class="title">Mysqldump error</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-06T03:05:56.000Z" itemprop="datePublished">2019-05-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/redis/">redis</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/06/2019-05-06-redis-dump/" class="title">redis-dump使用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-06T03:05:33.000Z" itemprop="datePublished">2019-05-06</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-2018-07-20-slb-502-debug" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SLB 502报错Debug
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/07/20/2018-07-20-slb-502-debug/" class="article-date">
+	  <time datetime="2018-07-19T18:07:06.000Z" itemprop="datePublished">2018-07-20</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/linux/">linux</a>►<a class="article-category-link" href="/categories/linux/nginx/">nginx</a>►<a class="article-category-link" href="/categories/linux/nginx/debug/">debug</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/debug/">debug</a>, <a class="article-tag-link" href="/tags/linux/">linux</a>, <a class="article-tag-link" href="/tags/nginx/">nginx</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/07/20/2018-07-20-slb-502-debug/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>用户自定义站点502问题分析</p>
+<ol>
+<li>现象：自定义域名用户反馈，打开网站返回502，如图</li>
+</ol>
+<p><img src="/images/img_5b5183b84d4dd.png" alt="img"></p>
+<p> 根据response header判断，请求到达captain，怀疑captain返回的502页面。查看nginx proxy_pass得知后端的地址为bobcat.sxldns.com.</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">set</span> <span class="variable">$bobcat_backend</span> <span class="string">"bobcat.sxldns.com"</span>;</span><br><span class="line"><span class="attribute">proxy_pass</span> http://<span class="variable">$bobcat_backend</span>;</span><br></pre></td></tr></table></figure>
+
+<p>使用curl模拟请求，直接请求bobcat.sxldns.com,正常获得返回内容，具体针对每个服务器的IP的curl,不再单独列出。</p>
+<p><img src="/images/img_5b5184bfd49e3.png" alt="img"></p>
+<p>通过上述返回基本判断，问题出在我们的代理层。具体查看代理层的nginx配置和系统资源利用率。</p>
+<p>查看当时系统的资源状态,查看到当时的系统磁盘空间使用完。查看nginx上有关于proxy的cache相关配置,nginx会cache的response的content的内容。怀疑nginx转发请求之后但是backend返回内容后，nginx cache到本地的时候无法写入disk导致会话结束，SLB的请求无返回包认为后端宕机抛出502。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxy_cache_path /etc/nginx/china_cache <span class="attribute">levels</span>=1:2 <span class="attribute">keys_zone</span>=user_page_cache:100m <span class="attribute">max_size</span>=20g <span class="attribute">inactive</span>=60m <span class="attribute">use_temp_path</span>=off;</span><br></pre></td></tr></table></figure>
+
+<p>具体DEBUG如下：</p>
+<ol>
+<li>获取container中的nginx worker进程的PID</li>
+</ol>
+<p><img src="/images/img_5b5184fb1c8d4.png" alt="img"></p>
+<ol start="2">
+<li>strace查看下系统调用具体信息</li>
+</ol>
+<p><img src="/images/img_5b518515e4fe7.png" alt="img"></p>
+<p>通过上图strace追踪流程可以看到左侧是一个正常的请求的全部流程，右侧是故障状态的strace的系统调用全流程。</p>
+<p>通过对比左右两侧的系统调用流程可以看到，当nginx cache的时候写入<code>/etc/nginx/china_cache</code>目录时提示<code>no space</code>后续的writev()和sendfile()方法就没有调用，因此导致SLB无法获得返回包，抛出<code>badgateway</code>的错误.</p>
+<p>PS：</p>
+<ol>
+<li>为什么单独请求返回头的时候正常返回？nginx返回请求头的时候并不会走proxy的cache流程。因此没有调用open()方法读写disk，正常返回，但是实际请求数据的时候cache写磁盘直接失败，后续直接退出。</li>
+<li>上图的系统调用过程为了debug的方便使用了非折叠模式。因此一些no space的一些报错未显示出来可以。全部流程见附录。</li>
+</ol>
+<p>附录：</p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line">1.异常调用堆栈</span><br><span class="line">[root@iZ2ze2mzhjk3ou1vsnkthzZ rpm]# strace -p 3904 -v</span><br><span class="line">strace: Process 3904 attached</span><br><span class="line">epoll_wait(8, [&#123;EPOLLIN, &#123;u32=69025808, u64=140003117973520&#125;&#125;], 512, -1) = 1</span><br><span class="line">accept4(6, &#123;sa_family=AF_INET, sin_port=htons(59464), sin_addr=inet_addr("10.130.0.4")&#125;, [16], SOCK_NONBLOCK) = 11</span><br><span class="line">epoll_ctl(8, EPOLL_CTL_ADD, 11, &#123;EPOLLIN|EPOLLRDHUP|EPOLLET, &#123;u32=69027249, u64=140003117974961&#125;&#125;) = 0</span><br><span class="line">epoll_wait(8, [&#123;EPOLLIN, &#123;u32=69027249, u64=140003117974961&#125;&#125;], 512, 60000) = 1</span><br><span class="line">recvfrom(11, "GET /?key=testxxxx HTTP/1.1<span class="symbol">\r</span><span class="symbol">\n</span>Use"..., 1024, 0, NULL, NULL) = 88</span><br><span class="line">epoll_ctl(8, EPOLL_CTL_MOD, 11, &#123;EPOLLIN|EPOLLOUT|EPOLLRDHUP|EPOLLET, &#123;u32=69027249, u64=140003117974961&#125;&#125;) = 0</span><br><span class="line">open("/etc/nginx/china_cache/2/7d/2ac65d1f9080e2baff45a4332f9017d2", O_RDONLY|O_NONBLOCK) = 14</span><br><span class="line">fstat(14, &#123;st_dev=makedev(253, 1), st_ino=655502, st_mode=S_IFREG|0600, st_nlink=1, st_uid=101, st_gid=101, st_blksize=4096, st_blocks=96, st_size=46750, st_atime=2018/07/17-16:34:43.967698739, st_mtime=2018/07/17-16:34:43.966698736, st_ctime=2018/07/17-16:34:43.967698739&#125;) = 0</span><br><span class="line">pread64(14, "<span class="symbol">\5</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span>(<span class="symbol">\2</span>52M[<span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span>"..., 636, 0) = 636</span><br><span class="line">getsockname(11, &#123;sa_family=AF_INET, sin_port=htons(80), sin_addr=inet_addr("172.17.0.2")&#125;, [16]) = 0</span><br><span class="line">sendto(13, "nN<span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\6</span>bobcat<span class="symbol">\6</span>sxldns<span class="symbol">\3</span>com<span class="symbol">\0</span><span class="symbol">\0</span>"..., 35, 0, NULL, 0) = 35</span><br><span class="line">sendto(13, "<span class="symbol">\3</span>75<span class="symbol">\2</span>15<span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\6</span>bobcat<span class="symbol">\6</span>sxldns<span class="symbol">\3</span>com<span class="symbol">\0</span><span class="symbol">\0</span>"..., 35, 0, NULL, 0) = 35</span><br><span class="line">epoll_wait(8, [&#123;EPOLLOUT, &#123;u32=69027249, u64=140003117974961&#125;&#125;, &#123;EPOLLIN, &#123;u32=69026288, u64=140003117974000&#125;&#125;], 512, 5000) = 2</span><br><span class="line">recvfrom(13, "nN<span class="symbol">\2</span>01<span class="symbol">\2</span>00<span class="symbol">\0</span><span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\3</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\6</span>bobcat<span class="symbol">\6</span>sxldns<span class="symbol">\3</span>com<span class="symbol">\0</span><span class="symbol">\0</span>"..., 4096, 0, NULL, NULL) = 147</span><br><span class="line">recvfrom(13, "<span class="symbol">\3</span>75<span class="symbol">\2</span>15<span class="symbol">\2</span>01<span class="symbol">\2</span>00<span class="symbol">\0</span><span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\6</span>bobcat<span class="symbol">\6</span>sxldns<span class="symbol">\3</span>com<span class="symbol">\0</span><span class="symbol">\0</span>"..., 4096, 0, NULL, NULL) = 168</span><br><span class="line">socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 15</span><br><span class="line">ioctl(15, FIONBIO, [1]) = 0</span><br><span class="line">epoll_ctl(8, EPOLL_CTL_ADD, 15, &#123;EPOLLIN|EPOLLOUT|EPOLLRDHUP|EPOLLET, &#123;u32=69027488, u64=140003117975200&#125;&#125;) = 0</span><br><span class="line">connect(15, &#123;sa_family=AF_INET, sin_port=htons(80), sin_addr=inet_addr("54.222.148.216")&#125;, 16) = -1 EINPROGRESS (Operation now in progress)</span><br><span class="line">recvfrom(13, 0x7ffd1f603790, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)</span><br><span class="line">epoll_wait(8, [&#123;EPOLLOUT, &#123;u32=69027488, u64=140003117975200&#125;&#125;], 512, 20000) = 1</span><br><span class="line">getsockopt(15, SOL_SOCKET, SO_ERROR, [0], [4]) = 0</span><br><span class="line">writev(15, [&#123;"GET /?key=testxxxx HTTP/1.0<span class="symbol">\r</span><span class="symbol">\n</span>Hos"..., 219&#125;], 1) = 219</span><br><span class="line">epoll_wait(8, [&#123;EPOLLIN|EPOLLOUT, &#123;u32=69027488, u64=140003117975200&#125;&#125;], 512, 60000) = 1</span><br><span class="line">recvfrom(15, "HTTP/1.1 200 OK<span class="symbol">\r</span><span class="symbol">\n</span>Content-Type: t"..., 3723, 0, NULL, NULL) = 3723</span><br><span class="line">close(14) = 0</span><br><span class="line">readv(15, [&#123;"a.qnssl.com/images/265818/Fntncr"..., 4096&#125;], 1) = 4096</span><br><span class="line">readv(15, [&#123;"w-card-price&#123;color: #004aa0;&#125;.s-"..., 4096&#125;], 1) = 4096</span><br><span class="line">readv(15, [&#123;" &#123;<span class="symbol">\n</span> font-family: <span class="symbol">\"</span>Open Sans"..., 4096&#125;], 1) = 373</span><br><span class="line">open("/etc/nginx/china_cache/2/7d/2ac65d1f9080e2baff45a4332f9017d2.0000014052", O_RDWR|O_CREAT|O_EXCL, 0600) = 14</span><br><span class="line">pwritev(14, [&#123;"<span class="symbol">\5</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\3</span>56<span class="symbol">\2</span>54M[<span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span>"..., 4096&#125;, &#123;"a.qnssl.com/images/265818/Fntncr"..., 4096&#125;, &#123;"w-card-price&#123;color: #004aa0;&#125;.s-"..., 4096&#125;], 3, 0) = -1 ENOSPC (No space left on device)</span><br><span class="line">gettid() = 7</span><br><span class="line">write(4, "2018/07/17 08:46:33 [crit] 7#7: "..., 328) = 328</span><br><span class="line">close(15) = 0</span><br><span class="line">unlink("/etc/nginx/china_cache/2/7d/2ac65d1f9080e2baff45a4332f9017d2.0000014052") = 0</span><br><span class="line">write(5, "&#123; <span class="symbol">\"</span>time<span class="symbol">\"</span>: <span class="symbol">\"</span>2018-07-17T08:46:33+0"..., 382) = 382</span><br><span class="line">close(14) = 0</span><br><span class="line">close(11) = 0</span><br><span class="line"></span><br><span class="line">2.正常调用堆栈过程</span><br><span class="line">[root@iZ2ze2mzhjk3ou1vsnkthzZ rpm]# strace -p 3904 -v</span><br><span class="line">strace: Process 3904 attached</span><br><span class="line">epoll_wait(8, [&#123;EPOLLIN, &#123;u32=69025808, u64=140003117973520&#125;&#125;], 512, -1) = 1</span><br><span class="line">accept4(6, &#123;sa_family=AF_INET, sin_port=htons(59360), sin_addr=inet_addr("10.130.0.4")&#125;, [16], SOCK_NONBLOCK) = 11</span><br><span class="line">epoll_ctl(8, EPOLL_CTL_ADD, 11, &#123;EPOLLIN|EPOLLRDHUP|EPOLLET, &#123;u32=69027248, u64=140003117974960&#125;&#125;) = 0</span><br><span class="line">epoll_wait(8, [&#123;EPOLLIN, &#123;u32=69027248, u64=140003117974960&#125;&#125;], 512, 60000) = 1</span><br><span class="line">recvfrom(11, "GET /?key=testxxxx HTTP/1.1<span class="symbol">\r</span><span class="symbol">\n</span>Use"..., 1024, 0, NULL, NULL) = 88</span><br><span class="line">epoll_ctl(8, EPOLL_CTL_MOD, 11, &#123;EPOLLIN|EPOLLOUT|EPOLLRDHUP|EPOLLET, &#123;u32=69027248, u64=140003117974960&#125;&#125;) = 0</span><br><span class="line">open("/etc/nginx/china_cache/2/7d/2ac65d1f9080e2baff45a4332f9017d2", O_RDONLY|O_NONBLOCK) = 14</span><br><span class="line">fstat(14, &#123;st_dev=makedev(253, 1), st_ino=655504, st_mode=S_IFREG|0600, st_nlink=1, st_uid=101, st_gid=101, st_blksize=4096, st_blocks=96, st_size=46750, st_atime=2018/07/17-16:14:38.127407158, st_mtime=2018/07/17-16:14:38.127407158, st_ctime=2018/07/17-16:14:38.128407161&#125;) = 0</span><br><span class="line">pread64(14, "<span class="symbol">\5</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span>s<span class="symbol">\2</span>45M[<span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span>"..., 636, 0) = 636</span><br><span class="line">getsockname(11, &#123;sa_family=AF_INET, sin_port=htons(80), sin_addr=inet_addr("172.17.0.2")&#125;, [16]) = 0</span><br><span class="line">sendto(12, "<span class="symbol">\2</span>10V<span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\6</span>bobcat<span class="symbol">\6</span>sxldns<span class="symbol">\3</span>com<span class="symbol">\0</span><span class="symbol">\0</span>"..., 35, 0, NULL, 0) = 35</span><br><span class="line">sendto(12, "<span class="symbol">\2</span>7<span class="symbol">\1</span><span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\6</span>bobcat<span class="symbol">\6</span>sxldns<span class="symbol">\3</span>com<span class="symbol">\0</span><span class="symbol">\0</span>"..., 35, 0, NULL, 0) = 35</span><br><span class="line">epoll_wait(8, [&#123;EPOLLOUT, &#123;u32=69027248, u64=140003117974960&#125;&#125;, &#123;EPOLLIN, &#123;u32=69027728, u64=140003117975440&#125;&#125;], 512, 5000) = 2</span><br><span class="line">recvfrom(12, "<span class="symbol">\2</span>10V<span class="symbol">\2</span>01<span class="symbol">\2</span>00<span class="symbol">\0</span><span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\3</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\6</span>bobcat<span class="symbol">\6</span>sxldns<span class="symbol">\3</span>com<span class="symbol">\0</span><span class="symbol">\0</span>"..., 4096, 0, NULL, NULL) = 147</span><br><span class="line">recvfrom(12, "<span class="symbol">\2</span>7<span class="symbol">\1</span><span class="symbol">\2</span>01<span class="symbol">\2</span>00<span class="symbol">\0</span><span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\1</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\6</span>bobcat<span class="symbol">\6</span>sxldns<span class="symbol">\3</span>com<span class="symbol">\0</span><span class="symbol">\0</span>"..., 4096, 0, NULL, NULL) = 168</span><br><span class="line">socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 15</span><br><span class="line">ioctl(15, FIONBIO, [1]) = 0</span><br><span class="line">epoll_ctl(8, EPOLL_CTL_ADD, 15, &#123;EPOLLIN|EPOLLOUT|EPOLLRDHUP|EPOLLET, &#123;u32=69027489, u64=140003117975201&#125;&#125;) = 0</span><br><span class="line">connect(15, &#123;sa_family=AF_INET, sin_port=htons(80), sin_addr=inet_addr("52.80.58.42")&#125;, 16) = -1 EINPROGRESS (Operation now in progress)</span><br><span class="line">recvfrom(12, 0x7ffd1f603790, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)</span><br><span class="line">epoll_wait(8, [&#123;EPOLLOUT, &#123;u32=69027489, u64=140003117975201&#125;&#125;], 512, 20000) = 1</span><br><span class="line">getsockopt(15, SOL_SOCKET, SO_ERROR, [0], [4]) = 0</span><br><span class="line">writev(15, [&#123;"GET /?key=testxxxx HTTP/1.0<span class="symbol">\r</span><span class="symbol">\n</span>Hos"..., 219&#125;], 1) = 219</span><br><span class="line">epoll_wait(8, [&#123;EPOLLIN|EPOLLOUT, &#123;u32=69027489, u64=140003117975201&#125;&#125;], 512, 60000) = 1</span><br><span class="line">recvfrom(15, "HTTP/1.1 200 OK<span class="symbol">\r</span><span class="symbol">\n</span>Content-Type: t"..., 3723, 0, NULL, NULL) = 3723</span><br><span class="line">close(14) = 0</span><br><span class="line">readv(15, [&#123;"a.qnssl.com/images/265818/Fntncr"..., 4096&#125;], 1) = 4096</span><br><span class="line">readv(15, [&#123;"w-card-price&#123;color: #004aa0;&#125;.s-"..., 4096&#125;], 1) = 4096</span><br><span class="line">readv(15, [&#123;" &#123;<span class="symbol">\n</span> font-family: <span class="symbol">\"</span>Open Sans"..., 4096&#125;], 1) = 2565</span><br><span class="line">open("/etc/nginx/china_cache/2/7d/2ac65d1f9080e2baff45a4332f9017d2.0000014051", O_RDWR|O_CREAT|O_EXCL, 0600) = 14</span><br><span class="line">pwritev(14, [&#123;"<span class="symbol">\5</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span>(<span class="symbol">\2</span>52M[<span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span><span class="symbol">\0</span>"..., 4096&#125;, &#123;"a.qnssl.com/images/265818/Fntncr"..., 4096&#125;, &#123;"w-card-price&#123;color: #004aa0;&#125;.s-"..., 4096&#125;], 3, 0) = 12288</span><br><span class="line">writev(11, [&#123;"HTTP/1.1 200 OK<span class="symbol">\r</span><span class="symbol">\n</span>Server: nginx/1"..., 321&#125;], 1) = 321</span><br><span class="line">sendfile(11, 14, [636] =&gt; [12288], 11652) = 11652</span><br><span class="line">epoll_wait(8, [&#123;EPOLLOUT, &#123;u32=69027489, u64=140003117975201&#125;&#125;], 512, 59955) = 1</span><br><span class="line">epoll_wait(8, [&#123;EPOLLIN|EPOLLOUT, &#123;u32=69027489, u64=140003117975201&#125;&#125;], 512, 59953) = 1</span><br><span class="line">readv(15, [&#123;"rc=<span class="symbol">\"</span>//nzr2ybsda.qnssl.com/images"..., 1531&#125;, &#123;"lass=<span class="symbol">\"</span>s-nav-item<span class="symbol">\"</span> target=<span class="symbol">\"</span>_self<span class="symbol">\"</span>"..., 4096&#125;, &#123;"lign: left; font-size: 160<span class="variable">%;\"&gt;\302\240"..., 4096&#125;, &#123;"OQswmpPvoA0.jpg?imageMogr2/strip"..., 4096&#125;], 4) = 10136</span></span><br><span class="line"><span class="variable">pwritev(14, [&#123;" &#123;\n font-family: \"Open Sans"..., 4096&#125;, &#123;"lass=\"s-nav-item\" target=\"_self\""..., 4096&#125;, &#123;"lign: left; font-size: 160%</span>;<span class="symbol">\"</span>&gt;<span class="symbol">\3</span>02<span class="symbol">\2</span>40"..., 4096&#125;], 3, 12288) = 12288</span><br><span class="line">sendfile(11, 14, [12288] =&gt; [24576], 12288) = 12288</span><br><span class="line">epoll_wait(8, [&#123;EPOLLIN|EPOLLOUT, &#123;u32=69027489, u64=140003117975201&#125;&#125;], 512, 59948) = 1</span><br><span class="line">readv(15, [&#123;"olor-custom1<span class="symbol">\"</span>&gt;<span class="symbol">\3</span>47<span class="symbol">\2</span>54<span class="symbol">\2</span>54<span class="symbol">\3</span>44<span class="symbol">\2</span>70<span class="symbol">\2</span>11<span class="symbol">\3</span>46<span class="symbol">\2</span>26<span class="symbol">\2</span>71<span class="symbol">\3</span>45"..., 3683&#125;, &#123;"container title-group-container<span class="symbol">\"</span>"..., 4096&#125;, &#123;";cs=srgb&amp;s=f71a6adc1e5953a52"..., 4096&#125;, &#123;")<span class="symbol">\"</span> data-bg=<span class="symbol">\"</span>//nzr2ybsda.qnssl.co"..., 4096&#125;], 4) = 15971</span><br><span class="line">readv(15, [&#123;"<span class="symbol">\2</span>30<span class="symbol">\2</span>63<span class="symbol">\3</span>45<span class="symbol">\2</span>24<span class="symbol">\2</span>57<span class="symbol">\3</span>46<span class="symbol">\2</span>31<span class="symbol">\2</span>37<span class="symbol">\"</span> title=<span class="symbol">\"</span><span class="symbol">\3</span>46<span class="symbol">\2</span>62<span class="symbol">\2</span>10<span class="symbol">\3</span>51<span class="symbol">\2</span>30<span class="symbol">\2</span>63<span class="symbol">\3</span>45<span class="symbol">\2</span>24<span class="symbol">\2</span>57<span class="symbol">\3</span>46<span class="symbol">\2</span>31<span class="symbol">\2</span>37<span class="symbol">\3</span>45<span class="symbol">\2</span>25<span class="symbol">\2</span>06"..., 4096&#125;], 1) = 2853</span><br><span class="line">pwritev(14, [&#123;"OQswmpPvoA0.jpg?imageMogr2/strip"..., 4096&#125;, &#123;"container title-group-container<span class="symbol">\"</span>"..., 4096&#125;, &#123;";cs=srgb&amp;s=f71a6adc1e5953a52"..., 4096&#125;, &#123;")<span class="symbol">\"</span> data-bg=<span class="symbol">\"</span>//nzr2ybsda.qnssl.co"..., 4096&#125;], 4, 24576) = 16384</span><br><span class="line">sendfile(11, 14, [24576] =&gt; [40960], 16384) = 16384</span><br><span class="line">epoll_wait(8, [&#123;EPOLLIN|EPOLLOUT, &#123;u32=69027489, u64=140003117975201&#125;&#125;], 512, 59947) = 1</span><br><span class="line">readv(15, [&#123;"</span><br><span class="line"></span><br><span class="line">&lt;d"..., 1243&#125;, &#123;"<span class="symbol">\2</span>32<span class="symbol">\2</span>04<span class="symbol">\3</span>44<span class="symbol">\2</span>70<span class="symbol">\2</span>32<span class="symbol">\3</span>47<span class="symbol">\2</span>73<span class="symbol">\2</span>51<span class="symbol">\3</span>44<span class="symbol">\2</span>71<span class="symbol">\2</span>37<span class="symbol">\3</span>45<span class="symbol">\2</span>34<span class="symbol">\2</span>50<span class="symbol">\3</span>44<span class="symbol">\2</span>70<span class="symbol">\2</span>15<span class="symbol">\3</span>46<span class="symbol">\2</span>26<span class="symbol">\2</span>55<span class="symbol">\3</span>46<span class="symbol">\2</span>24<span class="symbol">\2</span>00<span class="symbol">\3</span>45<span class="symbol">\2</span>15<span class="symbol">\2</span>07<span class="symbol">\3</span>43<span class="symbol">\2</span>00<span class="symbol">\2</span>02&lt;/d"..., 4096&#125;, &#123;"", 4096&#125;, &#123;"", 4096&#125;, &#123;"", 4096&#125;], 5) = 2937</span><br><span class="line">pwritev(14, [&#123;"<span class="symbol">\2</span>30<span class="symbol">\2</span>63<span class="symbol">\3</span>45<span class="symbol">\2</span>24<span class="symbol">\2</span>57<span class="symbol">\3</span>46<span class="symbol">\2</span>31<span class="symbol">\2</span>37<span class="symbol">\"</span> title=<span class="symbol">\"</span><span class="symbol">\3</span>46<span class="symbol">\2</span>62<span class="symbol">\2</span>10<span class="symbol">\3</span>51<span class="symbol">\2</span>30<span class="symbol">\2</span>63<span class="symbol">\3</span>45<span class="symbol">\2</span>24<span class="symbol">\2</span>57<span class="symbol">\3</span>46<span class="symbol">\2</span>31<span class="symbol">\2</span>37<span class="symbol">\3</span>45<span class="symbol">\2</span>25<span class="symbol">\2</span>06"..., 4096&#125;, &#123;"<span class="symbol">\2</span>32<span class="symbol">\2</span>04<span class="symbol">\3</span>44<span class="symbol">\2</span>70<span class="symbol">\2</span>32<span class="symbol">\3</span>47<span class="symbol">\2</span>73<span class="symbol">\2</span>51<span class="symbol">\3</span>44<span class="symbol">\2</span>71<span class="symbol">\2</span>37<span class="symbol">\3</span>45<span class="symbol">\2</span>34<span class="symbol">\2</span>50<span class="symbol">\3</span>44<span class="symbol">\2</span>70<span class="symbol">\2</span>15<span class="symbol">\3</span>46<span class="symbol">\2</span>26<span class="symbol">\2</span>55<span class="symbol">\3</span>46<span class="symbol">\2</span>24<span class="symbol">\2</span>00<span class="symbol">\3</span>45<span class="symbol">\2</span>15<span class="symbol">\2</span>07<span class="symbol">\3</span>43<span class="symbol">\2</span>00<span class="symbol">\2</span>02&lt;/d"..., 1694&#125;], 2, 40960) = 5790 sendfile(11, 14, [40960] =&gt; [46750], 5790) = 5790</span><br><span class="line">chmod("/etc/nginx/china_cache/2/7d/2ac65d1f9080e2baff45a4332f9017d2.0000014051", 0600) = 0</span><br><span class="line">rename("/etc/nginx/china_cache/2/7d/2ac65d1f9080e2baff45a4332f9017d2.0000014051", "/etc/nginx/china_cache/2/7d/2ac65d1f9080e2baff45a4332f9017d2") = 0</span><br><span class="line">fstat(14, &#123;st_dev=makedev(253, 1), st_ino=655502, st_mode=S_IFREG|0600, st_nlink=1, st_uid=101, st_gid=101, st_blksize=4096, st_blocks=96, st_size=46750, st_atime=2018/07/17-16:34:43.967698739, st_mtime=2018/07/17-16:34:43.966698736, st_ctime=2018/07/17-16:34:43.967698739&#125;) = 0</span><br><span class="line">close(15) = 0</span><br><span class="line">write(5, "&#123; <span class="symbol">\"</span>time<span class="symbol">\"</span>: <span class="symbol">\"</span>2018-07-17T08:34:43+0"..., 386) = 386</span><br><span class="line">close(14) = 0</span><br><span class="line">setsockopt(11, SOL_TCP, TCP_NODELAY, [1], 4) = 0</span><br><span class="line">epoll_wait(8, [&#123;EPOLLIN|EPOLLOUT|EPOLLRDHUP, &#123;u32=69027248, u64=140003117974960&#125;&#125;], 512, 65000) = 1</span><br><span class="line">recvfrom(11, "", 1024, 0, NULL, NULL) = 0</span><br><span class="line">close(11) = 0</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.xiemx.com/2018/07/20/2018-07-20-slb-502-debug/" title="SLB 502报错Debug" target="_blank" rel="external">https://blog.xiemx.com/2018/07/20/2018-07-20-slb-502-debug/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span class="text-dark">Mingxu.xie</span><small class="ml-1x">DevOps</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/05/06/2019-05-06-ssh-authorizedkeyscommand/" title="SSH的AuthorizedKeysCommand、AuthorizedKeysCommandUser"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/01/23/2018-01-23-tcp-state/" title="TCP状态机"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2019 Mingxu.xie
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+  var gitment = new Gitment({
+    // id默认为当前页面url，如果url后带参数或锚点，gitment要重新初始化
+    // https://github.com/imsun/gitment/issues/55
+    // 解决方案：id:window.location.pathname,或者将id设置为当前页面标题
+    id: 'SLB 502报错Debug',
+    owner: 'xiemx', // 可以是你的GitHub用户名，也可以是github id
+    repo: 'xray',
+    oauth: {
+      client_id: 'ccf366da75afeaf5215a',
+      client_secret: 'ab4c80318537cc3fae0a62dcbd11fd206b57ac6e',
+    }
+  })
+  gitment.render('comments')
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>

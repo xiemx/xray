@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>mysql binlog恢复数据 | 求索</title>
+  <meta name="description" content="123456789101112131415[root@localhost mysql]# cat /etc/my.cnf[mysqld]datadir=/var/lib/mysqllog-bin=/var/log/mysql/binlog   开启二进制日志socket=/var/lib/mysql/mysql.sockuser=mysqllog-slow-queries=/var/log/mys">
+<meta name="keywords" content="mysql,binlog">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql binlog恢复数据">
+<meta property="og:url" content="https://blog.xiemx.com/2016/01/30/2016-01-30-mysql-binlog-recovery-data/index.html">
+<meta property="og:site_name" content="求索">
+<meta property="og:description" content="123456789101112131415[root@localhost mysql]# cat /etc/my.cnf[mysqld]datadir=/var/lib/mysqllog-bin=/var/log/mysql/binlog   开启二进制日志socket=/var/lib/mysql/mysql.sockuser=mysqllog-slow-queries=/var/log/mys">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2019-10-19T10:48:03.517Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql binlog恢复数据">
+<meta name="twitter:description" content="123456789101112131415[root@localhost mysql]# cat /etc/my.cnf[mysqld]datadir=/var/lib/mysqllog-bin=/var/log/mysql/binlog   开启二进制日志socket=/var/lib/mysql/mysql.sockuser=mysqllog-slow-queries=/var/log/mys">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.xiemx.com/2016/01/30/2016-01-30-mysql-binlog-recovery-data/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiemx" target="_blank">
+          <img class="img-circle img-rotate" src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.xie</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shanghai, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <font color="#C91406">尔</font><font color="#B60119">不</font><font color="#A3002C">必</font><font color="#90003F">求</font><font color="#7D0052">记</font><font color="#6A0065">，</font><font color="#570078">却</font><font color="#44008B">宜</font><font color="#31009E">求</font><font color="#1E00B1">个</font><font color="#0B00C4">明</font><font color="#0000D7">白</font><font color="#0000EA">！</font>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/cluster/">cluster</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/command/">command</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/domain/">domain</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/http/mime-type/">mime-type</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iis/">iis</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iis/windows/">windows</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/k8s/">k8s</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/keepalived/">keepalived</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/nginx/">nginx</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/nginx/debug/">debug</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/lvs/">lvs</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/memcached/">memcached</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/memcached/redis/">redis</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/mssql/">mssql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/php/debug/">debug</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/postgresql/">postgresql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/python/uwsgi/">uwsgi</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/shell/linux/">linux</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/statsd/">statsd</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/statsd/graphite/">graphite</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/storage/">storage</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tomcat/">tomcat</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/uwsgi/">uwsgi</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/uwsgi/python/">python</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant/">vagrant</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/vcenter/">vcenter</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/window/">window</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/windows/">windows</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/windows/vcenter/">vcenter</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/zabbix/">zabbix</a><span class="category-list-count">12</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/zabbix/issue/">issue</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/zentaopms/">zentaopms</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/zentaopms/deployment/">deployment</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMS/">CMS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/acl/">acl</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/amoeba/">amoeba</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/">bash</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/binlog/">binlog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cache/">cache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster/">cluster</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/command/">command</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commands/">commands</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debug/">debug</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deployment/">deployment</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/domain/">domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphite/">graphite</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iis/">iis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ingress/">ingress</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/">iptables</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iscsi/">iscsi</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/issue/">issue</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/">k8s</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keepalived/">keepalived</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kernal/">kernal</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kickstart/">kickstart</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">27</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lvm/">lvm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lvs/">lvs</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/magent/">magent</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/memcache/">memcache</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/memcached/">memcached</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mime-type/">mime-type</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongo/">mongo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/monitor/">monitor</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mssql/">mssql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysqlcheck/">mysqlcheck</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ntp/">ntp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phpmyadmin/">phpmyadmin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/proxy/">proxy</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pxe/">pxe</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rbash/">rbash</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/repcache/">repcache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rhcs/">rhcs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scripts/">scripts</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket/">socket</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssh/">ssh</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/statsd/">statsd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/statusCode/">statusCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/store/">store</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcp/">tcp</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/">tool</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/twemproxy/">twemproxy</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/udev/">udev</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uwsgi/">uwsgi</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vagrant/">vagrant</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vcenter/">vcenter</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webserver/">webserver</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/">websocket</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/window/">window</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/">windows</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yum/">yum</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zabbix/">zabbix</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zentaopms/">zentaopms</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cluster/" style="font-size: 13.88px;">cluster</a> <a href="/tags/command/" style="font-size: 13.63px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/database/" style="font-size: 13.63px;">database</a> <a href="/tags/debug/" style="font-size: 13.63px;">debug</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/django/" style="font-size: 13px;">django</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.75px;">http</a> <a href="/tags/iis/" style="font-size: 13px;">iis</a> <a href="/tags/ingress/" style="font-size: 13px;">ingress</a> <a href="/tags/iptables/" style="font-size: 13px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.13px;">issue</a> <a href="/tags/k8s/" style="font-size: 13px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.13px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.25px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/memcache/" style="font-size: 13.13px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.25px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.13px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.88px;">mysql</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/nginx/" style="font-size: 13.38px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/php/" style="font-size: 13.38px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/postgresql/" style="font-size: 13px;">postgresql</a> <a href="/tags/proxy/" style="font-size: 13px;">proxy</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.75px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.25px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.13px;">tcp</a> <a href="/tags/tomcat/" style="font-size: 13.5px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.13px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.13px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.13px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.13px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.13px;">vcenter</a> <a href="/tags/webserver/" style="font-size: 13.5px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/window/" style="font-size: 13px;">window</a> <a href="/tags/windows/" style="font-size: 13.25px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.75px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archive/2019/09/">September 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2019/05/">May 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2018/07/">July 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2018/01/">January 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2017/09/">September 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2017/07/">July 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2017/03/">March 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2017/02/">February 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2017/01/">January 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/12/">December 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/08/">August 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/07/">July 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/06/">June 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/05/">May 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/04/">April 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/03/">March 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/02/">February 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2016/01/">January 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2015/11/">November 2015</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2015/10/">October 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2015/09/">September 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archive/2015/08/">August 2015</a><span class="archive-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/16/2019-09-16-k8s-ingress-nginx/" class="title">k8s ingress-nginx动态balance实现解析</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-15T23:09:52.000Z" itemprop="datePublished">2019-09-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/postgresql/">postgresql</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/07/08/2019-07-08-postgresql-replica-status/" class="title">PostgreSQL查看复制状态</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-08T03:07:36.000Z" itemprop="datePublished">2019-07-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/http/">http</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/13/2019-05-13-http-cache/" class="title">http cache</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-13T03:05:02.000Z" itemprop="datePublished">2019-05-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/mysql/">mysql</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/06/2019-05-06-mysqldump-error/" class="title">Mysqldump error</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-06T03:05:56.000Z" itemprop="datePublished">2019-05-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/redis/">redis</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/06/2019-05-06-redis-dump/" class="title">redis-dump使用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-06T03:05:33.000Z" itemprop="datePublished">2019-05-06</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-2016-01-30-mysql-binlog-recovery-data" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mysql binlog恢复数据
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2016/01/30/2016-01-30-mysql-binlog-recovery-data/" class="article-date">
+	  <time datetime="2016-01-30T03:01:53.000Z" itemprop="datePublished">2016-01-30</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/mysql/">mysql</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/binlog/">binlog</a>, <a class="article-tag-link" href="/tags/mysql/">mysql</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/01/30/2016-01-30-mysql-binlog-recovery-data/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mysql]# cat /etc/my.cnf</span><br><span class="line">[mysqld]</span><br><span class="line">datadir=/var/lib/mysql</span><br><span class="line">log-bin=/var/log/mysql/binlog   开启二进制日志</span><br><span class="line">socket=/var/lib/mysql/mysql.sock</span><br><span class="line">user=mysql</span><br><span class="line">log-slow-queries=/var/log/mysql/slowlog</span><br><span class="line">symbolic-links=0</span><br><span class="line">[mysqld_safe]</span><br><span class="line">log-error=/var/log/mysqld.log</span><br><span class="line">pid-file=/var/run/mysqld/mysqld.pid</span><br><span class="line"></span><br><span class="line">[root@localhost mysql]# cd /var/log/mysql</span><br><span class="line">[root@localhost mysql]# ls</span><br><span class="line">binlog.000001  binlog.000002  binlog.000003  binlog.index             二进制生成的文件</span><br></pre></td></tr></table></figure>
+
+<p>查看数据库的日志相关设置：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SHOW  GLOBAL VARIABLES LIKE '%log%';</span><br><span class="line">+<span class="comment">-----------------------------------------+----------------------------+</span></span><br><span class="line">| Variable_name                           | Value                      |</span><br><span class="line">+<span class="comment">-----------------------------------------+----------------------------+</span></span><br><span class="line">| back_log                                | 50                         |</span><br><span class="line">| binlog_cache_size                       | 32768                      |</span><br><span class="line">| binlog_direct_non_transactional_updates | OFF                        |</span><br><span class="line">| binlog_format                           | STATEMENT                  |</span><br><span class="line">| expire_logs_days                        | 0                          |</span><br><span class="line">| general_log                             | OFF                        |</span><br><span class="line">| general_log_file                        | /var/run/mysqld/mysqld.log |</span><br><span class="line">| innodb_flush_log_at_trx_commit          | 1                          |</span><br><span class="line">| innodb_locks_unsafe_for_binlog          | OFF                        |</span><br><span class="line">| innodb_log_buffer_size                  | 1048576                    |</span><br><span class="line">| innodb_log_file_size                    | 5242880                    |</span><br><span class="line">| innodb_log_files_in_group               | 2                          |</span><br><span class="line">| innodb_log_group_home_dir               | ./                         |</span><br><span class="line">| innodb_mirrored_log_groups              | 1                          |</span><br><span class="line">| log                                     | OFF                        |</span><br><span class="line">| log_bin                                 | ON                         |    查看二进制日志是否开启</span><br><span class="line">| log_bin_trust_function_creators         | OFF                        |</span><br><span class="line">| log_bin_trust_routine_creators          | OFF                        |</span><br><span class="line">| log_error                               | /var/log/mysqld.log        |   错误日志</span><br><span class="line">| log_output                              | FILE                       |</span><br><span class="line">| log_queries_not_using_indexes           | OFF                        |</span><br><span class="line">| log_slave_updates                       | OFF                        |</span><br><span class="line">| log_slow_queries                        | ON                         |</span><br><span class="line">| log_warnings                            | 1                          |</span><br><span class="line">| max_binlog_cache_size                   | 18446744073709547520       |</span><br><span class="line">| max_binlog_size                         | 1073741824                 |</span><br><span class="line">| max_relay_log_size                      | 0                          |</span><br><span class="line">| relay_log                               |                            |   中继日志</span><br><span class="line">| relay_log_index                         |                            |</span><br><span class="line">| relay_log_info_file                     | relay-log.info             |</span><br><span class="line">| relay_log_purge                         | ON                         |</span><br><span class="line">| relay_log_space_limit                   | 0                          |</span><br><span class="line">| slow_query_log                          | ON                         |   慢查询日志</span><br><span class="line">| slow_query_log_file                     | /var/log/mysql/slowlog     |</span><br><span class="line">| sql_log_bin                             | ON                         |</span><br><span class="line">| sql_log_off                             | OFF                        |</span><br><span class="line">| sql_log_update                          | ON                         |</span><br><span class="line">| sync_binlog                             | 0                          |</span><br><span class="line">+<span class="comment">-----------------------------------------+----------------------------+</span></span><br><span class="line">38 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<p>查看二进制日志文件：二进制文件不是文本文档无法使用cat等于都文本的命令查看，需使用mysqlbinlog命令查看。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mysql]<span class="comment"># mysqlbinlog binlog.000003</span></span><br><span class="line"><span class="comment">/*!40019 SET @@session.max_insert_delayed_threads=0*/</span>;</span><br><span class="line"><span class="comment">/*!50003 SET @OLD_COMPLETION_TYPE=@@COMPLETION_TYPE,COMPLETION_TYPE=0*/</span>;</span><br><span class="line">DELIMITER <span class="comment">/*!*/</span>;</span><br><span class="line"><span class="comment"># at 4</span></span><br><span class="line"><span class="comment">#160110 16:41:49 server id 1  end_log_pos 106     Start: binlog v 4, server v 5.1.73-log created 160110 16:41:49 at startup</span></span><br><span class="line"><span class="comment"># Warning: this binlog is either in use or was not closed properly.</span></span><br><span class="line"><span class="keyword">ROLLBACK</span><span class="comment">/*!*/</span>;</span><br><span class="line">BINLOG '</span><br><span class="line">TRmSVg8BAAAAZgAAAGoAAAABAAQANS4xLjczLWxvZwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span><br><span class="line">AAAAAAAAAAAAAAAAAABNGZJWEzgNAAgAEgAEBAQEEgAAUwAEGggAAAAICAgC</span><br><span class="line">'<span class="comment">/*!*/</span>;</span><br><span class="line"><span class="comment"># at 106                 position号标记</span></span><br><span class="line"><span class="comment">#160110 17:26:15 server id 1  end_log_pos 191     Query    thread_id=3    exec_time=0    error_code=0    时间标记160110表示2016-01-10</span></span><br><span class="line"><span class="keyword">SET</span> <span class="built_in">TIMESTAMP</span>=<span class="number">1452417975</span><span class="comment">/*!*/</span>;</span><br><span class="line"><span class="keyword">SET</span> @@session.pseudo_thread_id=<span class="number">3</span><span class="comment">/*!*/</span>;</span><br><span class="line"><span class="keyword">SET</span> @@session.foreign_key_checks=<span class="number">1</span>, @@session.sql_auto_is_null=<span class="number">1</span>, @@session.unique_checks=<span class="number">1</span>, @@session.autocommit=<span class="number">1</span><span class="comment">/*!*/</span>;</span><br><span class="line"><span class="keyword">SET</span> @@session.sql_mode=<span class="number">0</span><span class="comment">/*!*/</span>;</span><br><span class="line"><span class="keyword">SET</span> @@session.auto_increment_increment=<span class="number">1</span>, @@session.auto_increment_offset=<span class="number">1</span><span class="comment">/*!*/</span>;</span><br><span class="line"><span class="comment">/*!\C latin1 */</span><span class="comment">/*!*/</span>;</span><br><span class="line"><span class="keyword">SET</span> @@session.character_set_client=<span class="number">8</span>,@@session.collation_connection=<span class="number">8</span>,@@session.collation_server=<span class="number">8</span><span class="comment">/*!*/</span>;</span><br><span class="line"><span class="keyword">SET</span> @@session.lc_time_names=<span class="number">0</span><span class="comment">/*!*/</span>;</span><br><span class="line"><span class="keyword">SET</span> @@session.collation_database=<span class="keyword">DEFAULT</span><span class="comment">/*!*/</span>;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> xiemx     对数据库的操作记录</span><br><span class="line"><span class="comment">/*!*/</span>;</span><br><span class="line">DELIMITER ;</span><br><span class="line"><span class="comment"># End of log file</span></span><br><span class="line"><span class="keyword">ROLLBACK</span> <span class="comment">/* added by mysqlbinlog */</span>;</span><br><span class="line"><span class="comment">/*!50003 SET COMPLETION_TYPE=@OLD_COMPLETION_TYPE*/</span>;</span><br></pre></td></tr></table></figure>
+
+<p>二进制恢复命令：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root @server1 mysql ] #mysqlbinlog --start-date=<span class="string">"2015-06-18 9:55:00"</span> --stop-date=<span class="string">"2015-06-18 10:05:00"</span> /var/log/mysql/binlog<span class="number">.000006</span> | mysql -uroot -p</span><br><span class="line"></span><br><span class="line">从二进制日志binlog<span class="number">.000006</span>的<span class="number">2015</span><span class="number">-06</span><span class="number">-18</span> <span class="number">9</span>:<span class="number">55</span>:<span class="number">00</span>这个时间到<span class="number">2015</span><span class="number">-06</span><span class="number">-18</span> <span class="number">10</span>:<span class="number">05</span>:<span class="number">00</span>之间的操作</span><br><span class="line"></span><br><span class="line">[root @server1 mysql ] #mysqlbinlog --stop-position=<span class="string">"368312"</span> /var/log/mysql/binlog<span class="number">.000006</span> | mysql -u root -p  从二进制日志binlog<span class="number">.000006</span>的开头恢复到<span class="number">368312</span>这个position标记结束</span><br><span class="line"></span><br><span class="line">[root @server1 mysql ] #mysqlbinlog --start-position=<span class="string">"368315"</span> /var/log/mysql/bin<span class="number">.000006</span> | mysql -u root -p     从二进制日志binlog<span class="number">.000006</span>的<span class="number">368315</span>这个position标记恢复到日志结束</span><br></pre></td></tr></table></figure>
+
+<p>在使用二进制恢复数据库时可以使用position标记和时间标记，假设我们在数据库操作中误执行了错误的操作我们可以用position和时间标记来跳 过错误的操作不执行，恢复出数据库。二进制日志恢复数据库是基于某个完整备份的基础上。因此在备份数据库时我们可以使用flush log命令来刷新二进制文件，记录下文件名。这样下次数据库出现问题我们就可以用手上的二进制文件和备份来恢复数据。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.xiemx.com/2016/01/30/2016-01-30-mysql-binlog-recovery-data/" title="mysql binlog恢复数据" target="_blank" rel="external">https://blog.xiemx.com/2016/01/30/2016-01-30-mysql-binlog-recovery-data/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span class="text-dark">Mingxu.xie</span><small class="ml-1x">DevOps</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2016/01/31/2016-01-31-transaction-isolation-level/" title="四种事务隔离级别"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2016/01/30/2016-01-30-multi-tomcat-server/" title="Tomcat多实例运行"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2019 Mingxu.xie
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+</body>
+</html>
