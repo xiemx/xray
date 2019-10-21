@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>Mysql数据库代理amoeba | 求索</title>
+  <meta name="description" content="基本环境： 12345A（172.25.16.10）：客户端    B（172.25.16.11）：主数据库       C（172.25.16.12）：从数据库     D（172.25.16.13）：从数据库J（172.25.16.19）：代理数据库  基于amoeba的读写分离  在server j 安装JDK  新建目录/usr/local/amoeba 1mkdir /usr/local">
+<meta name="keywords" content="mysql,amoeba,proxy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql数据库代理amoeba">
+<meta property="og:url" content="https://blog.xiemx.com/2016/02/18/mysql-proxy-amoeba/index.html">
+<meta property="og:site_name" content="求索">
+<meta property="og:description" content="基本环境： 12345A（172.25.16.10）：客户端    B（172.25.16.11）：主数据库       C（172.25.16.12）：从数据库     D（172.25.16.13）：从数据库J（172.25.16.19）：代理数据库  基于amoeba的读写分离  在server j 安装JDK  新建目录/usr/local/amoeba 1mkdir /usr/local">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2019-10-21T06:57:42.687Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mysql数据库代理amoeba">
+<meta name="twitter:description" content="基本环境： 12345A（172.25.16.10）：客户端    B（172.25.16.11）：主数据库       C（172.25.16.12）：从数据库     D（172.25.16.13）：从数据库J（172.25.16.19）：代理数据库  基于amoeba的读写分离  在server j 安装JDK  新建目录/usr/local/amoeba 1mkdir /usr/local">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.xiemx.com/2016/02/18/mysql-proxy-amoeba/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+     <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiemx" target="_blank">
+          <img class="img-circle img-rotate"
+            src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200"
+            height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.xie</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>
+          Shanghai, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar"
+        aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement"
+      role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tips">
+          <a href="/tips">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Tips</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <font color="#C91406">尔</font><font color="#B60119">不</font><font color="#A3002C">必</font><font color="#90003F">求</font><font color="#7D0052">记</font><font color="#6A0065">，</font><font color="#570078">却</font><font color="#44008B">宜</font><font color="#31009E">求</font><font color="#1E00B1">个</font><font color="#0B00C4">明</font><font color="#0000D7">白</font><font color="#0000EA">！</font>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.27px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.64px;">cluster</a> <a href="/tags/command/" style="font-size: 13.64px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.45px;">database</a> <a href="/tags/debug/" style="font-size: 13.91px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/django/" style="font-size: 13.09px;">django</a> <a href="/tags/dns/" style="font-size: 13.09px;">dns</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.55px;">http</a> <a href="/tags/iis/" style="font-size: 13.36px;">iis</a> <a href="/tags/ingress/" style="font-size: 13px;">ingress</a> <a href="/tags/iptables/" style="font-size: 13px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.09px;">issue</a> <a href="/tags/k8s/" style="font-size: 13px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.09px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.18px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.09px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.18px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.09px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.73px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/nginx/" style="font-size: 13.36px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/php/" style="font-size: 13.36px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/postgresql/" style="font-size: 13px;">postgresql</a> <a href="/tags/proxy/" style="font-size: 13px;">proxy</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.45px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.55px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.18px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.09px;">tcp</a> <a href="/tags/tomcat/" style="font-size: 13.36px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.09px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.09px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.09px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.09px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.09px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/webserver/" style="font-size: 13.82px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/window/" style="font-size: 13px;">window</a> <a href="/tags/windows/" style="font-size: 13.64px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.64px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/16/k8s-ingress-nginx/" class="title">k8s ingress-nginx动态balance实现解析</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-15T23:09:52.000Z" itemprop="datePublished">2019-09-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/postgresql/">postgresql</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/07/08/postgresql-replica-status/" class="title">PostgreSQL查看复制状态</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-08T03:07:36.000Z" itemprop="datePublished">2019-07-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/http/">http</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/13/http-cache/" class="title">http cache</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-13T03:05:02.000Z" itemprop="datePublished">2019-05-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/mysql/">mysql</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/06/mysqldump-error/" class="title">Mysqldump error</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-06T03:05:56.000Z" itemprop="datePublished">2019-05-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/redis/">redis</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/06/redis-dump/" class="title">redis-dump使用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-06T03:05:33.000Z" itemprop="datePublished">2019-05-06</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-mysql-proxy-amoeba" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Mysql数据库代理amoeba
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2016/02/18/mysql-proxy-amoeba/" class="article-date">
+	  <time datetime="2016-02-17T21:02:36.000Z" itemprop="datePublished">2016-02-18</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/mysql/">mysql</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/amoeba/">amoeba</a>, <a class="article-tag-link" href="/tags/mysql/">mysql</a>, <a class="article-tag-link" href="/tags/proxy/">proxy</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/02/18/mysql-proxy-amoeba/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>基本环境：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A（<span class="number">172.25</span><span class="number">.16</span><span class="number">.10</span>）：客户端    </span><br><span class="line">B（<span class="number">172.25</span><span class="number">.16</span><span class="number">.11</span>）：主数据库       </span><br><span class="line">C（<span class="number">172.25</span><span class="number">.16</span><span class="number">.12</span>）：从数据库     </span><br><span class="line">D（<span class="number">172.25</span><span class="number">.16</span><span class="number">.13</span>）：从数据库</span><br><span class="line">J（<span class="number">172.25</span><span class="number">.16</span><span class="number">.19</span>）：代理数据库</span><br></pre></td></tr></table></figure>
+
+<p>基于amoeba的读写分离</p>
+<ol>
+<li><p>在server j 安装JDK</p>
+</li>
+<li><p>新建目录/usr/local/amoeba</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /usr/local/amoeba</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>把压缩包解压到该目录/usrl/local/amoeba</p>
+</li>
+<li><p>在conf目录下有amoeba的配置文件<br>需要修改的两个：<code>amoeba.xml</code> 和 <code>dbServers.xml</code></p>
+<h3 id="amoeba-xml-3个地方要改"><a href="#amoeba-xml-3个地方要改" class="headerlink" title="amoeba.xml(3个地方要改):"></a>amoeba.xml(3个地方要改):</h3><h4 id="监听的端口号："><a href="#监听的端口号：" class="headerlink" title="监听的端口号："></a>监听的端口号：</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;proxy&gt;</span><br><span class="line">&lt;!--<span class="built_in"> service </span>class must implements com.meidusa.amoeba.service.Service --&gt;</span><br><span class="line">  &lt;service <span class="attribute">name</span>=<span class="string">"Amoeba for Mysql"</span> <span class="attribute">class</span>=<span class="string">"com.meidusa.amoeba.net.ServerableConnectionManager"</span>&gt;</span><br><span class="line">&lt;!--<span class="built_in"> port </span>--&gt;</span><br><span class="line">&lt;property <span class="attribute">name</span>=<span class="string">"port"</span>&gt;3306&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h4 id="客户端访问时用的用户名"><a href="#客户端访问时用的用户名" class="headerlink" title="客户端访问时用的用户名"></a>客户端访问时用的用户名</h4><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"authenticator"</span>&gt;</span><br><span class="line"></span><br><span class="line">  &lt;bean <span class="built_in">class</span>=<span class="string">"com.meidusa.amoeba.mysql.server.MysqlClientAuthenticator"</span>&gt;</span><br><span class="line">  &lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"user"</span>&gt;amoeba&lt;/<span class="keyword">property</span>&gt;</span><br><span class="line">  &lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"password"</span>&gt;amoeba&lt;/<span class="keyword">property</span>&gt;</span><br><span class="line">  &lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"filter"</span>&gt;</span><br><span class="line">    &lt;bean <span class="built_in">class</span>=<span class="string">"com.meidusa.amoeba.server.IPAccessController"</span>&gt;</span><br><span class="line">      &lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"ipFile"</span>&gt;$&#123;amoeba.home&#125;/conf/access_list.conf&lt;/<span class="keyword">property</span>&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">  &lt;/<span class="keyword">property</span>&gt;</span><br><span class="line">  &lt;/bean&gt;</span><br><span class="line">&lt;/<span class="keyword">property</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="read-write-pool"><a href="#read-write-pool" class="headerlink" title="read/write pool"></a>read/write pool</h4><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"sqlFunctionFile"</span>&gt;$&#123;amoeba.home&#125;/conf/functionMap.xml&lt;/<span class="keyword">property</span>&gt;</span><br><span class="line">&lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"LRUMapSize"</span>&gt;<span class="number">1500</span>&lt;/<span class="keyword">property</span>&gt;</span><br><span class="line">     &lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"defaultPool"</span>&gt;serverb<span class="comment">#默认访问的数据库#&lt;/property&gt;</span></span><br><span class="line">            &lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"writePool"</span>&gt;serverb<span class="comment">#指定可写池#&lt;/property&gt;</span></span><br><span class="line">            &lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"readPool"</span>&gt;readgroup1<span class="comment">#指定只读池#&lt;/property&gt;</span></span><br><span class="line">&lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"needParse"</span>&gt;<span class="literal">true</span>&lt;/<span class="keyword">property</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="dbServers-xml文件："><a href="#dbServers-xml文件：" class="headerlink" title="dbServers.xml文件："></a>dbServers.xml文件：</h3><h4 id="修改端口号，用户名，密码。"><a href="#修改端口号，用户名，密码。" class="headerlink" title="修改端口号，用户名，密码。"></a>修改端口号，用户名，密码。</h4><figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">dbServer</span> <span class="attr">name</span>=<span class="string">"abstractServer"</span> <span class="attr">abstractive</span>=<span class="string">"true"</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">factoryConfig</span> <span class="attr">class</span>=<span class="string">"com.meidusa.amoeba.mysql.net.MysqlServerConnectionFactory"</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"manager"</span>&gt;</span>$</span><span class="template-variable">&#123;defaultManager&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"sendBufferSize"</span>&gt;</span>64<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"receiveBufferSize"</span>&gt;</span>128<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="comment">&lt;!-- mysql port --&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"port"</span>&gt;</span>3306<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="comment">&lt;!-- mysql schema --&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"schema"</span>&gt;</span>test<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="comment">&lt;!-- mysql user --&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"user"</span>&gt;</span>dbproxy<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="comment">&lt;!--  mysql password  --&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span>&gt;</span>xiemx<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">factoryConfig</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="指定可以代理的数据库"><a href="#指定可以代理的数据库" class="headerlink" title="指定可以代理的数据库"></a>指定可以代理的数据库</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dbServer</span> <span class="attr">name</span>=<span class="string">"serverb"</span>  <span class="attr">parent</span>=<span class="string">"abstractServer"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">factoryConfig</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- mysql ip --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"ipAddress"</span>&gt;</span>172.25.16.11<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">factoryConfig</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dbServer</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dbServer</span> <span class="attr">name</span>=<span class="string">"serverc"</span>  <span class="attr">parent</span>=<span class="string">"abstractServer"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">factoryConfig</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- mysql ip --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"ipAddress"</span>&gt;</span>172.25.16.12<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">factoryConfig</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dbServer</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dbServer</span> <span class="attr">name</span>=<span class="string">"serverd"</span>  <span class="attr">parent</span>=<span class="string">"abstractServer"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">factoryConfig</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- mysql ip --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"ipAddress"</span>&gt;</span>172.25.16.13<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">factoryConfig</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dbServer</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="指定只读组"><a href="#指定只读组" class="headerlink" title="指定只读组"></a>指定只读组</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dbServer</span> <span class="attr">name</span>=<span class="string">"readgroup1"</span> <span class="attr">virtual</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">poolConfig</span> <span class="attr">class</span>=<span class="string">"com.meidusa.amoeba.server.MultipleServerPool"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Load balancing strategy: 1=ROUNDROBIN , 2=WEIGHTBASED , 3=HA--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"loadbalance"</span>&gt;</span>1<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Separated by commas,such as: server1,server2,server1 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"poolNames"</span>&gt;</span>serverc,serverd<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">poolConfig</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dbServer</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="5">
+<li><p>启动脚本在/bin下<br>启动时会报错，需要修改文件即可：<code>DEFAULT_OPTS=&quot;-server -Xms256m -Xmx256m -Xss228k&quot;</code>(最后一个参数改为228即可)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./amoeba start</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在BCD上授权允许J访问数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">all</span> <span class="keyword">on</span> db1.* <span class="keyword">to</span> dbproxy@<span class="string">'172.25.16.19'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'xiemx'</span>;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.xiemx.com/2016/02/18/mysql-proxy-amoeba/" title="Mysql数据库代理amoeba" target="_blank" rel="external">https://blog.xiemx.com/2016/02/18/mysql-proxy-amoeba/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span class="text-dark">Mingxu.xie</span><small class="ml-1x">DevOps</small></a></h3>
+        <div>一个普通devops。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2016/02/18/build-mysql-proxy/" title="Mysql-proxy代理程序"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2016/02/18/udev/" title="UDEV规则"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2019 Mingxu.xie
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+  var gitment = new Gitment({
+    // id默认为当前页面url，如果url后带参数或锚点，gitment要重新初始化
+    // https://github.com/imsun/gitment/issues/55
+    // 解决方案：id:window.location.pathname,或者将id设置为当前页面标题
+    id: 'Mysql数据库代理amoeba',
+    owner: 'xiemx', // 可以是你的GitHub用户名，也可以是github id
+    repo: 'xray',
+    oauth: {
+      client_id: 'ccf366da75afeaf5215a',
+      client_secret: 'ab4c80318537cc3fae0a62dcbd11fd206b57ac6e',
+    }
+  })
+  gitment.render('comments')
+</script>
+
+
+
+
+
+
+    <script defer type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-89045515-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
