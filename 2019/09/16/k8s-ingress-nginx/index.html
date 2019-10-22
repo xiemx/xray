@@ -22,7 +22,7 @@
 <meta name="keywords" content="k8s,ingress">
 <meta property="og:type" content="article">
 <meta property="og:title" content="k8s ingress-nginx动态balance实现解析">
-<meta property="og:url" content="https://blog.xiemx.com/2019/09/16/k8s-ingress-nginx/index.html">
+<meta property="og:url" content="https://www.xiemx.com/2019/09/16/k8s-ingress-nginx/index.html">
 <meta property="og:site_name" content="求索">
 <meta property="og:description" content="只节选了比较关键的代码，删除了比较多的干扰项。纯属个人理解！！！ 1. 初始化balancer.init_worker()，使用balancer.balance()动态获取123456789101112131415161718192021http &amp;#123;        lua_package_path &quot;/etc/nginx/lua/?.lua;/etc/nginx/lua/vendor/?">
 <meta property="og:locale" content="zh">
@@ -31,7 +31,7 @@
 <meta name="twitter:title" content="k8s ingress-nginx动态balance实现解析">
 <meta name="twitter:description" content="只节选了比较关键的代码，删除了比较多的干扰项。纯属个人理解！！！ 1. 初始化balancer.init_worker()，使用balancer.balance()动态获取123456789101112131415161718192021http &amp;#123;        lua_package_path &quot;/etc/nginx/lua/?.lua;/etc/nginx/lua/vendor/?">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://blog.xiemx.com/2019/09/16/k8s-ingress-nginx/index.html">
+  <link rel="canonical" href="https://www.xiemx.com/2019/09/16/k8s-ingress-nginx/index.html">
   
   <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
   
@@ -59,7 +59,7 @@
             src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200"
             height="200">
         </a>
-        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.xie</h2>
+        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.Xie</h2>
         <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
         <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>
           Shanghai, China</small>
@@ -210,7 +210,7 @@
   <div class="widget">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget-body tagcloud">
-      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.27px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.64px;">cluster</a> <a href="/tags/command/" style="font-size: 13.64px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.45px;">database</a> <a href="/tags/debug/" style="font-size: 13.91px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/django/" style="font-size: 13.09px;">django</a> <a href="/tags/dns/" style="font-size: 13.09px;">dns</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.55px;">http</a> <a href="/tags/iis/" style="font-size: 13.36px;">iis</a> <a href="/tags/ingress/" style="font-size: 13px;">ingress</a> <a href="/tags/iptables/" style="font-size: 13px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.09px;">issue</a> <a href="/tags/k8s/" style="font-size: 13px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.09px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.18px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.09px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.18px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.09px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.73px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/nginx/" style="font-size: 13.36px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/php/" style="font-size: 13.36px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/postgresql/" style="font-size: 13px;">postgresql</a> <a href="/tags/proxy/" style="font-size: 13px;">proxy</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.45px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.55px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.18px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.09px;">tcp</a> <a href="/tags/tomcat/" style="font-size: 13.36px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.09px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.09px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.09px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.09px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.09px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/webserver/" style="font-size: 13.82px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/window/" style="font-size: 13px;">window</a> <a href="/tags/windows/" style="font-size: 13.64px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.64px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.27px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.64px;">cluster</a> <a href="/tags/command/" style="font-size: 13.64px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.45px;">database</a> <a href="/tags/debug/" style="font-size: 13.91px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/django/" style="font-size: 13.09px;">django</a> <a href="/tags/dns/" style="font-size: 13.09px;">dns</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.55px;">http</a> <a href="/tags/iis/" style="font-size: 13.36px;">iis</a> <a href="/tags/ingress/" style="font-size: 13px;">ingress</a> <a href="/tags/iptables/" style="font-size: 13px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.09px;">issue</a> <a href="/tags/k8s/" style="font-size: 13px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.09px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.18px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.09px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.18px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.09px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.73px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.09px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/nginx/" style="font-size: 13.36px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/php/" style="font-size: 13.36px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/postgresql/" style="font-size: 13px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.45px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.55px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.18px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.09px;">tcp</a> <a href="/tags/tomcat/" style="font-size: 13.36px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.09px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.09px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.09px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.09px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.09px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/webserver/" style="font-size: 13.82px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.73px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.64px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
     </div>
   </div>
 
@@ -309,11 +309,12 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-k8s-ingress-nginx" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-k8s-ingress-nginx" class="article article-type-post" itemscope
+    itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
-        
+      
   
     <h1 class="article-title" itemprop="name">
       k8s ingress-nginx动态balance实现解析
@@ -342,14 +343,22 @@
 
 
         
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/09/16/k8s-ingress-nginx/#comments" class="article-comment-link">Comments</a></span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/09/16/k8s-ingress-nginx/#comments"
+            class="article-comment-link">Comments</a></span>
         
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <p>只节选了比较关键的代码，删除了比较多的干扰项。纯属个人理解！！！</p>
+      <p>只节选了比较关键的代码，删除了比较多的干扰项。纯属个人理解！！！</p>
 <h4 id="1-初始化balancer-init-worker-，使用balancer-balance-动态获取"><a href="#1-初始化balancer-init-worker-，使用balancer-balance-动态获取" class="headerlink" title="1. 初始化balancer.init_worker()，使用balancer.balance()动态获取"></a>1. 初始化balancer.init_worker()，使用balancer.balance()动态获取</h4><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">        lua_package_path <span class="string">"/etc/nginx/lua/?.lua;/etc/nginx/lua/vendor/?.lua;/usr/local/lib/lua/?.lua;;"</span>;</span><br><span class="line">        init_by_lua_block &#123;</span><br><span class="line">                ok, res = <span class="built_in">pcall</span>(<span class="built_in">require</span>, <span class="string">"configuration"</span>)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        init_worker_by_lua_block &#123;</span><br><span class="line">                balancer.init_worker()  #####创建定时任务 ngx.timer.every(BACKENDS_SYNC_INTERVAL, sync_backends)</span><br><span class="line">        &#125;</span><br><span class="line">     </span><br><span class="line">###upstream configure</span><br><span class="line">upstream upstream_balancer &#123;</span><br><span class="line">		server <span class="number">0.0</span><span class="number">.0</span><span class="number">.1</span>; # placeholder</span><br><span class="line"></span><br><span class="line">		balancer_by_lua_block &#123;</span><br><span class="line">			balancer.balance()</span><br><span class="line">		&#125;</span><br><span class="line">		keepalive <span class="number">32</span>;</span><br><span class="line">		keepalive_timeout  <span class="number">60</span>s;</span><br><span class="line">		keepalive_requests <span class="number">100</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="2-获取backend信息，balancer-init-worker"><a href="#2-获取backend信息，balancer-init-worker" class="headerlink" title="2. 获取backend信息，balancer.init_worker()"></a>2. 获取backend信息，balancer.init_worker()</h4><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">####https://sourcegraph.com/github.com/kubernetes/ingress-nginx@dd0fe4b458cc5520f25eb8bba25bbe6f0c72ee98/-/blob/rootfs/etc/nginx/lua/balancer.lua?utm_source=share#L223</span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> configuration = <span class="built_in">require</span>(<span class="string">"configuration"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_M.init_worker</span><span class="params">()</span></span></span><br><span class="line">  sync_backends() <span class="comment">-- when worker starts, sync backends without delay</span></span><br><span class="line">  <span class="keyword">local</span> _, err = ngx.timer.every(BACKENDS_SYNC_INTERVAL, sync_backends)</span><br><span class="line">  <span class="keyword">if</span> err <span class="keyword">then</span></span><br><span class="line">    ngx.<span class="built_in">log</span>(ngx.ERR, <span class="built_in">string</span>.<span class="built_in">format</span>(<span class="string">"error when setting up timer.every for sync_backends: %s"</span>, <span class="built_in">tostring</span>(err)))</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">sync_backends</span><span class="params">()</span></span></span><br><span class="line">  <span class="keyword">local</span> backends_data = configuration.get_backends_data()</span><br><span class="line"></span><br><span class="line">  <span class="keyword">local</span> new_backends, err = cjson.decode(backends_data)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">local</span> balancers_to_keep = &#123;&#125;</span><br><span class="line">  <span class="keyword">for</span> _, new_backend <span class="keyword">in</span> <span class="built_in">ipairs</span>(new_backends) <span class="keyword">do</span></span><br><span class="line">    sync_backend(new_backend)</span><br><span class="line">    balancers_to_keep[new_backend.name] = balancers[new_backend.name]</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
@@ -373,11 +382,11 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://blog.xiemx.com/2019/09/16/k8s-ingress-nginx/" title="k8s ingress-nginx动态balance实现解析" target="_blank" rel="external">https://blog.xiemx.com/2019/09/16/k8s-ingress-nginx/</a>
+      <a href="https://www.xiemx.com/2019/09/16/k8s-ingress-nginx/" title="k8s ingress-nginx动态balance实现解析" target="_blank" rel="external">https://www.xiemx.com/2019/09/16/k8s-ingress-nginx/</a>
     </li>
     
     <li class="post-copyright-license">
-      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+      <strong>版权声明： </strong> 本博客只是作者自己用来记录工作、学习中的笔记，如有版权问题请联系作者。另外，转载请注明出处！
     </li>
   </ul>
 </blockquote>
@@ -388,22 +397,24 @@
     <figure class="media">
       <div class="media-left">
         <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
-          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" class="img-rounded w-full" alt="">
+          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128"
+            class="img-rounded w-full" alt="">
         </a>
       </div>
       <div class="media-body">
-        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span class="text-dark">Mingxu.xie</span><small class="ml-1x">DevOps</small></a></h3>
+        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span
+              class="text-dark">Mingxu.Xie</span><small class="ml-1x">DevOps</small></a>
+        </h3>
         <div>一个普通devops。</div>
       </div>
     </figure>
   </div>
 </div>
 
-
     </div>
   </article>
   
-    
+  
   <section id="comments">
   	
            
@@ -414,7 +425,7 @@
   
 </div>
 
-  <nav class="bar bar-footer clearfix" data-stick-bottom>
+<nav class="bar bar-footer clearfix" data-stick-bottom>
   <div class="bar-inner">
   
   <ul class="pager pull-left">
@@ -436,7 +447,7 @@
   </div>
   </div>
 </nav>
-  
+
 
 
 </main>
@@ -495,6 +506,8 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 
 
    
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
 
 
 
