@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>Linux日志系统 | 求索</title>
+  <meta name="description" content="在Linux系统中，有三个主要的日志子系统：  连接日志–由多个程序执行，把纪录写入到/var/log/wtmp和/var/run/utmp，login等程序更新wtmp和utmp文件，使系统管理员能够跟踪谁在何时登录到系统。 进程统计–由系统内核执行。当一个进程终止时，为每个进程往进程统计文件（pacct或acct）中写一个纪录。进程统计的目的是为系统中的基本服务提供命令使用统计。 错误日志–由">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux日志系统">
+<meta property="og:url" content="https://www.xiemx.com/2015/11/28/linux-log-system/index.html">
+<meta property="og:site_name" content="求索">
+<meta property="og:description" content="在Linux系统中，有三个主要的日志子系统：  连接日志–由多个程序执行，把纪录写入到/var/log/wtmp和/var/run/utmp，login等程序更新wtmp和utmp文件，使系统管理员能够跟踪谁在何时登录到系统。 进程统计–由系统内核执行。当一个进程终止时，为每个进程往进程统计文件（pacct或acct）中写一个纪录。进程统计的目的是为系统中的基本服务提供命令使用统计。 错误日志–由">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2019-10-21T06:57:42.910Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux日志系统">
+<meta name="twitter:description" content="在Linux系统中，有三个主要的日志子系统：  连接日志–由多个程序执行，把纪录写入到/var/log/wtmp和/var/run/utmp，login等程序更新wtmp和utmp文件，使系统管理员能够跟踪谁在何时登录到系统。 进程统计–由系统内核执行。当一个进程终止时，为每个进程往进程统计文件（pacct或acct）中写一个纪录。进程统计的目的是为系统中的基本服务提供命令使用统计。 错误日志–由">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.xiemx.com/2015/11/28/linux-log-system/index.html">
+  
+  <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiemx" target="_blank">
+          <img class="img-circle img-rotate"
+            src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200"
+            height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.Xie</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>
+          Shanghai, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar"
+        aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement"
+      role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tips">
+          <a href="/tips">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Tips</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <font color="#C91406">尔</font><font color="#B60119">不</font><font color="#A3002C">必</font><font color="#90003F">求</font><font color="#7D0052">记</font><font color="#6A0065">，</font><font color="#570078">却</font><font color="#44008B">宜</font><font color="#31009E">求</font><font color="#1E00B1">个</font><font color="#0B00C4">明</font><font color="#0000D7">白</font><font color="#0000EA">！</font>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.27px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.64px;">cluster</a> <a href="/tags/command/" style="font-size: 13.64px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.45px;">database</a> <a href="/tags/debug/" style="font-size: 13.91px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/django/" style="font-size: 13.09px;">django</a> <a href="/tags/dns/" style="font-size: 13.09px;">dns</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.55px;">http</a> <a href="/tags/iis/" style="font-size: 13.36px;">iis</a> <a href="/tags/ingress/" style="font-size: 13px;">ingress</a> <a href="/tags/iptables/" style="font-size: 13px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.09px;">issue</a> <a href="/tags/k8s/" style="font-size: 13.09px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.09px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.18px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.09px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.18px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.09px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.73px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.09px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13px;">network</a> <a href="/tags/nginx/" style="font-size: 13.45px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/php/" style="font-size: 13.36px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/postgresql/" style="font-size: 13px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.45px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.55px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.18px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.09px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.36px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.09px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.09px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.09px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.09px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.09px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/webserver/" style="font-size: 13.82px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.73px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.64px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/nginx/">nginx</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/12/12/nginx-remote-port-is-null/" class="title">nginx remote_port为空</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-12-12T02:01:04.000Z" itemprop="datePublished">2019-12-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/12/12/k8s-tcpdump/" class="title">如何在K8S环境中抓POD的包</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-12-12T02:01:04.000Z" itemprop="datePublished">2019-12-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/16/k8s-ingress-nginx/" class="title">k8s ingress-nginx动态balance实现解析</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-15T23:09:52.000Z" itemprop="datePublished">2019-09-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/postgresql/">postgresql</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/07/08/postgresql-replica-status/" class="title">PostgreSQL查看复制状态</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-08T03:07:36.000Z" itemprop="datePublished">2019-07-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/http/">http</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/05/13/http-cache/" class="title">http cache</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-05-13T03:05:02.000Z" itemprop="datePublished">2019-05-13</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-linux-log-system" class="article article-type-post" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+      
+  
+    <h1 class="article-title" itemprop="name">
+      Linux日志系统
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2015/11/28/linux-log-system/" class="article-date">
+	  <time datetime="2015-11-28T02:11:40.000Z" itemprop="datePublished">2015-11-28</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/linux/">linux</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2015/11/28/linux-log-system/#comments"
+            class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+      <p>在Linux系统中，有三个主要的日志子系统：</p>
+<ul>
+<li>连接日志–由多个程序执行，把纪录写入到/var/log/wtmp和/var/run/utmp，login等程序更新wtmp和utmp文件，使系统管理员能够跟踪谁在何时登录到系统。</li>
+<li>进程统计–由系统内核执行。当一个进程终止时，为每个进程往进程统计文件（pacct或acct）中写一个纪录。进程统计的目的是为系统中的基本服务提供命令使用统计。</li>
+<li>错误日志–由syslogd（8）执行。各种系统守护进程、用户程序和内核通过syslog（3）向文件/var/log/messages报告值得注意的事件。另外有许多UNIX程序创建日志。像HTTP和FTP这样提供网络服务的服务器也保持详细的日志。</li>
+</ul>
+<p>大部分Linux系统都使用syslog管理日志，系统日志默认会写在/var/log目录下，syslog会依据/etc/syslog.conf文件中的配置将不同级别、不同类别的日志分门别类的纪录到不同的日志文件中去。/etc/syslog.conf中依照如下格式纪录日志配置：</p>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">日志对象.级别                  日志文件存放位置</span><br><span class="line">authpriv.info                /<span class="built_in">var</span>/<span class="built_in">log</span>/secure</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">［root@localhost ～］#cat /etc/syslog.conf</span><br><span class="line"></span><br><span class="line">//将<span class="built_in">info</span>或更高级别的消息送到/<span class="built_in">var</span>/<span class="built_in">log</span>/messages，除了mail以外。</span><br><span class="line">//其中*是通配符，代表任何设备；none表示不对任何级别的信息进行记录。</span><br><span class="line">*.<span class="built_in">info</span>;mail.none;authpriv.none /<span class="built_in">var</span>/<span class="built_in">log</span>/messages</span><br><span class="line">//将authpirv设备的任何级别的信息记录到/<span class="built_in">var</span>/<span class="built_in">log</span>/secure文件中，这主要是一些和认、权限使用相关的信息。</span><br><span class="line">authpriv.* /<span class="built_in">var</span>/<span class="built_in">log</span>/secure</span><br><span class="line">//将mail设备中的任何级别的信息记录到/<span class="built_in">var</span>/<span class="built_in">log</span>/maillog文件中，这主要是和电子邮件相关的信息。</span><br><span class="line">mail.* /<span class="built_in">var</span>/<span class="built_in">log</span>/maillog</span><br><span class="line">//将cron设备中的任何级别的信息记录到/<span class="built_in">var</span>/<span class="built_in">log</span>/cron文件中，这主要是和系统中定期执行的任务相关的信息。</span><br><span class="line">cron.* /<span class="built_in">var</span>/<span class="built_in">log</span>/cron</span><br><span class="line">//将任何设备的emerg级别的信息发送给所有正在系统上的用户。</span><br><span class="line">*.emerg *</span><br><span class="line">//将uucp和news设备的crit级别的信息记录到/<span class="built_in">var</span>/<span class="built_in">log</span>/spooler文件中。</span><br><span class="line">uucp,news.crit /<span class="built_in">var</span>/<span class="built_in">log</span>/spooler</span><br><span class="line">//将和系统启动相关的信息记录到/<span class="built_in">var</span>/<span class="built_in">log</span>/boot.log文件中。</span><br><span class="line">local7.* /<span class="built_in">var</span>/<span class="built_in">log</span>/boot.log</span><br></pre></td></tr></table></figure>
+
+<h5 id="日志对象"><a href="#日志对象" class="headerlink" title="日志对象"></a>日志对象</h5><p>kern——内核<br>User——用户程序<br>Damon——系统守护进程<br>Mail——电子邮件系统<br>Auth——与安全权限相关的命令<br>Lpr——打印机<br>News——新闻组信息<br>Uucp——Uucp程序<br>Cron——记录当前登录的每个用户信息<br>wtmp——一个用户每次登录进入和退出时间的永久记录<br>Authpriv——授权信息</p>
+<h5 id="日志的级别"><a href="#日志的级别" class="headerlink" title="日志的级别"></a>日志的级别</h5><p>emerg——最高的紧急程度状态<br>alert——紧急状态<br>Cirt——重要信息<br>warning——警告<br>err——错误<br>notice——通知<br>info——一般性消息<br>Debug——调试级信息<br>None——不记录任何日志信息常用的日志文件</p>
+<h5 id="常见的日志文件"><a href="#常见的日志文件" class="headerlink" title="常见的日志文件"></a>常见的日志文件</h5><p>cron: crontab例行事务的日志<br>dmesg: 内核启动时的检测信息,输出同 dmesg 命令<br>lastlog: 所有帐号最后一次登录的相关信息，输出同 lastlog 命令<br>maillog: 邮件来往信息<br>messages ： 系统错误信息<br>secure ： 涉及到“输入口令”的操作，都会记录于此<br>wtmp与faillog: 登录成功的用户信息(wtmp)和登录失败的用户信息(faillog)<br>httpd, samba等 ： 不同的网络服务用自己的定制的日志文件<br>utmp、wtmp和lastlog日志文件是多数重用UNIX日志子系统的关键–保持用户登录进入和退出的纪录。有关当前登录用户的信息记录在文件utmp中；登录进入和退出纪录在文件wtmp中；最后一次登录文件可以用lastlog命令察看。数据交换、关机和重起也记录在wtmp文件中。通常，每次有一个用户登录时，login程序在文件lastlog中察看用户的UID。如果找到了，则把用户上次登录、退出时间和主机名写到标准输出中，然后login程序在lastlog中纪录新的登录时间。在新的lastlog纪录写入后，utmp文件打开并插入用户的utmp纪录。该纪录一直用到用户登录退出时删除。utmp文件被各种命令文件使用，包括who、w、users和finger。 下一步，login程序打开文件wtmp附加用户的utmp纪录。当用户登录退出时，具有更新时间戳的同一utmp纪录附加到文件中。wtmp文件被程序last和ac使用。</p>
+<h3 id="日志轮替（logrotate）"><a href="#日志轮替（logrotate）" class="headerlink" title="日志轮替（logrotate）"></a>日志轮替（logrotate）</h3><p>在系统用户众多的，或系统运行有访问量非常大的程序时，日志文件的增长会非常迅速，严重的会导致系统磁盘被写满数据无法被写入系统进程报错中止等。为了应对这个问题，Linux采取了日志轮替的方式来管理日志文件。logrotate程序会依据/etc/logrotate.conf和/etc/logrotate.d/中定义的轮替规则来裁剪、删除、备份日志文件。logrotate会在/etc/cron.daily目录下生成脚本，每天自动执行。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># cat /etc/logrotate.conf</span></span><br><span class="line"></span><br><span class="line">weekly                        <span class="comment">#默认每周进行一次日志清理</span></span><br><span class="line">rotate 4                      <span class="comment">#保留的日志文件数量</span></span><br><span class="line"><span class="keyword">create</span>                         <span class="comment">#创建一个新的来存储</span></span><br><span class="line"><span class="comment">#compress                #是否需要压缩</span></span><br><span class="line"><span class="keyword">include</span> /etc/logrotate.d  <span class="comment">#读取/etc/logrotate.d目录下的文件</span></span><br><span class="line">/<span class="keyword">var</span>/<span class="keyword">log</span>/wtmp &#123;               <span class="comment">#针对单个wtmp日志操作</span></span><br><span class="line">monthly                              <span class="comment">#每个月一次</span></span><br><span class="line">minsize <span class="number">1</span>M                         <span class="comment">#超过1M整理</span></span><br><span class="line"><span class="keyword">create</span> <span class="number">0664</span> root utmp     <span class="comment">#新加文件权限和用户组</span></span><br><span class="line">rotate <span class="number">1</span>                                <span class="comment">#保留一个文件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.xiemx.com/2015/11/28/linux-log-system/" title="Linux日志系统" target="_blank" rel="external">https://www.xiemx.com/2015/11/28/linux-log-system/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客只是作者自己用来记录工作、学习中的笔记，如有版权问题请联系作者。另外，转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128"
+            class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span
+              class="text-dark">Mingxu.Xie</span><small class="ml-1x">DevOps</small></a>
+        </h3>
+        <div>一个普通devops。最近有点沉迷户外，可能逐渐驴化！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+    </div>
+  </article>
+  
+  
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+<nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2015/11/28/linux-crontab-and-at/" title="Linux计划任务"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2015/11/15/linux-boot-workflow/" title="Linux启动过程"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq"></div>
+    
+  </div>
+  </div>
+</nav>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+    
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+        
+        &copy; 2019 Mingxu.xie
+        
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ccf366da75afeaf5215a',
+    clientSecret: 'ab4c80318537cc3fae0a62dcbd11fd206b57ac6e',
+    repo: 'xray',
+    owner: 'xiemx',
+    admin: ['xiemx'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+    <script defer type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-89045515-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>

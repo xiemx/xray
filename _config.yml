@@ -1,0 +1,114 @@
+# Site
+title: 求索
+subtitle: 尔不必求记，却宜求个明白！
+author: Mingxu.xie
+language: zh
+timezone:
+
+# URL
+url: https://www.xiemx.com
+root: /
+permalink: /:year/:month/:day/:title/
+permalink_defaults:
+
+# Build settings
+anchorjs: true
+
+sidebar-avatar: profile.png
+
+# The following content is not recommended to modify
+search:
+  path: search.json
+  field: post
+
+# 文章样式(是否首行缩进)：
+post_style:
+  indent: default
+
+# Directory
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archive
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render:
+
+# Writing
+new_post_name: :title.md # File name of new posts
+default_layout: post
+titlecase: false # Transform title into titlecase
+external_link: true # Open external links in new tab
+filename_case: 0
+render_drafts: false
+post_asset_folder: true
+relative_link: false
+future: true
+highlight:
+  enable: true
+  line_number: true
+  auto_detect: true
+  tab_replace:
+
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
+
+# Date / Time format
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+
+# Pagination
+per_page: 10
+pagination_dir: page
+
+# theme: aircloud
+theme: pure
+
+# 导航菜单
+menu:
+  Home: . 
+  Archives: archives # 归档
+  Categories: categories # 分类
+  Tags: tags # 标签
+  Repository: repository # github repositories
+  # Books: books     # 书单
+  # Links: links # 友链
+  About: about # 关于
+
+# 导航菜单图标（font awesome）
+menu_icons:
+  enable: true # 是否启用菜单图标
+  home: fa-dashboard
+  archives: fa-delicious
+  categories: fa-folder
+  tags: fa-tags
+  repository: fa-code
+  books: fa-leanpub
+  links: fa-gg
+  about: fa-coffee
+
+# Share
+# weibo,qq,qzone,wechat,tencent,douban,diandian,facebook,twitter,google,linkedin
+share:
+  enable: true  # 是否启用分享
+  sites: weibo,qq,wechat,facebook,twitter  # PC端显示的分享图标
+  mobile_sites: weibo,qq,qzone  # 移动端显示的分享图标
+
+# Github
+github: 
+  username: xiemx
+
+# Site
+site:
+  logo:
+    enabled: true
+    width: 40
+    height: 40
+    url: ../images/logo.png
+  title: 求索 # 页面title
+  favicon: /favicon.png
+  board: <p>-------阿斯顿发送到发------</p> # 站点公告
+  copyright: false # 底部版权信息
