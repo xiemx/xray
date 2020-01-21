@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>linux network namespace and bridge | 求索</title>
+  <meta name="description" content="linux netns 和 bridgenetns 最近在学习k8s网络，看到权威指南中有讲到基础网络的实现，故而搬运一下重新学习network namespace的隔离技术，默认binary是放在iproute2这个套件中的 123456789vagrant@ubuntu-xenial:~$ apt-file search $(which ip)cups-ipp-utils: /usr/sbin">
+<meta name="keywords" content="linux,network,docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux network namespace and bridge">
+<meta property="og:url" content="https://www.xiemx.com/2020/01/21/linux-network-namespace/index.html">
+<meta property="og:site_name" content="求索">
+<meta property="og:description" content="linux netns 和 bridgenetns 最近在学习k8s网络，看到权威指南中有讲到基础网络的实现，故而搬运一下重新学习network namespace的隔离技术，默认binary是放在iproute2这个套件中的 123456789vagrant@ubuntu-xenial:~$ apt-file search $(which ip)cups-ipp-utils: /usr/sbin">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2020-01-21T08:56:26.914Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux network namespace and bridge">
+<meta name="twitter:description" content="linux netns 和 bridgenetns 最近在学习k8s网络，看到权威指南中有讲到基础网络的实现，故而搬运一下重新学习network namespace的隔离技术，默认binary是放在iproute2这个套件中的 123456789vagrant@ubuntu-xenial:~$ apt-file search $(which ip)cups-ipp-utils: /usr/sbin">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.xiemx.com/2020/01/21/linux-network-namespace/index.html">
+  
+  <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiemx" target="_blank">
+          <img class="img-circle img-rotate"
+            src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200"
+            height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.Xie</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>
+          Shanghai, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar"
+        aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement"
+      role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tips">
+          <a href="/tips">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Tips</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <font color="#C91406">尔</font><font color="#B60119">不</font><font color="#A3002C">必</font><font color="#90003F">求</font><font color="#7D0052">记</font><font color="#6A0065">，</font><font color="#570078">却</font><font color="#44008B">宜</font><font color="#31009E">求</font><font color="#1E00B1">个</font><font color="#0B00C4">明</font><font color="#0000D7">白</font><font color="#0000EA">！</font>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.27px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.09px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.64px;">cluster</a> <a href="/tags/command/" style="font-size: 13.64px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.45px;">database</a> <a href="/tags/debug/" style="font-size: 13.91px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/django/" style="font-size: 13.09px;">django</a> <a href="/tags/dns/" style="font-size: 13.09px;">dns</a> <a href="/tags/docker/" style="font-size: 13.09px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.55px;">http</a> <a href="/tags/iis/" style="font-size: 13.36px;">iis</a> <a href="/tags/ingress/" style="font-size: 13px;">ingress</a> <a href="/tags/iptables/" style="font-size: 13px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.09px;">issue</a> <a href="/tags/k8s/" style="font-size: 13.36px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.09px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.18px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.09px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.18px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.09px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.73px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.09px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.27px;">network</a> <a href="/tags/nginx/" style="font-size: 13.55px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/php/" style="font-size: 13.36px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.45px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.55px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.18px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.09px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.36px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.09px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.09px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.09px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.09px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.09px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/webserver/" style="font-size: 13.82px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.73px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.64px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/01/21/k8s-pod-lifecycle/" class="title">k8s pod lifecycle</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-01-21T09:08:14.000Z" itemprop="datePublished">2020-01-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/01/21/aws-vpc-cni/" class="title">aws-vpc-cni</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-01-21T09:05:04.000Z" itemprop="datePublished">2020-01-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/linux/">linux</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/01/21/linux-network-namespace/" class="title">linux network namespace and bridge</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-01-21T05:09:52.000Z" itemprop="datePublished">2020-01-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/01/21/k8s-fannel/" class="title">k8s Flannel</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-01-21T02:01:04.000Z" itemprop="datePublished">2020-01-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/01/20/k8s-pause-container/" class="title">k8s pause container</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-01-20T04:01:52.000Z" itemprop="datePublished">2020-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-linux-network-namespace" class="article article-type-post" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+      
+  
+    <h1 class="article-title" itemprop="name">
+      linux network namespace and bridge
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/01/21/linux-network-namespace/" class="article-date">
+	  <time datetime="2020-01-21T05:09:52.000Z" itemprop="datePublished">2020-01-21</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/docker/">docker</a>, <a class="article-tag-link" href="/tags/linux/">linux</a>, <a class="article-tag-link" href="/tags/network/">network</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/01/21/linux-network-namespace/#comments"
+            class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+      <h3 id="linux-netns-和-bridge"><a href="#linux-netns-和-bridge" class="headerlink" title="linux netns 和 bridge"></a>linux netns 和 bridge</h3><h4 id="netns"><a href="#netns" class="headerlink" title="netns"></a>netns</h4><hr>
+<p>最近在学习k8s网络，看到权威指南中有讲到基础网络的实现，故而搬运一下重新学习network namespace的隔离技术，默认binary是放在iproute2这个套件中的</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vagrant@ubuntu-xenial:~$ apt-file search $(which ip)</span><br><span class="line">cups-ipp-utils: /usr/sbin/ippserver</span><br><span class="line">freeipa-client: /usr/sbin/ipa-certupdate</span><br><span class="line">freeipa-client: /usr/sbin/ipa-client-automount</span><br><span class="line">freeipa-client: /usr/sbin/ipa-client-install</span><br><span class="line">freeipa-client: /usr/sbin/ipa-getkeytab</span><br><span class="line">freeipa-client: /usr/sbin/ipa-join</span><br><span class="line">freeipa-client: /usr/sbin/ipa-rmkeytab</span><br><span class="line">iproute2: /sbin/ip</span><br></pre></td></tr></table></figure>
+
+<p>默认情况下，使用 <code>ip netns</code> 是没有网络 namespace 的，所以 <code>ip netns ls</code> 命令看不到任何输出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">vagrant@ubuntu-xenial:~$ ip netns <span class="built_in">help</span></span><br><span class="line">Usage: ip netns list</span><br><span class="line">       ip netns add NAME</span><br><span class="line">       ip netns <span class="built_in">set</span> NAME NETNSID</span><br><span class="line">       ip [-all] netns delete [NAME]</span><br><span class="line">       ip netns identify [PID]</span><br><span class="line">       ip netns pids NAME</span><br><span class="line">       ip [-all] netns <span class="built_in">exec</span> [NAME] cmd ...</span><br><span class="line">       ip netns monitor</span><br><span class="line">       ip netns list-id</span><br></pre></td></tr></table></figure>
+
+<p>新创建的 netns 会在<code>/var/run/netns/</code> 目录中生存对应名称的文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">vagrant@ubuntu-xenial:~$ sudo ip netns add xiemx1</span><br><span class="line">vagrant@ubuntu-xenial:~$ sudo ip netns add xiemx2</span><br><span class="line">vagrant@ubuntu-xenial:~$ sudo ip netns ls</span><br><span class="line">xiemx2</span><br><span class="line">xiemx1</span><br><span class="line">vagrant@ubuntu-xenial:~$ ll /var/run/netns/</span><br><span class="line">total 0</span><br><span class="line">drwxr-xr-x  2 root root   80 Jan 21 03:19 ./</span><br><span class="line">drwxr-xr-x 28 root root 1140 Jan 21 03:19 ../</span><br><span class="line">-r--r--r--  1 root root    0 Jan 21 03:19 xiemx1</span><br><span class="line">-r--r--r--  1 root root    0 Jan 21 03:19 xiemx2</span><br></pre></td></tr></table></figure>
+
+<p>由于netns 之间互相都是隔离的，因此要查看对应命名空间的网络设备、路由表就需要使用 <code>ip netns exec &lt;netns name&gt; bash</code>  开启子bash进入对应的命名空间，也可以直接执行命令</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">vagrant@ubuntu-xenial:~$ sudo<span class="built_in"> ip </span>a</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN<span class="built_in"> group default </span>qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: enp0s3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether 02:97:71:8a:f0:d8 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 10.0.2.15/24 brd 10.0.2.255 scope global enp0s3</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::97:71ff:fe8a:f0d8/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">3: enp0s8: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether 08:00:27:f1:22:f6 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 10.110.120.65/24 brd 10.110.120.255 scope global enp0s8</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::a00:27ff:fef1:22f6/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">4: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state DOWN<span class="built_in"> group </span>default</span><br><span class="line">    link/ether 02:42:da:5a:39:42 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">       </span><br><span class="line">vagrant@ubuntu-xenial:~$ sudo<span class="built_in"> ip </span>net exec xiemx1<span class="built_in"> ip </span>a</span><br><span class="line">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    </span><br><span class="line">vagrant@ubuntu-xenial:~$ sudo<span class="built_in"> ip </span>net exec xiemx2<span class="built_in"> ip </span>a</span><br><span class="line">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br></pre></td></tr></table></figure>
+
+<p>每个 namespace 在创建的时候会自动创建一个 <code>lo</code> ，默认时DOWN状态，如果需要启用记得UP一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">vagrant@ubuntu-xenial:~$ sudo ip net <span class="built_in">exec</span> xiemx1 ip a</span><br><span class="line">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">vagrant@ubuntu-xenial:~$ sudo ip netns <span class="built_in">exec</span> xiemx1 ip link <span class="built_in">set</span> lo up</span><br><span class="line">vagrant@ubuntu-xenial:~$ sudo ip netns <span class="built_in">exec</span> xiemx1 ip a</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<h4 id="veth-pair"><a href="#veth-pair" class="headerlink" title="veth pair"></a>veth pair</h4><hr>
+<p>netns 之间是相互隔离的，linux 提供了 <code>veth</code> 设备对来实现不同netns之间的往来通讯，veth 设备是成对出现的，类似于一根网线插到了两个隔离的ns之中，实现了两个隔离网络的互联。</p>
+<p>我们可以使用 <code>ip link add &lt;name1&gt; type veth peer name &lt;name2&gt;</code> 来创建一对 veth pair 出来，需要记住的是 veth pair 无法单独存在，删除其中一个，另一个也会自动消失。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">vagrant@ubuntu-xenial:~$ sudo<span class="built_in"> ip </span>netns exec xiemx1 bash</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>add</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN<span class="built_in"> group default </span>qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>link <span class="builtin-name">add</span> xiemx-veth1<span class="built_in"> type </span>veth<span class="built_in"> peer </span>name xiemx-veth2</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>add</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN<span class="built_in"> group default </span>qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">4: xiemx-veth2@xiemx-veth1: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether a6:76:6f:47:e1:f9 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">5: xiemx-veth1@xiemx-veth2: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether 42:6a:cb:19:0d:2a brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    </span><br><span class="line"><span class="comment">####如果对名称没有特别要求可以使用默认命令创建，会默认生存veth0/veth1 的设备对</span></span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>link <span class="builtin-name">add</span><span class="built_in"> type </span>veth</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>add</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN<span class="built_in"> group default </span>qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">4: xiemx-veth2@xiemx-veth1: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether a6:76:6f:47:e1:f9 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">5: xiemx-veth1@xiemx-veth2: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether 42:6a:cb:19:0d:2a brd ff:ff:ff:ff:ff:ff</span><br><span class="line">6: veth0@veth1: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether 3e:72:e3:48:25:69 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">7: veth1@veth0: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether ea:37:ea:92:a5:c5 brd ff:ff:ff:ff:ff:ff</span><br></pre></td></tr></table></figure>
+
+<p>给这对 veth pair 配置上 ip 地址，并up</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>netns exec xiemx1 bash</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span><span class="builtin-name">add</span> <span class="builtin-name">add</span> 10.0.0.1/24 dev xiemx-veth1</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span><span class="builtin-name">add</span> <span class="builtin-name">add</span> 10.0.0.2/24 dev xiemx-veth2</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span><span class="builtin-name">add</span> show dev xiemx-veth1 up</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span><span class="builtin-name">add</span> show dev xiemx-veth2 up</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>add</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN<span class="built_in"> group default </span>qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">4: xiemx-veth2@xiemx-veth1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether a6:76:6f:47:e1:f9 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 10.0.0.2/24 scope global xiemx-veth2</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::a476:6fff:fe47:e1f9/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">5: xiemx-veth1@xiemx-veth2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether 42:6a:cb:19:0d:2a brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 10.0.0.1/24 scope global xiemx-veth1</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::406a:cbff:fe19:d2a/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">6: veth0@veth1: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether 3e:72:e3:48:25:69 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">7: veth1@veth0: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether ea:37:ea:92:a5:c5 brd ff:ff:ff:ff:ff:ff</span><br><span class="line"></span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>route</span><br><span class="line">10.0.0.0/24 dev xiemx-veth1  proto kernel  scope link  src 10.0.0.1</span><br><span class="line">10.0.0.0/24 dev xiemx-veth2  proto kernel  scope link  src 10.0.0.2</span><br></pre></td></tr></table></figure>
+
+<p>目前所有的veth pair的两端都在xiemx1这个netns 中，现在移动设备的一段到xiemx2 这个netns中，实现网络互联</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>link <span class="builtin-name">set</span> xiemx-veth2 netns xiemx2</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>add</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN<span class="built_in"> group default </span>qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">5: xiemx-veth1@if4: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state LOWERLAYERDOWN<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether 42:6a:cb:19:0d:2a brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 10.0.0.1/24 scope global xiemx-veth1</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::406a:cbff:fe19:d2a/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">6: veth0@veth1: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether 3e:72:e3:48:25:69 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">7: veth1@veth0: &lt;BROADCAST,MULTICAST,M-DOWN&gt; mtu 1500 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether ea:37:ea:92:a5:c5 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>netns exec xiemx2<span class="built_in"> ip </span>add</span><br><span class="line">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">4: xiemx-veth2@if5: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether a6:76:6f:47:e1:f9 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>netns exec xiemx2 ifconfig xiemx-veth2 up</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>netns exec xiemx2<span class="built_in"> ip </span>add</span><br><span class="line">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">4: xiemx-veth2@if5: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether a6:76:6f:47:e1:f9 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet6 fe80::a476:6fff:fe47:e1f9/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>netns exec xiemx2<span class="built_in"> ip </span><span class="builtin-name">add</span> <span class="builtin-name">add</span> 10.0.0.2/24 dev xiemx-veth2</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ip </span>netns exec xiemx2<span class="built_in"> ip </span>add</span><br><span class="line">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN<span class="built_in"> group default </span>qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">4: xiemx-veth2@if5: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP<span class="built_in"> group default </span>qlen 1000</span><br><span class="line">    link/ether a6:76:6f:47:e1:f9 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 10.0.0.2/24 scope global xiemx-veth2</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::a476:6fff:fe47:e1f9/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">root@ubuntu-xenial:~#<span class="built_in"> ping </span>10.0.0.2</span><br><span class="line">PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.</span><br><span class="line">64 bytes <span class="keyword">from</span> 10.0.0.2: <span class="attribute">icmp_seq</span>=1 <span class="attribute">ttl</span>=64 <span class="attribute">time</span>=0.083 ms</span><br><span class="line">64 bytes <span class="keyword">from</span> 10.0.0.2: <span class="attribute">icmp_seq</span>=2 <span class="attribute">ttl</span>=64 <span class="attribute">time</span>=0.046 ms</span><br><span class="line">^C</span><br><span class="line">--- 10.0.0.2<span class="built_in"> ping </span>statistics ---</span><br><span class="line">2 packets transmitted, 2 received, 0% packet loss, time 999ms</span><br><span class="line">rtt min/avg/max/mdev = 0.046/0.064/0.083/0.020 ms</span><br></pre></td></tr></table></figure>
+
+<h4 id="bridge"><a href="#bridge" class="headerlink" title="bridge"></a>bridge</h4><hr>
+<p>linux 内核支持网口桥接，但是和传统的硬件网桥不同的是，linux 中的网桥设备不仅仅是二层设备，只是对报文进行转发，由于Linux 主机上运行的上层应用有可能就是报文的终点，因此还要求网桥能够将保数据包传递给linux网络协议栈。</p>
+<p>Docker bridge的网络就可以看成是通过bridge 来讲veth的设备对一端进行聚合，另一端放到容器的进程中，实现网络隔离和网络互联。再通过iptables的数据包转发功能来传递数据包，这里不讨论iptables层面的问题。</p>
+<p>手动模拟一下大概如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">##增加一个网桥（假设是docker bridge)</span></span></span><br><span class="line">root@ubuntu-xenial:~# ip netns exec xiemx1 bash</span><br><span class="line">root@ubuntu-xenial:~# brctl  show</span><br><span class="line">bridge name	bridge id		STP enabled	interfaces</span><br><span class="line">root@ubuntu-xenial:~# brctl addbr xiemx-br</span><br><span class="line">root@ubuntu-xenial:~# brctl show</span><br><span class="line">bridge name	bridge id		STP enabled	interfaces</span><br><span class="line">xiemx-br		8000.000000000000	no</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">##将veth设备的一端绑定到网桥上，由于使用网桥进行通讯，所以veth设备在这里只需要当成二层设备来使用，不需要IP</span></span></span><br><span class="line">root@ubuntu-xenial:~# brctl addif xiemx-br veth0</span><br><span class="line">root@ubuntu-xenial:~# brctl show</span><br><span class="line">bridge name	bridge id		STP enabled	interfaces</span><br><span class="line">xiemx-br		8000.3e72e3482569	no		veth0</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">##将veth的另一端移动到另一个netns中，可以理解为容器内的eth0</span></span></span><br><span class="line">root@ubuntu-xenial:~# ip link set veth1 netns xiemx2</span><br><span class="line">root@ubuntu-xenial:~# ip add</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">5: xiemx-veth1@if4: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</span><br><span class="line">    link/ether 42:6a:cb:19:0d:2a brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 10.0.0.1/24 scope global xiemx-veth1</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::406a:cbff:fe19:d2a/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">6: veth0@if7: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop master xiemx-br state DOWN group default qlen 1000</span><br><span class="line">    link/ether 3e:72:e3:48:25:69 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">8: xiemx-br: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state DOWN group default qlen 1000</span><br><span class="line">    link/ether 3e:72:e3:48:25:69 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 11.0.0.1/24 brd 11.0.0.255 scope global xiemx-br</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line">root@ubuntu-xenial:~# ip netns exec xiemx2 bash</span><br><span class="line">root@ubuntu-xenial:~# ip add</span><br><span class="line">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">4: xiemx-veth2@if5: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</span><br><span class="line">    link/ether a6:76:6f:47:e1:f9 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 10.0.0.2/24 scope global xiemx-veth2</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::a476:6fff:fe47:e1f9/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">7: veth1@if6: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/ether ea:37:ea:92:a5:c5 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## 给veth1 分配ip 地址，并开启设备</span></span></span><br><span class="line">root@ubuntu-xenial:~# ip add add 11.0.0.2/24 dev veth1</span><br><span class="line">root@ubuntu-xenial:~# ifconfig veth1 up</span><br><span class="line">root@ubuntu-xenial:~# ip add</span><br><span class="line">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">4: xiemx-veth2@if5: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</span><br><span class="line">    link/ether a6:76:6f:47:e1:f9 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 10.0.0.2/24 scope global xiemx-veth2</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::a476:6fff:fe47:e1f9/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">7: veth1@if6: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state LOWERLAYERDOWN group default qlen 1000</span><br><span class="line">    link/ether ea:37:ea:92:a5:c5 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 11.0.0.2/24 scope global veth1</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## 给网桥分配IP，并开启veth0设备</span></span></span><br><span class="line">root@ubuntu-xenial:~# ip netns exec xiemx1 bash</span><br><span class="line">root@ubuntu-xenial:~# ifconfig xiemx-br 11.0.0.1/24</span><br><span class="line">root@ubuntu-xenial:~# ifconfig veth0 up</span><br><span class="line">root@ubuntu-xenial:~# ip add</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">5: xiemx-veth1@if4: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</span><br><span class="line">    link/ether 42:6a:cb:19:0d:2a brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 10.0.0.1/24 scope global xiemx-veth1</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::406a:cbff:fe19:d2a/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">6: veth0@if7: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue master xiemx-br state UP group default qlen 1000</span><br><span class="line">    link/ether 3e:72:e3:48:25:69 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet6 fe80::3c72:e3ff:fe48:2569/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">8: xiemx-br: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</span><br><span class="line">    link/ether 3e:72:e3:48:25:69 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 11.0.0.1/24 brd 11.0.0.255 scope global xiemx-br</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::3c72:e3ff:fe48:2569/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">       </span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## 测试网络联通</span></span></span><br><span class="line">root@ubuntu-xenial:~# ping 11.0.0.2</span><br><span class="line">PING 11.0.0.2 (11.0.0.2) 56(84) bytes of data.</span><br><span class="line">64 bytes from 11.0.0.2: icmp_seq=1 ttl=64 time=0.244 ms</span><br><span class="line">64 bytes from 11.0.0.2: icmp_seq=2 ttl=64 time=0.047 ms</span><br><span class="line">64 bytes from 11.0.0.2: icmp_seq=3 ttl=64 time=0.048 ms</span><br><span class="line">64 bytes from 11.0.0.2: icmp_seq=4 ttl=64 time=0.047 ms</span><br><span class="line">64 bytes from 11.0.0.2: icmp_seq=5 ttl=64 time=0.051 ms</span><br><span class="line">^C</span><br><span class="line">--- 11.0.0.2 ping statistics ---</span><br><span class="line">5 packets transmitted, 5 received, 0% packet loss, time 4005ms</span><br><span class="line">rtt min/avg/max/mdev = 0.047/0.087/0.244/0.078 ms</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.xiemx.com/2020/01/21/linux-network-namespace/" title="linux network namespace and bridge" target="_blank" rel="external">https://www.xiemx.com/2020/01/21/linux-network-namespace/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客只是作者自己用来记录工作、学习中的笔记，如有版权问题请联系作者。另外，转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128"
+            class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span
+              class="text-dark">Mingxu.Xie</span><small class="ml-1x">DevOps</small></a>
+        </h3>
+        <div>一个普通devops。最近有点沉迷户外，可能逐渐驴化！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+    </div>
+  </article>
+  
+  
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+<nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/01/21/aws-vpc-cni/" title="aws-vpc-cni"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/01/21/k8s-fannel/" title="k8s Flannel"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq"></div>
+    
+  </div>
+  </div>
+</nav>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+    
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+        
+        &copy; 2020 Mingxu.xie
+        
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ccf366da75afeaf5215a',
+    clientSecret: 'ab4c80318537cc3fae0a62dcbd11fd206b57ac6e',
+    repo: 'xray',
+    owner: 'xiemx',
+    admin: ['xiemx'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+    <script defer type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-89045515-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
