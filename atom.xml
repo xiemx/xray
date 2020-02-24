@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiemx.com/"/>
-  <updated>2020-01-22T03:02:33.828Z</updated>
+  <updated>2020-02-24T01:53:57.621Z</updated>
   <id>https://www.xiemx.com/</id>
   
   <author>
@@ -15,6 +15,71 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>character-varying vs character vs text</title>
+    <link href="https://www.xiemx.com//2020/01/22/character-varying/"/>
+    <id>https://www.xiemx.com//2020/01/22/character-varying/</id>
+    <published>2020-01-22T02:52:00.000Z</published>
+    <updated>2020-02-24T01:53:57.621Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h4><table><thead><tr><th>名字</th><th>描述</th></tr></thead><tbody><tr><td>character varying(n), varchar(n)</td><td>变长，有长度限制</td></tr><tr><td>character(n), char(n)</td><td>定长，不足补空白</td></tr><tr><td>text</td><td>变长，无长度限制</td></tr></tbody></table><h4 id="类型区别"><a href="#类型区别" class="headerlink" title="类型区别"></a>类型区别</h4><ul><li><p>SQL定义了两种基本的字符类型：<code>character varying(n)</code> 和<code>character(n)</code>，这里的n是一个正整数。两种类型都可以存储最多n个字符的字符串。 试图存储更长的字符串到这些类型的字段里会产生一个错误， 除非超出长度的字符都是空白，这种情况下该字符串将被截断为最大长度。</p><ul><li><p><code>varchar(n)</code>和<code>char(n)</code>分别是<code>character varying(n)</code>和<code>character(n)</code>的别名。</p></li><li><p>如果要存储的字符串比声明的长度短，类型为<code>character</code>的数值将会用空白填满； 而类型为<code>character varying</code>的数值将只是存储短些的字符串。</p></li><li><p>如果我们明确地把一个数值转换成<code>character varying(n)</code>或<code>character(n)</code>，那么超长的数值将被截断成n 个字符，且不会抛出错误。这也是SQL标准的要求。</p></li><li><p>没有声明长度的<code>character</code>等于<code>character(1)</code>, 如果不带长度使用<code>character varying</code>， 那么该类型接受任何长度的字符串。后者是PostgreSQL的扩展。</p></li><li><p>character类型的数值物理上都用空白填充到指定的长度n， 并且以这种方式存储和显示。不过，在比较两个character 类型的值时，尾随的空白不需要理会。 在空白比较重要的排序规则中，这个行为会导致意想不到的结果， 比如<code>SELECT &#39;a &#39;::CHAR(2) collate &quot;C&quot; &lt; &#39;a\n&#39;::CHAR(2)</code>返回<code>true</code>。 在将<code>character</code>值转换成其它字符串类型的时候， 它后面的空白会被删除。请注意， 在<code>character varying</code>和<code>text</code>数值里， 结尾的空白是有语意的。 并且当使用模式匹配时，如LIKE，使用正则表达式。</p></li></ul></li></ul><h4 id="官方提示"><a href="#官方提示" class="headerlink" title="官方提示"></a>官方提示</h4><ul><li><p>三种类型<strong>没有性能差别</strong>，除了当使用填充空白类型时的增加存储空间和当存储长度约束的列时一些检查存入时长度的额外的CPU周期。 某些其它的数据库系统里，character(n) 有一定的性能优势，但在PostgreSQL里没有。 事实上，character(n)通常是这三个中最慢的， 因为额外存储成本。在大多数情况下，应该使用text 或character varying。</p></li><li><p>不管怎样，允许存储的最长字符串大概是<code>1GB</code> 。允许在数据类型声明中出现的n 的最大值比这还小。修改这个行为没有什么意义，因为在多字节编码下字符和字节的数目可能差别很大。 如果你想存储没有特定上限的长字符串，那么使用text 或没有长度声明的character varying，而不要选择一个任意长度限制。</p></li></ul><h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> test1 (a <span class="built_in">character</span>(<span class="number">4</span>));</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test1 <span class="keyword">VALUES</span> (<span class="string">'ok'</span>);</span><br><span class="line"><span class="keyword">SELECT</span> a, <span class="keyword">char_length</span>(a) <span class="keyword">FROM</span> test1; <span class="comment">-- (1)</span></span><br><span class="line">  a   | char_length</span><br><span class="line"><span class="comment">------+-------------</span></span><br><span class="line"> ok   |           2</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> test2 (b <span class="built_in">varchar</span>(<span class="number">5</span>));</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test2 <span class="keyword">VALUES</span> (<span class="string">'ok'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test2 <span class="keyword">VALUES</span> (<span class="string">'good      '</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test2 <span class="keyword">VALUES</span> (<span class="string">'too long'</span>);</span><br><span class="line">ERROR:  value too long for type character varying(5)</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test2 <span class="keyword">VALUES</span> (<span class="string">'too long'</span>::<span class="built_in">varchar</span>(<span class="number">5</span>)); <span class="comment">-- 明确截断</span></span><br><span class="line"><span class="keyword">SELECT</span> b, <span class="keyword">char_length</span>(b) <span class="keyword">FROM</span> test2;</span><br><span class="line">   b   | char_length</span><br><span class="line"><span class="comment">-------+-------------</span></span><br><span class="line"> ok    |           2</span><br><span class="line"> good  |           5</span><br><span class="line"> too l |           5</span><br></pre></td></tr></table></figure><hr><p>postgresql字符串类型比较，参考：<br><a href="https://www.postgresql.org/docs/9.1/datatype-character.html" target="_blank" rel="noopener">https://www.postgresql.org/docs/9.1/datatype-character.html</a><br><a href="http://www.postgres.cn/docs/9.4/datatype-character.html" target="_blank" rel="noopener">http://www.postgres.cn/docs/9.4/datatype-character.html</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;字符串类型&quot;&gt;&lt;a href=&quot;#字符串类型&quot; class=&quot;headerlink&quot; title=&quot;字符串类型&quot;&gt;&lt;/a&gt;字符串类型&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;名字&lt;/th&gt;
+&lt;th&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="database" scheme="https://www.xiemx.com/categories/database/"/>
+    
+    
+      <category term="database" scheme="https://www.xiemx.com/tags/database/"/>
+    
+      <category term="postgresql" scheme="https://www.xiemx.com/tags/postgresql/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>K8S QOS</title>
+    <link href="https://www.xiemx.com//2020/01/22/k8s-qos/"/>
+    <id>https://www.xiemx.com//2020/01/22/k8s-qos/</id>
+    <published>2020-01-22T02:52:00.000Z</published>
+    <updated>2020-02-24T01:53:50.295Z</updated>
+    
+    <content type="html"><![CDATA[<p>对于一个 pod 来说，服务质量体现在两个具体的指标：CPU 和内存。当节点上内存资源紧张时，kubernetes 会根据预先设置的不同 QoS 类别进行相应处理。</p><ul><li><p>guaranteed （有保证的）</p></li><li><p>burstable （不稳定的）</p></li><li><p>Best-Effort （尽力而为）</p><h4 id="Guaranteed"><a href="#Guaranteed" class="headerlink" title="Guaranteed"></a>Guaranteed</h4><ul><li>Pod中的所有容器都且仅设置了 CPU 和内存的 limits</li><li>pod中的所有容器都设置了 CPU 和内存的 requests 和 limits ，且单个容器内的requests==limits（requests不等于0）</li></ul><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#### set limit</span></span><br><span class="line"><span class="attr">containers:</span></span><br><span class="line"><span class="attr"> name:</span> <span class="string">xiemx1</span></span><br><span class="line"><span class="attr">   resources:</span></span><br><span class="line"><span class="attr">     limits:</span></span><br><span class="line"><span class="attr">       cpu:</span> <span class="number">10</span><span class="string">m</span></span><br><span class="line"><span class="attr">       memory:</span> <span class="number">1</span><span class="string">Gi</span></span><br><span class="line"><span class="attr"> name:</span> <span class="string">xiemx2</span></span><br><span class="line"><span class="attr">   resources:</span></span><br><span class="line"><span class="attr">     limits:</span></span><br><span class="line"><span class="attr">       cpu:</span> <span class="number">100</span><span class="string">m</span></span><br><span class="line"><span class="attr">       memory:</span> <span class="number">100</span><span class="string">Mi</span></span><br><span class="line">       </span><br><span class="line"><span class="comment">#### request=limit</span></span><br><span class="line"><span class="attr">containers:</span></span><br><span class="line"><span class="attr"> name:</span> <span class="string">xiemx1</span></span><br><span class="line"><span class="attr">   resources:</span></span><br><span class="line"><span class="attr">     limits:</span></span><br><span class="line"><span class="attr">       cpu:</span> <span class="number">10</span><span class="string">m</span></span><br><span class="line"><span class="attr">       memory:</span> <span class="number">1</span><span class="string">Gi</span></span><br><span class="line"><span class="attr">     requests:</span></span><br><span class="line"><span class="attr">       cpu:</span> <span class="number">10</span><span class="string">m</span></span><br><span class="line"><span class="attr">       memory:</span> <span class="number">1</span><span class="string">Gi</span></span><br><span class="line"></span><br><span class="line"><span class="attr"> name:</span> <span class="string">xiemx2</span></span><br><span class="line"><span class="attr">   resources:</span></span><br><span class="line"><span class="attr">     limits:</span></span><br><span class="line"><span class="attr">       cpu:</span> <span class="number">100</span><span class="string">m</span></span><br><span class="line"><span class="attr">       memory:</span> <span class="number">100</span><span class="string">Mi</span></span><br><span class="line"><span class="attr">     requests:</span></span><br><span class="line"><span class="attr">       cpu:</span> <span class="number">100</span><span class="string">m</span></span><br><span class="line"><span class="attr">       memory:</span> <span class="number">100</span><span class="string">Mi</span></span><br></pre></td></tr></table></figure><h4 id="Burstable"><a href="#Burstable" class="headerlink" title="Burstable"></a>Burstable</h4></li><li><p>pod中只要有一个容器的requests和limits的设置不相同</p></li><li><p>pod中只要有一个容器的cpu or memory 没有设置limits</p></li></ul><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">containers:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">xiemx1</span></span><br><span class="line"><span class="attr">    resources:</span></span><br><span class="line"><span class="attr">      limits:</span></span><br><span class="line"><span class="attr">        memory:</span> <span class="number">1</span><span class="string">Gi</span></span><br><span class="line"></span><br><span class="line"><span class="attr">  name:</span> <span class="string">xiemx2</span></span><br><span class="line"><span class="attr">    resources:</span></span><br><span class="line"><span class="attr">      limits:</span></span><br><span class="line"><span class="attr">        cpu:</span> <span class="number">100</span><span class="string">m</span></span><br></pre></td></tr></table></figure><h4 id="Best-Effort"><a href="#Best-Effort" class="headerlink" title="Best-Effort"></a>Best-Effort</h4><ul><li>Pod中所有容器的resources均未设置requests与limits</li></ul><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">containers:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">xiemx1</span></span><br><span class="line"><span class="attr">    resources:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">xiemx2</span></span><br><span class="line"><span class="attr">    resources:</span></span><br></pre></td></tr></table></figure><h4 id="不同策略的QOS回收策略实现"><a href="#不同策略的QOS回收策略实现" class="headerlink" title="不同策略的QOS回收策略实现"></a>不同策略的QOS回收策略实现</h4><p>Kubernetes 通过cgroup给pod设置QoS级别，当资源不足时先kill优先级低的pod，通过OOM_ADJ参数计算分数值来实现，OOM分数值范围为0-1000。计算出来的OOM分数越高，表明该pod优先级就越低，当出现资源竞争时会越早被kill掉</p><ul><li>Guaranteed级别的 Pod，OOM_ADJ参数设置成了-998</li><li>Best-Effort级别的 Pod，OOM_ADJ参数设置成了1000</li><li>对于Burstable级别的 Pod，OOM_ADJ参数取值从2到999</li><li>kuberntes 保留资源，比如kubelet，docker，OOM_ADJ参数设置成了-999，表示不会被OOM kill掉</li></ul><h4 id="QoS-pods被kill掉场景与顺序"><a href="#QoS-pods被kill掉场景与顺序" class="headerlink" title="QoS pods被kill掉场景与顺序"></a>QoS pods被kill掉场景与顺序</h4><ul><li>Best-Effort pods：系统用完了全部内存时，该类型 pods 会最先被kill掉。</li><li>Burstable pods：系统用完了全部内存，且没有 Best-Effort 类型的容器可以被 kill 时，该类型的 pods 会被 kill 掉。</li><li>Guaranteed pods：系统用完了全部内存，且没有 Burstable 与 Best-Effort 类型的容器可以被 kill 时，该类型的 pods 会被 kill 掉。</li></ul><p>参考：<a href="https://www.qikqiak.com/post/kubernetes-qos-usage/" target="_blank" rel="noopener">https://www.qikqiak.com/post/kubernetes-qos-usage/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;对于一个 pod 来说，服务质量体现在两个具体的指标：CPU 和内存。当节点上内存资源紧张时，kubernetes 会根据预先设置的不同 QoS 类别进行相应处理。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;guaranteed （有保证的）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;bur
+      
+    
+    </summary>
+    
+    
+      <category term="k8s" scheme="https://www.xiemx.com/categories/k8s/"/>
+    
+    
+      <category term="k8s" scheme="https://www.xiemx.com/tags/k8s/"/>
+    
+  </entry>
   
   <entry>
     <title>zombie/orphan process</title>
@@ -390,9 +455,9 @@
     
       <category term="debug" scheme="https://www.xiemx.com/tags/debug/"/>
     
-      <category term="mysql" scheme="https://www.xiemx.com/tags/mysql/"/>
-    
       <category term="database" scheme="https://www.xiemx.com/tags/database/"/>
+    
+      <category term="mysql" scheme="https://www.xiemx.com/tags/mysql/"/>
     
   </entry>
   
@@ -551,67 +616,6 @@
       <category term="linux" scheme="https://www.xiemx.com/tags/linux/"/>
     
       <category term="tcp" scheme="https://www.xiemx.com/tags/tcp/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>TCP TIME_WAIT</title>
-    <link href="https://www.xiemx.com//2018/01/23/tcp-time_wait/"/>
-    <id>https://www.xiemx.com//2018/01/23/tcp-time_wait/</id>
-    <published>2018-01-23T02:01:21.000Z</published>
-    <updated>2019-10-19T07:40:03.304Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="维持TIME-WAIT有两个原因："><a href="#维持TIME-WAIT有两个原因：" class="headerlink" title="维持TIME_WAIT有两个原因："></a>维持TIME_WAIT有两个原因：</h4><ol><li><p>可靠地实现TCP的全双工连接终止</p><p> 在四次挥手中，假设最后的ACK丢失了，被动关闭方会重发FIN。主动关闭端必须维护状态，来允许被动关闭方重发最后的ACK；如果它没有维护这个状态，将会对重发FIN返回RST，被动关闭方会认为这是个错误。如果TCP正在执行彻底终止数据流的两个方向所需的所有工作（即全双工关闭），则必须正确处理这四个段中任何一个的丢失。所以执行主动关闭的一方必须在结束时保持TIME_WAIT状态：因为它可能必须重传最后的ACK。</p></li><li><p>允许旧的重复数据段在网络中过期</p><p> 假设在主机1.1.1.1的1111端口和2.2.2.2的2222端口之间有一个TCP连接。此连接关闭后，相同的地址和端口建立了一个新连接。由于IP地址和端口相同，TCP必须防止旧连接的数据包再次出现，被新的连接误收。为此，TCP将不会启动当前处于TIME_WAIT状态的连接。由于TIME_WAIT状态的持续时间是两倍的MSL，因此TCP允许一个方向的数据在MSL秒内丢失，也允许回复在一个MSL秒内丢失。通过此规则来保证当一个TCP连接成功建立时，来自先前连接的所有旧的副本在网络中已过期。</p></li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;维持TIME-WAIT有两个原因：&quot;&gt;&lt;a href=&quot;#维持TIME-WAIT有两个原因：&quot; class=&quot;headerlink&quot; title=&quot;维持TIME_WAIT有两个原因：&quot;&gt;&lt;/a&gt;维持TIME_WAIT有两个原因：&lt;/h4&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;可
-      
-    
-    </summary>
-    
-    
-      <category term="linux" scheme="https://www.xiemx.com/categories/linux/"/>
-    
-    
-      <category term="linux" scheme="https://www.xiemx.com/tags/linux/"/>
-    
-      <category term="tcp" scheme="https://www.xiemx.com/tags/tcp/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>zabbix distrubuted monitor</title>
-    <link href="https://www.xiemx.com//2017/09/21/zabbix-distrubuted-monitor/"/>
-    <id>https://www.xiemx.com//2017/09/21/zabbix-distrubuted-monitor/</id>
-    <published>2017-09-20T18:09:37.000Z</published>
-    <updated>2019-10-21T06:57:42.570Z</updated>
-    
-    <content type="html"><![CDATA[<p>zabbix 分布式监控2种模式</p><ul><li>node模式</li><li>proxy模式</li></ul><p>PS: node模式官方在2.4版本之后已经弃用，重点讨论proxy模式</p><h3 id="proxy-模式"><a href="#proxy-模式" class="headerlink" title="proxy 模式"></a>proxy 模式</h3><p>Zabbix proxy可以代替Zabbix服务器收集性能和可用性数据，一个代理可以承担一些收集数据的负载。使用代理是实现集中式和分布式监控的最简单方法。proxy需要使用单独的数据库来缓存agent数据，在发给server防止出现因网络问题造成的数据丢失。zabbix proxy只是一个数据收集组件，不会触发任何trigger／alert.</p><p><img src="/images/img_59c35cd9ab71b.png" alt="img"></p><h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul><li>Monitor remote locations</li><li>Monitor locations having unreliable communications</li><li>Offload the Zabbix server when monitoring thousands of devices</li><li>Simplify the maintenance of distributed monitoring</li></ul><h3 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">同安装zabbix server 类似，不赘述,需要其他功能也可以在编译时自行开启。</span></span><br><span class="line"></span><br><span class="line">./configure --prefix=/opt/zabbix_proxy/ --enable-proxy --with-mysql --with-libcurl</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line">create databases zabbix</span><br><span class="line">grant all to zabbix.* to zabbix@'%' identified by "zabbix";</span><br><span class="line"><span class="meta">#</span><span class="bash">导入schema.sql</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">配置文件中hostname需要和zabbix上添加的保持一致</span></span><br><span class="line"><span class="meta">#</span><span class="bash">其它参考server设置参数</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">ps：设置适当的配置同步时间，默认一小时。建议设置短一点，这样如果有新机器加入配置修改都可以快速同步并监控。</span></span><br><span class="line">ConfigFrequency=600</span><br></pre></td></tr></table></figure><p>zabbix server 配置</p><p><img src="/images/img_59c35d1d930c1.png" alt="img"></p><p>添加主机时选择指定的proxy</p><p><img src="/images/img_59c35d389b1c5.png" alt="img"></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;zabbix 分布式监控2种模式&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;node模式&lt;/li&gt;
-&lt;li&gt;proxy模式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;PS: node模式官方在2.4版本之后已经弃用，重点讨论proxy模式&lt;/p&gt;
-&lt;h3 id=&quot;proxy-模式&quot;&gt;&lt;a href=&quot;#
-      
-    
-    </summary>
-    
-    
-      <category term="zabbix" scheme="https://www.xiemx.com/categories/zabbix/"/>
-    
-    
-      <category term="zabbix" scheme="https://www.xiemx.com/tags/zabbix/"/>
     
   </entry>
   
