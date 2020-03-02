@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiemx.com/"/>
-  <updated>2020-02-25T06:14:57.233Z</updated>
+  <updated>2020-03-02T06:01:52.543Z</updated>
   <id>https://www.xiemx.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>nginx/openresty 执行阶段</title>
+    <link href="https://www.xiemx.com//2020/02/28/nginx-and-openresty-phases/"/>
+    <id>https://www.xiemx.com//2020/02/28/nginx-and-openresty-phases/</id>
+    <published>2020-02-27T17:12:43.000Z</published>
+    <updated>2020-03-02T06:01:52.543Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h4><hr><p>nginx 官方文档：<a href="http://nginx.org/en/docs/dev/development_guide.html#http_phases" target="_blank" rel="noopener">http://nginx.org/en/docs/dev/development_guide.html#http_phases</a></p><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">NGX_HTTP_POST_READ_PHASE</span>:</span><br><span class="line">接收完请求头之后的第一个阶段，ngx_http_realip_module 注册在这个阶段</span><br><span class="line"></span><br><span class="line"><span class="attribute">NGX_HTTP_SERVER_REWRITE_PHASE</span>:</span><br><span class="line">server级别的uri重写阶段， ngx_http_rewrite_module 注册在这个阶段</span><br><span class="line"></span><br><span class="line"><span class="attribute">NGX_HTTP_FIND_CONFIG_PHASE</span>:</span><br><span class="line">寻找location配置阶段，该阶段使用重写之后的uri来查找对应的location</span><br><span class="line"></span><br><span class="line"><span class="attribute">NGX_HTTP_REWRITE_PHASE</span>:</span><br><span class="line">location级别的uri重写阶段</span><br><span class="line"></span><br><span class="line"><span class="attribute">NGX_HTTP_POST_REWRITE_PHASE</span>:</span><br><span class="line">location级别重写的后一阶段，用来检查上阶段是否有uri重写，并根据结果跳转到合适的阶段</span><br><span class="line"></span><br><span class="line"><span class="attribute">NGX_HTTP_PREACCESS_PHASE</span>:</span><br><span class="line">一般也用于访问控制，比如限制访问频率，并发等</span><br><span class="line">ngx_http_limit_conn_module/ngx_http_limit_req_module这两个模块注册在此阶段</span><br><span class="line"></span><br><span class="line"><span class="attribute">NGX_HTTP_ACCESS_PHASE</span>:</span><br><span class="line">访问权限控制阶段，比如基于ip黑白名单的权限控制，基于用户名密码的权限控制等， ngx_http_access_module/ngx_http_auth_basic_module 注册在此阶段</span><br><span class="line"></span><br><span class="line"><span class="attribute">NGX_HTTP_POST_ACCESS_PHASE</span>:</span><br><span class="line">问权限控制的后一阶段，该阶段根据权限控制阶段的执行结果进行相应处理 <span class="built_in">`satisfy`</span> 指令在此阶段生效。</span><br><span class="line"></span><br><span class="line"><span class="attribute">NGX_HTTP_TRY_FILES_PHASE</span>:</span><br><span class="line">try_files指令的处理阶段，如果没有配置try_files指令，则该阶段被跳过</span><br><span class="line"></span><br><span class="line"><span class="attribute">NGX_HTTP_CONTENT_PHASE</span>:</span><br><span class="line">内容生成阶段，该阶段产生响应，并发送到客户端</span><br><span class="line"></span><br><span class="line"><span class="attribute">NGX_HTTP_LOG_PHASE</span>:</span><br><span class="line">日志记录阶段，该阶段记录访问日志</span><br></pre></td></tr></table></figure><h4 id="openresty"><a href="#openresty" class="headerlink" title="openresty"></a>openresty</h4><hr><p>参考文档：<a href="https://moonbingbing.gitbooks.io/openresty-best-practices/content/ngx_lua/phase.html" target="_blank" rel="noopener">https://moonbingbing.gitbooks.io/openresty-best-practices/content/ngx_lua/phase.html</a><br><img src="/images/openresty_phases.png" alt="phase"></p><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">set_by_lua*: 流程分支处理判断变量初始化</span><br><span class="line">rewrite_by_lua*: 转发、重定向、缓存等功能(例如特定请求代理到外网)</span><br><span class="line">access_by_lua*:<span class="built_in"> IP </span>准入、接口权限等情况集中处理(例如配合 iptable 完成简单防火墙)</span><br><span class="line">content_by_lua*: 内容生成</span><br><span class="line">header_filter_by_lua*: 响应头部过滤处理(例如添加头部信息)</span><br><span class="line">body_filter_by_lua*: 响应体过滤处理(例如完成应答内容统一成大写)</span><br><span class="line">log_by_lua*: 会话完成后本地异步完成日志记录(日志可以记录在本地，还可以同步到其他机器)</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;nginx&quot;&gt;&lt;a href=&quot;#nginx&quot; class=&quot;headerlink&quot; title=&quot;nginx&quot;&gt;&lt;/a&gt;nginx&lt;/h4&gt;&lt;hr&gt;
+&lt;p&gt;nginx 官方文档：&lt;a href=&quot;http://nginx.org/en/docs/dev/deve
+      
+    
+    </summary>
+    
+    
+      <category term="nginx" scheme="https://www.xiemx.com/categories/nginx/"/>
+    
+    
+      <category term="nginx" scheme="https://www.xiemx.com/tags/nginx/"/>
+    
+      <category term="openresty" scheme="https://www.xiemx.com/tags/openresty/"/>
+    
+  </entry>
   
   <entry>
     <title>K8S initContainer</title>
@@ -218,6 +247,32 @@
   </entry>
   
   <entry>
+    <title>《nginx 变量漫谈》随记</title>
+    <link href="https://www.xiemx.com//2020/01/22/nginx-tick/"/>
+    <id>https://www.xiemx.com//2020/01/22/nginx-tick/</id>
+    <published>2020-01-22T02:52:00.000Z</published>
+    <updated>2020-03-02T05:59:40.760Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="agentzh-nginx变量漫谈随手记"><a href="#agentzh-nginx变量漫谈随手记" class="headerlink" title="agentzh nginx变量漫谈随手记"></a>agentzh nginx变量漫谈随手记</h4><p>文章地址:<a href="https://openresty.org/download/agentzh-nginx-tutorials-zhcn.html" target="_blank" rel="noopener">https://openresty.org/download/agentzh-nginx-tutorials-zhcn.html</a>  </p><ol><li><p>Nginx 变量名前面有一个 $ 符号</p><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">set</span> <span class="variable">$a</span> <span class="string">"b"</span>;</span><br><span class="line"><span class="builtin-name">set</span> <span class="variable">$b</span> <span class="string">"<span class="variable">$a</span>, <span class="variable">$a</span>"</span>;</span><br></pre></td></tr></table></figure></li><li><p>有没有办法把特殊的 <code>$</code>字符给转义掉呢？</p></li></ol><ul><li>答案是否定的, 不过幸运的是，我们可以绕过这个限制，比如通过不支持“变量插值”的模块配置指令专门构造出取值为 $ 的 Nginx 变量，然后再在 echo 中使用这个变量<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">geo <span class="variable">$dollar</span> &#123;</span><br><span class="line">    <span class="built_in"> default </span><span class="string">"$"</span>;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in"> server </span>&#123;</span><br><span class="line">     listen 8080;</span><br><span class="line"></span><br><span class="line">     location /test &#123;</span><br><span class="line">         echo <span class="string">"This is a dollar sign: <span class="variable">$dollar</span>"</span>;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></li></ul><ol start="3"><li><p>在“变量插值”的上下文中，还有一种特殊情况，即当引用的变量名之后紧跟着变量名的构成字符时（比如后跟字母、数字以及下划线），我们就需要使用特别的记法来消除歧义，例如：</p><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">8080</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> /test &#123;</span><br><span class="line">        <span class="attribute">set</span> <span class="variable">$first</span> <span class="string">"hello "</span>;</span><br><span class="line">        <span class="attribute">echo</span> <span class="string">"<span class="variable">$&#123;first&#125;</span>world"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p>变量创建和加载</p><ul><li>Nginx 变量的创建和赋值操作发生在全然不同的时间阶段。</li><li>Nginx 变量的创建只能发生在 Nginx 配置加载的时候</li><li>而赋值操作则只会发生在请求实际处理的时候。</li><li>这意味着不创建而直接使用变量会导致启动失败。</li><li>无法在请求处理时动态地创建新的 Nginx 变量。</li><li>Nginx 变量一旦创建可见范围就是整个Nginx配置，跨越不同虚拟主机的 server 配置块。</li></ul></li><li><p>内部跳转</p></li></ol><p>使用第三方模块 ngx_echo 提供的 echo_exec 配置指令，发起到 location /bar 的“内部跳转”。所谓“内部跳转”，就是在处理请求的过程中，于服务器内部，从一个 location 跳转到另一个 location 的过程。不同于 301 和 302 会发生二次请求。 exec类似于linux中的exec 请求发出后不会在回到原理的location，而是直接接管。</p><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">8080</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> /foo &#123;</span><br><span class="line">        <span class="attribute">set</span> <span class="variable">$a</span> hello;</span><br><span class="line">        <span class="attribute">echo_exec</span> /bar;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> /bar &#123;</span><br><span class="line">        <span class="attribute">echo</span> <span class="string">"a = [<span class="variable">$a</span>]"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">### 效果等同于rewrite实现</span></span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">8080</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> /foo &#123;</span><br><span class="line">        <span class="attribute">set</span> <span class="variable">$a</span> hello;</span><br><span class="line">        <span class="attribute">rewrite</span><span class="regexp"> ^</span> /bar;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> /bar &#123;</span><br><span class="line">        <span class="attribute">echo</span> <span class="string">"a = [<span class="variable">$a</span>]"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ol start="6"><li>内置变量获取request参数</li></ol><ul><li>取 arg 值的 <code>$arg_XXX</code></li><li>取 cookie 值的 <code>$cookie_XXX</code> </li><li>取请求头的 <code>$http_XXX</code> </li><li>取响应头的 <code>$sent_http_XXX</code> <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">location /test &#123;</span><br><span class="line">    echo <span class="string">"name: $arg_name"</span>;</span><br><span class="line">    echo <span class="string">"class: $arg_class"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ curl <span class="string">'http://localhost:8080/test'</span></span><br><span class="line">name: </span><br><span class="line"><span class="keyword">class</span>: </span><br><span class="line"></span><br><span class="line">$ <span class="symbol">curl</span> '<span class="symbol">http:</span>//<span class="symbol">localhost:<span class="symbol">8080</span></span>/<span class="symbol">test</span>?<span class="symbol">name</span>=<span class="symbol">Tom</span>&amp;<span class="symbol">class</span>=<span class="symbol">3</span>'</span><br><span class="line"><span class="symbol">name: <span class="symbol">Tom</span></span></span><br><span class="line"><span class="symbol">class: <span class="symbol">3</span></span></span><br><span class="line"></span><br><span class="line">$ <span class="symbol">curl</span> '<span class="symbol">http:</span>//<span class="symbol">localhost:<span class="symbol">8080</span></span>/<span class="symbol">test</span>?<span class="symbol">name</span>=<span class="symbol">hello</span>%<span class="symbol">20world</span>&amp;<span class="symbol">class</span>=<span class="symbol">9</span>'</span><br><span class="line"><span class="symbol">name: <span class="symbol">hello</span></span>%<span class="symbol">20world</span></span><br><span class="line"><span class="symbol">class: <span class="symbol">9</span></span></span><br><span class="line"></span><br><span class="line">###<span class="symbol">Nginx</span> 会在匹配参数名之前，自动把原始请求中的参数名调整为全部小写的形式</span><br><span class="line"></span><br><span class="line">$ <span class="symbol">curl</span> '<span class="symbol">http:</span>//<span class="symbol">localhost:<span class="symbol">8080</span></span>/<span class="symbol">test</span>?<span class="symbol">NAME</span>=<span class="symbol">Marry</span>'</span><br><span class="line"><span class="symbol">name: <span class="symbol">Marry</span></span></span><br><span class="line"><span class="symbol">class: </span></span><br><span class="line"></span><br><span class="line">$ <span class="symbol">curl</span> '<span class="symbol">http:</span>//<span class="symbol">localhost:<span class="symbol">8080</span></span>/<span class="symbol">test</span>?<span class="symbol">Name</span>=<span class="symbol">Jimmy</span>'</span><br><span class="line"><span class="symbol">name: <span class="symbol">Jimmy</span></span></span><br><span class="line"><span class="symbol">class:</span></span><br></pre></td></tr></table></figure></li></ul><ol start="7"><li><code>%XX</code> 字符解码</li></ol><ul><li>可以使用第三方 ngx_set_misc 模块提供的 set_unescape_uri 配置指令：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">location /<span class="built_in">test</span> &#123;</span><br><span class="line">    set_unescape_uri <span class="variable">$name</span> <span class="variable">$arg_name</span>;</span><br><span class="line">    set_unescape_uri <span class="variable">$class</span> <span class="variable">$arg_class</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"name: <span class="variable">$name</span>"</span>;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"class: <span class="variable">$class</span>"</span>;</span><br><span class="line">&#125;</span><br><span class="line">现在我们再看一下效果：</span><br><span class="line"></span><br><span class="line">$ curl <span class="string">'http://localhost:8080/test?name=hello%20world&amp;class=9'</span></span><br><span class="line">name: hello world</span><br><span class="line">class: 9</span><br></pre></td></tr></table></figure></li></ul><ol start="8"><li><p>内建变量都是只读的，如 <code>$uri</code> 和 <code>$request_uri</code>. 应当避免对只读变量进行赋值。</p><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> /bad &#123;</span><br><span class="line">  <span class="attribute">set</span> <span class="variable">$uri</span> /blah;</span><br><span class="line">  <span class="attribute">echo</span> <span class="variable">$uri</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="attribute">Nginx</span> 在启动的时候报出错误：</span><br><span class="line">[emerg] the duplicate <span class="string">"uri"</span> variable in ...</span><br></pre></td></tr></table></figure></li><li><p>多个同名arg变量取值</p></li></ol><ul><li>$arg_XXX 变量在请求 URL 中有多个同名 XXX 参数时，就只会返回最先出现的那个 XXX 参数的值，而默默忽略掉其他实例：<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">location /test &#123;</span><br><span class="line">    content_by_lua '</span><br><span class="line">        <span class="keyword">if</span> ngx.<span class="keyword">var</span>.arg_name == <span class="keyword">nil</span> then</span><br><span class="line">            ngx.say(<span class="string">"name: missing"</span>)</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            ngx.say(<span class="string">"name: ["</span>, ngx.<span class="keyword">var</span>.arg_name, <span class="string">"]"</span>)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    ';</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ curl 'http://localhost:<span class="number">8080</span>/test?name=<span class="type">Tom</span>&amp;name=<span class="type">Jim</span>&amp;name=<span class="type">Bob</span>'</span><br><span class="line">name: [<span class="type">Tom</span>]</span><br><span class="line">要解决这些局限，可以直接在 <span class="type">Lua</span> 代码中使用 ngx_lua 模块提供的 ngx.req.get_uri_args 函数。</span><br></pre></td></tr></table></figure></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;agentzh-nginx变量漫谈随手记&quot;&gt;&lt;a href=&quot;#agentzh-nginx变量漫谈随手记&quot; class=&quot;headerlink&quot; title=&quot;agentzh nginx变量漫谈随手记&quot;&gt;&lt;/a&gt;agentzh nginx变量漫谈随手记&lt;/h4&gt;&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="nginx" scheme="https://www.xiemx.com/categories/nginx/"/>
+    
+    
+      <category term="nginx" scheme="https://www.xiemx.com/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
     <title>character-varying vs character vs text</title>
     <link href="https://www.xiemx.com//2020/01/22/character-varying/"/>
     <id>https://www.xiemx.com//2020/01/22/character-varying/</id>
@@ -336,9 +391,9 @@
       <category term="linux" scheme="https://www.xiemx.com/categories/linux/"/>
     
     
-      <category term="linux" scheme="https://www.xiemx.com/tags/linux/"/>
-    
       <category term="network" scheme="https://www.xiemx.com/tags/network/"/>
+    
+      <category term="linux" scheme="https://www.xiemx.com/tags/linux/"/>
     
       <category term="docker" scheme="https://www.xiemx.com/tags/docker/"/>
     
@@ -453,11 +508,11 @@
       <category term="k8s" scheme="https://www.xiemx.com/categories/k8s/"/>
     
     
-      <category term="linux" scheme="https://www.xiemx.com/tags/linux/"/>
-    
       <category term="k8s" scheme="https://www.xiemx.com/tags/k8s/"/>
     
       <category term="network" scheme="https://www.xiemx.com/tags/network/"/>
+    
+      <category term="linux" scheme="https://www.xiemx.com/tags/linux/"/>
     
       <category term="tcpdump" scheme="https://www.xiemx.com/tags/tcpdump/"/>
     
@@ -545,64 +600,6 @@
       <category term="database" scheme="https://www.xiemx.com/tags/database/"/>
     
       <category term="postgresql" scheme="https://www.xiemx.com/tags/postgresql/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>http cache</title>
-    <link href="https://www.xiemx.com//2019/05/13/http-cache/"/>
-    <id>https://www.xiemx.com//2019/05/13/http-cache/</id>
-    <published>2019-05-13T03:05:02.000Z</published>
-    <updated>2019-10-21T06:57:42.935Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="cache流程图"><a href="#cache流程图" class="headerlink" title="cache流程图"></a><strong>cache流程图</strong></h4><p><img src="/images/image.png" alt="img"></p><h3 id="“no-cache”和“no-store”"><a href="#“no-cache”和“no-store”" class="headerlink" title="“no-cache”和“no-store”"></a>“no-cache”和“no-store”</h3><p>“no-cache”表示必须先与服务器确认返回的响应是否发生了变化，然后才能使用该响应来满足后续对同一网址的请求。 因此，如果存在合适的验证令牌 (ETag)，no-cache 会发起往返通信来验证缓存的响应，但如果资源未发生变化，则可避免下载。</p><p>“no-store”禁止浏览器以及所有中间缓存存储任何版本的返回响应，例如，包含个人隐私数据或银行业务数据的响应。 每次用户请求该资产时，都会向服务器发送请求，并下载完整的响应。</p><h3 id="“public”与-“private”"><a href="#“public”与-“private”" class="headerlink" title="“public”与 “private”"></a>“public”与 “private”</h3><p>“public”则即使它有关联的 HTTP 身份验证，甚至响应状态代码通常无法缓存，也可以缓存响应。 大多数情况下，“public”不是必需的，因为明确的缓存信息（例如“max-age”）已表示响应是可以缓存的。</p><p>“private”浏览器可以缓存响应，不允许任何中间缓存对其进行缓存。 例如，用户的浏览器可以缓存包含用户私人信息的 HTML 网页，但 CDN 却不能缓存。</p><h3 id="“max-age”"><a href="#“max-age”" class="headerlink" title="“max-age”"></a>“max-age”</h3><p>指令指定从请求的时间开始，允许提取的响应被重用的最长时间（单位：秒）。 例如，“max-age=60”表示可在接下来的 60 秒缓存和重用响应。</p><h2 id="通过-ETag-验证缓存的响应"><a href="#通过-ETag-验证缓存的响应" class="headerlink" title="通过 ETag 验证缓存的响应"></a>通过 ETag 验证缓存的响应</h2><p>在首次请求资源时服务器生成并返回”ETag” http请求头(通常是文件内容的哈希值或某个其他指纹)。 当120 秒后，浏览器又对该资源发起了新的请求。 首先，浏览器会检查本地缓存并找到之前的响应。如果发现缓存超过max-age, 浏览器将发起一个带有”If-None-Match”的http请求。 如果Etag相同，则返回304，使用本地缓存。</p><p><img src="/images/http-cache-control.png" alt="HTTP Cache-Control 示例"></p><p>参考： <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching" target="_blank" rel="noopener">https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;cache流程图&quot;&gt;&lt;a href=&quot;#cache流程图&quot; class=&quot;headerlink&quot; title=&quot;cache流程图&quot;&gt;&lt;/a&gt;&lt;strong&gt;cache流程图&lt;/strong&gt;&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;/images/image.png&quot; 
-      
-    
-    </summary>
-    
-    
-      <category term="http" scheme="https://www.xiemx.com/categories/http/"/>
-    
-    
-      <category term="http" scheme="https://www.xiemx.com/tags/http/"/>
-    
-      <category term="cache" scheme="https://www.xiemx.com/tags/cache/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Mysqldump error</title>
-    <link href="https://www.xiemx.com//2019/05/06/mysqldump-error/"/>
-    <id>https://www.xiemx.com//2019/05/06/mysqldump-error/</id>
-    <published>2019-05-06T03:05:56.000Z</published>
-    <updated>2019-10-19T10:22:28.240Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@FCHK-instance ~]# mysqldump <span class="comment">--host rm-xxxxxxxxxxx.mysql.rds.aliyuncs.com -u xxxx -p --databases visa &gt; hk.sql</span></span><br><span class="line">Enter password:</span><br><span class="line"><span class="literal">Warning</span>: A partial dump from a server that has GTIDs will by <span class="keyword">default</span> include the GTIDs <span class="keyword">of</span> <span class="keyword">all</span> transactions, even those that changed suppressed parts <span class="keyword">of</span> the database. <span class="keyword">If</span> you don<span class="symbol">'t</span> want <span class="keyword">to</span> restore GTIDs, pass <span class="comment">--set-gtid-purged=OFF. To make a complete dump, pass --all-databases --triggers --routines --events.</span></span><br><span class="line">mysqldump: Couldn<span class="symbol">'t</span> execute <span class="symbol">'SELECT</span> COLUMN_NAME,                       JSON_EXTRACT(HISTOGRAM, '$.<span class="string">"number-of-buckets-specified"</span>')                FROM information_schema.COLUMN_STATISTICS                WHERE SCHEMA_NAME = <span class="symbol">'visa</span>' <span class="keyword">AND</span> TABLE_NAME = <span class="symbol">'admin</span>';': Unknown table <span class="symbol">'column_statistics</span>' <span class="keyword">in</span> information_schema (<span class="number">1109</span></span><br></pre></td></tr></table></figure><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[root@FCHK-instance ~]# mysql <span class="comment">--version</span></span><br><span class="line">mysql  Ver <span class="number">8.0</span><span class="number">.11</span> <span class="keyword">for</span> Linux <span class="keyword">on</span> x86_64 (MySQL Community <span class="keyword">Server</span> - GPL)</span><br><span class="line"></span><br><span class="line">可能是由于mysqldump <span class="number">8</span>中默认启用（COLUMN_STATISTICS）</span><br><span class="line"></span><br><span class="line">官方文档解释</span><br><span class="line">Mysql <span class="number">8.0</span> The INFORMATION_SCHEMA COLUMN_STATISTICS <span class="keyword">Table</span></span><br><span class="line">https://dev.mysql.com/doc/refman/<span class="number">8.0</span>/en/<span class="keyword">column</span>-<span class="keyword">statistics</span>-<span class="keyword">table</span>.html</span><br></pre></td></tr></table></figure><h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@FCHK-instance ~]# mysqldump <span class="comment">--host rm-xxxxxxxxxx2.mysql.rds.aliyuncs.com -u xxxx -p --databases visa --column-statistics=0 &gt; hk.sql</span></span><br><span class="line">Enter password:</span><br><span class="line"><span class="literal">Warning</span>: A partial dump from a server that has GTIDs will by <span class="keyword">default</span> include the GTIDs <span class="keyword">of</span> <span class="keyword">all</span> transactions, even those that changed suppressed parts <span class="keyword">of</span> the database. <span class="keyword">If</span> you don<span class="symbol">'t</span> want <span class="keyword">to</span> restore GTIDs, pass <span class="comment">--set-gtid-purged=OFF. To make a complete dump, pass --all-databases --triggers --routines --events.</span></span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;现象&quot;&gt;&lt;a href=&quot;#现象&quot; class=&quot;headerlink&quot; title=&quot;现象&quot;&gt;&lt;/a&gt;现象&lt;/h3&gt;&lt;figure class=&quot;highlight vhdl&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span c
-      
-    
-    </summary>
-    
-    
-      <category term="mysql" scheme="https://www.xiemx.com/categories/mysql/"/>
-    
-    
-      <category term="mysql" scheme="https://www.xiemx.com/tags/mysql/"/>
-    
-      <category term="debug" scheme="https://www.xiemx.com/tags/debug/"/>
-    
-      <category term="database" scheme="https://www.xiemx.com/tags/database/"/>
     
   </entry>
   
