@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>aws alb ingress controller | 求索</title>
+  <meta name="description" content="AWS-alb-ingress-controller项目：https://github.com/kubernetes-sigs/aws-load-balancer-controller   步骤1: controller 监听api-services的event事件,当发现 Ingress 资源满足要求，则将开始创建 AWS 资源。 步骤2: 为 Ingress 资源创建 ALB 步骤3: 为 I">
+<meta name="keywords" content="aws,k8s,ingress">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aws alb ingress controller">
+<meta property="og:url" content="https://www.xiemx.com/2020/10/03/kong-ingress/index.html">
+<meta property="og:site_name" content="求索">
+<meta property="og:description" content="AWS-alb-ingress-controller项目：https://github.com/kubernetes-sigs/aws-load-balancer-controller   步骤1: controller 监听api-services的event事件,当发现 Ingress 资源满足要求，则将开始创建 AWS 资源。 步骤2: 为 Ingress 资源创建 ALB 步骤3: 为 I">
+<meta property="og:locale" content="zh">
+<meta property="og:image" content="https://www.xiemx.com/images/aws-alb-ingress-controller.jpg">
+<meta property="og:image" content="https://www.xiemx.com/images/aws-alb-ingress-ex1.jpg">
+<meta property="og:image" content="https://www.xiemx.com/images/aws-alb-ingress-ex2.jpg">
+<meta property="og:image" content="https://www.xiemx.com/images/aws-alb-ingress-ex3.jpg">
+<meta property="og:image" content="https://www.xiemx.com/images/aws-alb-ingress-ex4.jpg">
+<meta property="og:updated_time" content="2020-12-07T08:00:06.980Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="aws alb ingress controller">
+<meta name="twitter:description" content="AWS-alb-ingress-controller项目：https://github.com/kubernetes-sigs/aws-load-balancer-controller   步骤1: controller 监听api-services的event事件,当发现 Ingress 资源满足要求，则将开始创建 AWS 资源。 步骤2: 为 Ingress 资源创建 ALB 步骤3: 为 I">
+<meta name="twitter:image" content="https://www.xiemx.com/images/aws-alb-ingress-controller.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.xiemx.com/2020/10/03/kong-ingress/index.html">
+  
+  <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiemx" target="_blank">
+          <img class="img-circle img-rotate"
+            src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200"
+            height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.Xie</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>
+          Shanghai, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar"
+        aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement"
+      role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tips">
+          <a href="/tips">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Tips</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <font color="#C91406">尔</font><font color="#B60119">不</font><font color="#A3002C">必</font><font color="#90003F">求</font><font color="#7D0052">记</font><font color="#6A0065">，</font><font color="#570078">却</font><font color="#44008B">宜</font><font color="#31009E">求</font><font color="#1E00B1">个</font><font color="#0B00C4">明</font><font color="#0000D7">白</font><font color="#0000EA">！</font>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/HPA/" style="font-size: 13px;">HPA</a> <a href="/tags/QOS/" style="font-size: 13px;">QOS</a> <a href="/tags/ResourceQuota/" style="font-size: 13px;">ResourceQuota</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.23px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.15px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.54px;">cluster</a> <a href="/tags/cluster-autoscaler/" style="font-size: 13px;">cluster-autoscaler</a> <a href="/tags/command/" style="font-size: 13.54px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.46px;">database</a> <a href="/tags/debug/" style="font-size: 13.85px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/descheduler/" style="font-size: 13px;">descheduler</a> <a href="/tags/django/" style="font-size: 13.08px;">django</a> <a href="/tags/dns/" style="font-size: 13.08px;">dns</a> <a href="/tags/docker/" style="font-size: 13.15px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.46px;">http</a> <a href="/tags/iis/" style="font-size: 13.31px;">iis</a> <a href="/tags/ingress/" style="font-size: 13.23px;">ingress</a> <a href="/tags/initContainer/" style="font-size: 13px;">initContainer</a> <a href="/tags/iptables/" style="font-size: 13.08px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.08px;">issue</a> <a href="/tags/k8s/" style="font-size: 13.92px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.08px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/kong/" style="font-size: 13.15px;">kong</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/ldap/" style="font-size: 13px;">ldap</a> <a href="/tags/limitRange/" style="font-size: 13px;">limitRange</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.15px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.08px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.15px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.08px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.62px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.08px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.23px;">network</a> <a href="/tags/nginx/" style="font-size: 13.69px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/openresty/" style="font-size: 13px;">openresty</a> <a href="/tags/pdb/" style="font-size: 13px;">pdb</a> <a href="/tags/php/" style="font-size: 13.31px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13.08px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.46px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.15px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.08px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.31px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.08px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.08px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.08px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.08px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.08px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/webserver/" style="font-size: 13.77px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.62px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.54px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/12/03/aws-targetgroupbinding/" class="title">Ingress Controller V2 TargetGroupBinding使用方法</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-03T02:52:00.000Z" itemprop="datePublished">2020-12-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/k8s/iptables/">iptables</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/12/03/k8s-services-iptables/" class="title">k8s services iptables规则探究</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-03T02:52:00.000Z" itemprop="datePublished">2020-12-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/12/02/k8s-cluster-autoscaler/" class="title">k8s cluster-autoscaler</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-02T09:05:04.000Z" itemprop="datePublished">2020-12-02</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/12/01/k8s-descheduler/" class="title">k8s descheduler</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-01T09:05:04.000Z" itemprop="datePublished">2020-12-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/21/nginx-ingress-ldap/" class="title">nginx-ingress下使用ldap 实现ingress auth认证</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-21T09:05:04.000Z" itemprop="datePublished">2020-11-21</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-kong-ingress" class="article article-type-post" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+      
+  
+    <h1 class="article-title" itemprop="name">
+      aws alb ingress controller
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/10/03/kong-ingress/" class="article-date">
+	  <time datetime="2020-10-03T02:52:00.000Z" itemprop="datePublished">2020-10-03</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/ingress/">ingress</a>►<a class="article-category-link" href="/categories/ingress/k8s/">k8s</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/aws/">aws</a>, <a class="article-tag-link" href="/tags/ingress/">ingress</a>, <a class="article-tag-link" href="/tags/k8s/">k8s</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/10/03/kong-ingress/#comments"
+            class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+      <h2 id="AWS-alb-ingress-controller"><a href="#AWS-alb-ingress-controller" class="headerlink" title="AWS-alb-ingress-controller"></a>AWS-alb-ingress-controller</h2><p>项目：<a href="https://github.com/kubernetes-sigs/aws-load-balancer-controller" target="_blank" rel="noopener">https://github.com/kubernetes-sigs/aws-load-balancer-controller</a></p>
+<p><img src="/images/aws-alb-ingress-controller.jpg" alt="aws-alb-ingress-controller"></p>
+<ul>
+<li><strong>步骤1</strong>: controller 监听api-services的event事件,当发现 Ingress 资源满足要求，则将开始创建 AWS 资源。</li>
+<li><strong>步骤2</strong>: 为 Ingress 资源创建 ALB</li>
+<li><strong>步骤3</strong>: 为 Ingress 资源中指定的每个后端创建目标组</li>
+<li><strong>步骤4</strong>: 为 Ingress 资源注释中指定的每个端口创建侦听器</li>
+<li><strong>步骤5</strong>: 为 Ingress 资源中指定的每个路径创建规则<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a><strong>注意</strong></h4><ul>
+<li>ingress-controller 需要有权限访问aws创建资源，具体权限可参考：<code>iam-policy.json</code>。本例子中直接对eks worknode role进行授权。理论上也可以进行OIDC接入aws iam针对于pod级别进行权限管理（未测试）。</li>
+<li>确保ingress annotation的资源存在，否则创建会失败，具体可看pod日志。</li>
+<li><code>service</code> 的type为 <code>nodeport</code>。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="Install-controller"><a href="#Install-controller" class="headerlink" title="Install controller"></a>Install controller</h3><details>
+<summary>rbac+sa+ns.yaml</summary>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Namespace</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">alb-ingress-controller</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ClusterRole</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    app:</span> <span class="string">alb-ingress-controller</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">alb-ingress-controller</span></span><br><span class="line"><span class="attr">rules:</span></span><br><span class="line"><span class="attr">  - apiGroups:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">""</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">extensions</span></span><br><span class="line"><span class="attr">    resources:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">configmaps</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">endpoints</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">events</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">ingresses</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">ingresses/status</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">services</span></span><br><span class="line"><span class="attr">    verbs:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">create</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">get</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">list</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">update</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">watch</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">patch</span></span><br><span class="line"><span class="attr">  - apiGroups:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">""</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">extensions</span></span><br><span class="line"><span class="attr">    resources:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">nodes</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">pods</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">secrets</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">services</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">namespaces</span></span><br><span class="line"><span class="attr">    verbs:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">get</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">list</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">watch</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ClusterRoleBinding</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    app:</span> <span class="string">alb-ingress-controller</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">alb-ingress-controller</span></span><br><span class="line"><span class="attr">roleRef:</span></span><br><span class="line"><span class="attr">  apiGroup:</span> <span class="string">rbac.authorization.k8s.io</span></span><br><span class="line"><span class="attr">  kind:</span> <span class="string">ClusterRole</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">alb-ingress-controller</span></span><br><span class="line"><span class="attr">subjects:</span></span><br><span class="line"><span class="attr">  - kind:</span> <span class="string">ServiceAccount</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">alb-ingress</span></span><br><span class="line"><span class="attr">    namespace:</span> <span class="string">alb-ingress-controller</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ServiceAccount</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    app:</span> <span class="string">alb-ingress-controller</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">alb-ingress</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">alb-ingress-controller</span></span><br></pre></td></tr></table></figure>
+
+</details>
+
+
+<details>
+<summary>controller.yaml</summary>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    app:</span> <span class="string">alb-ingress-controller</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">alb-ingress-controller</span></span><br><span class="line">  <span class="comment"># Namespace the ALB Ingress Controller should run in. Does not impact which</span></span><br><span class="line">  <span class="comment"># namespaces it's able to resolve ingress resource for. For limiting ingress</span></span><br><span class="line">  <span class="comment"># namespace scope, see --watch-namespace.</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">alb-ingress-controller</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  replicas:</span> <span class="number">1</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    matchLabels:</span></span><br><span class="line"><span class="attr">      app:</span> <span class="string">alb-ingress-controller</span></span><br><span class="line"><span class="attr">  strategy:</span></span><br><span class="line"><span class="attr">    rollingUpdate:</span></span><br><span class="line"><span class="attr">      maxSurge:</span> <span class="number">1</span></span><br><span class="line"><span class="attr">      maxUnavailable:</span> <span class="number">1</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">RollingUpdate</span></span><br><span class="line"><span class="attr">  template:</span></span><br><span class="line"><span class="attr">    metadata:</span></span><br><span class="line"><span class="attr">      creationTimestamp:</span> <span class="literal">null</span></span><br><span class="line"><span class="attr">      labels:</span></span><br><span class="line"><span class="attr">        app:</span> <span class="string">alb-ingress-controller</span></span><br><span class="line"><span class="attr">    spec:</span></span><br><span class="line"><span class="attr">      containers:</span></span><br><span class="line"><span class="attr">        - args:</span></span><br><span class="line">            <span class="comment"># Limit the namespace where this ALB Ingress Controller deployment will</span></span><br><span class="line">            <span class="comment"># resolve ingress resources. If left commented, all namespaces are used.</span></span><br><span class="line">            <span class="comment"># - --watch-namespace=uat</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># Setting the ingress-class flag below ensures that only ingress resources with the</span></span><br><span class="line">            <span class="comment"># annotation kubernetes.io/ingress.class: "alb" are respected by the controller. You may</span></span><br><span class="line">            <span class="comment"># choose any class you'd like for this controller to respect.</span></span><br><span class="line"><span class="bullet">            -</span> <span class="bullet">--ingress-class=alb</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># Name of your cluster. Used when naming resources created</span></span><br><span class="line">            <span class="comment"># by the ALB Ingress Controller, providing distinction between</span></span><br><span class="line">            <span class="comment"># clusters.</span></span><br><span class="line"><span class="bullet">            -</span> <span class="bullet">--cluster-name=aux-eks</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># AWS VPC ID this ingress controller will use to create AWS resources.</span></span><br><span class="line">            <span class="comment"># If unspecified, it will be discovered from ec2metadata.</span></span><br><span class="line">            <span class="comment"># - --aws-vpc-id=vpc-xxxxxx</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># AWS region this ingress controller will operate in.</span></span><br><span class="line">            <span class="comment"># If unspecified, it will be discovered from ec2metadata.</span></span><br><span class="line">            <span class="comment"># List of regions: http://docs.aws.amazon.com/general/latest/gr/rande.html#vpc_region</span></span><br><span class="line">            <span class="comment"># - --aws-region=us-west-1</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># Enables logging on all outbound requests sent to the AWS API.</span></span><br><span class="line">            <span class="comment"># If logging is desired, set to true.</span></span><br><span class="line">            <span class="comment"># - ---aws-api-debug</span></span><br><span class="line">            <span class="comment"># Maximum number of times to retry the aws calls.</span></span><br><span class="line">            <span class="comment"># defaults to 10.</span></span><br><span class="line">            <span class="comment"># - --aws-max-retries=10</span></span><br><span class="line"><span class="attr">          env:</span></span><br><span class="line">            <span class="comment"># AWS key id for authenticating with the AWS API.</span></span><br><span class="line">            <span class="comment"># This is only here for examples. It's recommended you instead use</span></span><br><span class="line">            <span class="comment"># a project like kube2iam for granting access.</span></span><br><span class="line">            <span class="comment">#- name: AWS_ACCESS_KEY_ID</span></span><br><span class="line">            <span class="comment">#  value: KEYVALUE</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># AWS key secret for authenticating with the AWS API.</span></span><br><span class="line">            <span class="comment"># This is only here for examples. It's recommended you instead use</span></span><br><span class="line">            <span class="comment"># a project like kube2iam for granting access.</span></span><br><span class="line">            <span class="comment">#- name: AWS_SECRET_ACCESS_KEY</span></span><br><span class="line">            <span class="comment">#  value: SECRETVALUE</span></span><br><span class="line">          <span class="comment"># Repository location of the ALB Ingress Controller.</span></span><br><span class="line"><span class="attr">          image:</span> <span class="number">894847497797.</span><span class="string">dkr.ecr.us-west-2.amazonaws.com/aws-alb-ingress-controller:v1.0.0</span></span><br><span class="line"><span class="attr">          imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line"><span class="attr">          name:</span> <span class="string">server</span></span><br><span class="line"><span class="attr">          resources:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">          terminationMessagePath:</span> <span class="string">/dev/termination-log</span></span><br><span class="line"><span class="attr">      dnsPolicy:</span> <span class="string">ClusterFirst</span></span><br><span class="line"><span class="attr">      restartPolicy:</span> <span class="string">Always</span></span><br><span class="line"><span class="attr">      securityContext:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">      terminationGracePeriodSeconds:</span> <span class="number">30</span></span><br><span class="line"><span class="attr">      serviceAccountName:</span> <span class="string">alb-ingress</span></span><br><span class="line"><span class="attr">      serviceAccount:</span> <span class="string">alb-ingress</span></span><br></pre></td></tr></table></figure>
+
+</details>
+<details>
+<summary>iam-policy.json</summary>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"Version"</span>: <span class="string">"2012-10-17"</span>,</span><br><span class="line">  <span class="attr">"Statement"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">      <span class="attr">"Action"</span>: [</span><br><span class="line">        <span class="string">"acm:DescribeCertificate"</span>,</span><br><span class="line">        <span class="string">"acm:ListCertificates"</span>,</span><br><span class="line">        <span class="string">"acm:GetCertificate"</span></span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">"Resource"</span>: <span class="string">"*"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">      <span class="attr">"Action"</span>: [</span><br><span class="line">        <span class="string">"ec2:AuthorizeSecurityGroupIngress"</span>,</span><br><span class="line">        <span class="string">"ec2:CreateSecurityGroup"</span>,</span><br><span class="line">        <span class="string">"ec2:CreateTags"</span>,</span><br><span class="line">        <span class="string">"ec2:DeleteTags"</span>,</span><br><span class="line">        <span class="string">"ec2:DeleteSecurityGroup"</span>,</span><br><span class="line">        <span class="string">"ec2:DescribeInstances"</span>,</span><br><span class="line">        <span class="string">"ec2:DescribeInstanceStatus"</span>,</span><br><span class="line">        <span class="string">"ec2:DescribeSecurityGroups"</span>,</span><br><span class="line">        <span class="string">"ec2:DescribeSubnets"</span>,</span><br><span class="line">        <span class="string">"ec2:DescribeTags"</span>,</span><br><span class="line">        <span class="string">"ec2:DescribeVpcs"</span>,</span><br><span class="line">        <span class="string">"ec2:ModifyInstanceAttribute"</span>,</span><br><span class="line">        <span class="string">"ec2:ModifyNetworkInterfaceAttribute"</span>,</span><br><span class="line">        <span class="string">"ec2:RevokeSecurityGroupIngress"</span></span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">"Resource"</span>: <span class="string">"*"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">      <span class="attr">"Action"</span>: [</span><br><span class="line">        <span class="string">"elasticloadbalancing:AddTags"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:CreateListener"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:CreateLoadBalancer"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:CreateRule"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:CreateTargetGroup"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:DeleteListener"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:DeleteLoadBalancer"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:DeleteRule"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:DeleteTargetGroup"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:DeregisterTargets"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:DescribeListeners"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:DescribeLoadBalancers"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:DescribeLoadBalancerAttributes"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:DescribeRules"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:DescribeSSLPolicies"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:DescribeTags"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:DescribeTargetGroups"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:DescribeTargetGroupAttributes"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:DescribeTargetHealth"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:ModifyListener"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:ModifyLoadBalancerAttributes"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:ModifyRule"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:ModifyTargetGroup"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:ModifyTargetGroupAttributes"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:RegisterTargets"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:RemoveTags"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:SetIpAddressType"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:SetSecurityGroups"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:SetSubnets"</span>,</span><br><span class="line">        <span class="string">"elasticloadbalancing:SetWebACL"</span></span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">"Resource"</span>: <span class="string">"*"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">      <span class="attr">"Action"</span>: [</span><br><span class="line">        <span class="string">"iam:GetServerCertificate"</span>,</span><br><span class="line">        <span class="string">"iam:ListServerCertificates"</span></span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">"Resource"</span>: <span class="string">"*"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">      <span class="attr">"Action"</span>: [</span><br><span class="line">        <span class="string">"waf-regional:GetWebACLForResource"</span>,</span><br><span class="line">        <span class="string">"waf-regional:GetWebACL"</span>,</span><br><span class="line">        <span class="string">"waf-regional:AssociateWebACL"</span>,</span><br><span class="line">        <span class="string">"waf-regional:DisassociateWebACL"</span></span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">"Resource"</span>: <span class="string">"*"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">      <span class="attr">"Action"</span>: [</span><br><span class="line">        <span class="string">"tag:GetResources"</span>,</span><br><span class="line">        <span class="string">"tag:TagResources"</span></span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">"Resource"</span>: <span class="string">"*"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">      <span class="attr">"Action"</span>: [</span><br><span class="line">        <span class="string">"waf:GetWebACL"</span></span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">"Resource"</span>: <span class="string">"*"</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</details>
+
+<details>
+<summary>ingress.yaml</summary>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  annotations:</span></span><br><span class="line">    <span class="string">alb.ingress.kubernetes.io/actions.ssl-redirect:</span> <span class="string">'&#123;"Type": "redirect", "RedirectConfig":</span></span><br><span class="line"><span class="string">      &#123; "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"&#125;&#125;'</span></span><br><span class="line">    <span class="string">alb.ingress.kubernetes.io/certificate-arn:</span> <span class="attr">arn:aws:acm:ap-northeast-1:xxxxxxxxx:certificate/281bee29-717c-4b50-bf8e-41a39748c548</span></span><br><span class="line">    <span class="string">alb.ingress.kubernetes.io/listen-ports:</span> <span class="string">'[&#123;"HTTP": 80, "HTTPS": 443&#125;]'</span></span><br><span class="line">    <span class="string">alb.ingress.kubernetes.io/scheme:</span> <span class="string">internet-facing</span></span><br><span class="line">    <span class="string">alb.ingress.kubernetes.io/subnets:</span> <span class="string">subnet-32ce5544,</span> <span class="string">subnet-41cf6c19</span></span><br><span class="line">    <span class="string">alb.ingress.kubernetes.io/security-groups:</span> <span class="string">sg-018347dc7a3ade5a2</span></span><br><span class="line">    <span class="string">kubernetes.io/ingress.class:</span> <span class="string">alb</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">xiemx-web-ingress</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  rules:</span></span><br><span class="line"><span class="attr">  - host:</span> <span class="string">www.xiemx.com</span></span><br><span class="line"><span class="attr">    http:</span></span><br><span class="line"><span class="attr">      paths:</span></span><br><span class="line"><span class="attr">      - backend:</span></span><br><span class="line"><span class="attr">          serviceName:</span> <span class="string">echo-v1</span></span><br><span class="line"><span class="attr">          servicePort:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">  - host:</span> <span class="string">'*.xiemx.com'</span></span><br><span class="line"><span class="attr">    http:</span></span><br><span class="line"><span class="attr">      paths:</span></span><br><span class="line"><span class="attr">      - backend:</span></span><br><span class="line"><span class="attr">          serviceName:</span> <span class="string">ssl-redirect</span></span><br><span class="line"><span class="attr">          servicePort:</span> <span class="string">use-annotation</span></span><br><span class="line"><span class="attr">        path:</span> <span class="string">/*</span></span><br><span class="line"><span class="attr">      - backend:</span></span><br><span class="line"><span class="attr">          serviceName:</span> <span class="string">echo-v1</span></span><br><span class="line"><span class="attr">          servicePort:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">        path:</span> <span class="string">/*</span></span><br></pre></td></tr></table></figure>
+
+</details>
+
+
+<hr>
+<h4 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h4><ul>
+<li><p>创建<code>alb-ingress-controller</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">➜  aws-alb-ingress-controller git:(master) ✗ k get all</span><br><span class="line">NAME                                         READY   STATUS    RESTARTS   AGE</span><br><span class="line">pod/alb-ingress-controller-9596b67b9-d7p69   1/1     Running   0          80d</span><br><span class="line"></span><br><span class="line">NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">deployment.apps/alb-ingress-controller   1/1     1            1           361d</span><br><span class="line"></span><br><span class="line">NAME                                               DESIRED   CURRENT   READY   AGE</span><br><span class="line">replicaset.apps/alb-ingress-controller-9596b67b9   1         1         1       361d</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">➜  aws-alb-ingress-controller git:(master) ✗ k logs -f pod/alb-ingress-controller-9596b67b9-d7p69</span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">AWS ALB Ingress controller</span><br><span class="line">  Release:    v1.0.0</span><br><span class="line">  Build:      git-c25bc6c5</span><br><span class="line">  Repository: https://github.com/kubernetes-sigs/aws-alb-ingress-controller</span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">W0917 09:50:21.934737       1 client_config.go:552] Neither --kubeconfig nor --master was specified.  Using the inClusterConfig.  This might not work.</span><br><span class="line">I0917 09:50:21.990251       1 :0] kubebuilder/controller "level"=0 "msg"="Starting EventSource"  "Controller"="alb-ingress-controller" "Source"=&#123;"Type":&#123;"metadata":&#123;"creationTimestamp":null&#125;,"spec":&#123;&#125;,"status":&#123;"loadBalancer":&#123;&#125;&#125;&#125;&#125;</span><br><span class="line">I0917 09:50:21.990434       1 :0] kubebuilder/controller "level"=0 "msg"="Starting EventSource"  "Controller"="alb-ingress-controller" "Source"=&#123;"Type":&#123;"metadata":&#123;"creationTimestamp":null&#125;,"spec":&#123;&#125;,"status":&#123;"loadBalancer":&#123;&#125;&#125;&#125;&#125;</span><br><span class="line">I0917 09:50:21.990555       1 :0] kubebuilder/controller "level"=0 "msg"="Starting EventSource"  "Controller"="alb-ingress-controller" "Source"=&#123;"Type":&#123;"metadata":&#123;"creationTimestamp":null&#125;&#125;&#125;</span><br><span class="line">I0917 09:50:21.990841       1 :0] kubebuilder/controller "level"=0 "msg"="Starting EventSource"  "Controller"="alb-ingress-controller" "Source"=&#123;"Type":&#123;"metadata":&#123;"creationTimestamp":null&#125;,"spec":&#123;&#125;,"status":&#123;"daemonEndpoints":&#123;"kubeletEndpoint":&#123;"Port":0&#125;&#125;,"nodeInfo":&#123;"machineID":"","systemUUID":"","bootID":"","kernelVersion":"","osImage":"","containerRuntimeVersion":"","kubeletVersion":"","kubeProxyVersion":"","operatingSystem":"","architecture":""&#125;&#125;&#125;&#125;</span><br><span class="line">I0917 09:50:21.993054       1 leaderelection.go:185] attempting to acquire leader lease  alb-ingress-controller/ingress-controller-leader-alb...</span><br><span class="line">I0917 09:50:38.515944       1 leaderelection.go:194] successfully acquired lease alb-ingress-controller/ingress-controller-leader-alb</span><br><span class="line">I0917 09:50:38.716164       1 :0] kubebuilder/controller "level"=0 "msg"="Starting Controller"  "Controller"="alb-ingress-controller"</span><br><span class="line">I0917 09:50:38.816322       1 :0] kubebuilder/controller "level"=0 "msg"="Starting workers"  "Controller"="alb-ingress-controller" "WorkerCount"=1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建<code>ingress</code>测试</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">➜  aws-alb-ingress-controller git:(master) ✗ k get ingress</span><br><span class="line">NAME                HOSTS                       ADDRESS                                                                      PORTS   AGE</span><br><span class="line">xiemx-web-ingress   www.xiemx.com,*.xiemx.com   71a14391-albingresscontrol-2ac6-648325502.ap-northeast-1.elb.amazonaws.com   80      14m</span><br><span class="line">➜  aws-alb-ingress-controller git:(master) ✗ curl 71a14391-albingresscontrol-2ac6-648325502.ap-northeast-1.elb.amazonaws.com -H host:www.xiemx.com -I</span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Mon, 07 Dec 2020 06:39:29 GMT</span><br><span class="line">Content-Type: text/plain</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Server: echoserver</span><br><span class="line"></span><br><span class="line">➜  aws-alb-ingress-controller git:(master) ✗ curl 71a14391-albingresscontrol-2ac6-648325502.ap-northeast-1.elb.amazonaws.com -H host:www.xiemx.com -i</span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Mon, 07 Dec 2020 06:39:37 GMT</span><br><span class="line">Content-Type: text/plain</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Server: echoserver</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Hostname: echo-85fb7989cc-d556c</span><br><span class="line"></span><br><span class="line">Pod Information:</span><br><span class="line">	node name:	ip-10-200-2-113.ap-northeast-1.compute.internal</span><br><span class="line">	pod name:	echo-85fb7989cc-d556c</span><br><span class="line">	pod namespace:	alb-ingress-controller</span><br><span class="line">	pod IP:	10.200.2.197</span><br><span class="line"></span><br><span class="line">Server values:</span><br><span class="line">	server_version=nginx: 1.12.2 - lua: 10010</span><br><span class="line"></span><br><span class="line">Request Information:</span><br><span class="line">	client_address=10.200.2.21</span><br><span class="line">	method=GET</span><br><span class="line">	real path=/</span><br><span class="line">	query=</span><br><span class="line">	request_version=1.1</span><br><span class="line">	request_scheme=http</span><br><span class="line">	request_uri=http://www.xiemx.com:8080/</span><br><span class="line"></span><br><span class="line">Request Headers:</span><br><span class="line">	accept=*/*</span><br><span class="line">	host=www.xiemx.com</span><br><span class="line">	user-agent=curl/7.54.0</span><br><span class="line">	x-amzn-trace-id=Root=1-5fcdce29-473e8ac375ce203f4961bec3</span><br><span class="line">	x-forwarded-for=101.231.43.114</span><br><span class="line">	x-forwarded-port=80</span><br><span class="line">	x-forwarded-proto=http</span><br><span class="line"></span><br><span class="line">Request Body:</span><br><span class="line">	-no body in request-</span><br><span class="line"></span><br><span class="line">➜  aws-alb-ingress-controller git:(master) ✗ curl 71a14391-albingresscontrol-2ac6-648325502.ap-northeast-1.elb.amazonaws.com -H host:blog.xiemx.com -I</span><br><span class="line">HTTP/1.1 301 Moved Permanently</span><br><span class="line">Server: awselb/2.0</span><br><span class="line">Date: Mon, 07 Dec 2020 06:39:44 GMT</span><br><span class="line">Content-Type: text/html</span><br><span class="line">Content-Length: 134</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Location: https://blog.xiemx.com:443/</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="aws-alb-规则"><a href="#aws-alb-规则" class="headerlink" title="aws alb 规则"></a>aws alb 规则</h3><p><img src="/images/aws-alb-ingress-ex1.jpg" alt="aws-alb-ingress-ex1"><br><img src="/images/aws-alb-ingress-ex2.jpg" alt="aws-alb-ingress-ex2"><br><img src="/images/aws-alb-ingress-ex3.jpg" alt="aws-alb-ingress-ex3"><br><img src="/images/aws-alb-ingress-ex4.jpg" alt="aws-alb-ingress-ex4"></p>
+</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.xiemx.com/2020/10/03/kong-ingress/" title="aws alb ingress controller" target="_blank" rel="external">https://www.xiemx.com/2020/10/03/kong-ingress/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客只是作者自己用来记录工作、学习中的笔记，如有版权问题请联系作者。另外，转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128"
+            class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span
+              class="text-dark">Mingxu.Xie</span><small class="ml-1x">DevOps</small></a>
+        </h3>
+        <div>一个普通devops。最近有点沉迷户外，可能逐渐驴化！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+    </div>
+  </article>
+  
+  
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+<nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/11/02/kong-notebook/" title="kong 学习随记"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/02/28/nginx-and-openresty-phases/" title="nginx/openresty 执行阶段"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq"></div>
+    
+  </div>
+  </div>
+</nav>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+    
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+        
+        &copy; 2020 Mingxu.xie
+        
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ccf366da75afeaf5215a',
+    clientSecret: 'ab4c80318537cc3fae0a62dcbd11fd206b57ac6e',
+    repo: 'xray',
+    owner: 'xiemx',
+    admin: ['xiemx'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+    <script defer type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-89045515-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>

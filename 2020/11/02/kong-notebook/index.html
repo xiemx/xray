@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>kong 学习随记 | 求索</title>
+  <meta name="description" content="模式 db dbless   install1234567891011121314docker run -d --name kong \     -v &quot;kong.yaml:/usr/local/kong/declarative&quot; \     -e &quot;KONG_DATABASE=off&quot; \     -e &quot;KONG_DECLARATIVE_CONFIG=/usr/local/kong/decla">
+<meta name="keywords" content="kong">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kong 学习随记">
+<meta property="og:url" content="https://www.xiemx.com/2020/11/02/kong-notebook/index.html">
+<meta property="og:site_name" content="求索">
+<meta property="og:description" content="模式 db dbless   install1234567891011121314docker run -d --name kong \     -v &quot;kong.yaml:/usr/local/kong/declarative&quot; \     -e &quot;KONG_DATABASE=off&quot; \     -e &quot;KONG_DECLARATIVE_CONFIG=/usr/local/kong/decla">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2020-12-07T05:46:43.045Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kong 学习随记">
+<meta name="twitter:description" content="模式 db dbless   install1234567891011121314docker run -d --name kong \     -v &quot;kong.yaml:/usr/local/kong/declarative&quot; \     -e &quot;KONG_DATABASE=off&quot; \     -e &quot;KONG_DECLARATIVE_CONFIG=/usr/local/kong/decla">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.xiemx.com/2020/11/02/kong-notebook/index.html">
+  
+  <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
+  
+  
+  <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiemx" target="_blank">
+          <img class="img-circle img-rotate"
+            src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200"
+            height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.Xie</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>
+          Shanghai, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar"
+        aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement"
+      role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tips">
+          <a href="/tips">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Tips</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <font color="#C91406">尔</font><font color="#B60119">不</font><font color="#A3002C">必</font><font color="#90003F">求</font><font color="#7D0052">记</font><font color="#6A0065">，</font><font color="#570078">却</font><font color="#44008B">宜</font><font color="#31009E">求</font><font color="#1E00B1">个</font><font color="#0B00C4">明</font><font color="#0000D7">白</font><font color="#0000EA">！</font>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/HPA/" style="font-size: 13px;">HPA</a> <a href="/tags/QOS/" style="font-size: 13px;">QOS</a> <a href="/tags/ResourceQuota/" style="font-size: 13px;">ResourceQuota</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.23px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.15px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.54px;">cluster</a> <a href="/tags/cluster-autoscaler/" style="font-size: 13px;">cluster-autoscaler</a> <a href="/tags/command/" style="font-size: 13.54px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.46px;">database</a> <a href="/tags/debug/" style="font-size: 13.85px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/descheduler/" style="font-size: 13px;">descheduler</a> <a href="/tags/django/" style="font-size: 13.08px;">django</a> <a href="/tags/dns/" style="font-size: 13.08px;">dns</a> <a href="/tags/docker/" style="font-size: 13.15px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.46px;">http</a> <a href="/tags/iis/" style="font-size: 13.31px;">iis</a> <a href="/tags/ingress/" style="font-size: 13.23px;">ingress</a> <a href="/tags/initContainer/" style="font-size: 13px;">initContainer</a> <a href="/tags/iptables/" style="font-size: 13.08px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.08px;">issue</a> <a href="/tags/k8s/" style="font-size: 13.92px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.08px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/kong/" style="font-size: 13.15px;">kong</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/ldap/" style="font-size: 13px;">ldap</a> <a href="/tags/limitRange/" style="font-size: 13px;">limitRange</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.15px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.08px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.15px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.08px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.62px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.08px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.23px;">network</a> <a href="/tags/nginx/" style="font-size: 13.69px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/openresty/" style="font-size: 13px;">openresty</a> <a href="/tags/pdb/" style="font-size: 13px;">pdb</a> <a href="/tags/php/" style="font-size: 13.31px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13.08px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.46px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.15px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.08px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.31px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.08px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.08px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.08px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.08px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.08px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/webserver/" style="font-size: 13.77px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.62px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.54px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/12/03/aws-targetgroupbinding/" class="title">Ingress Controller V2 TargetGroupBinding使用方法</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-03T02:52:00.000Z" itemprop="datePublished">2020-12-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/k8s/iptables/">iptables</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/12/03/k8s-services-iptables/" class="title">k8s services iptables规则探究</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-03T02:52:00.000Z" itemprop="datePublished">2020-12-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/12/02/k8s-cluster-autoscaler/" class="title">k8s cluster-autoscaler</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-02T09:05:04.000Z" itemprop="datePublished">2020-12-02</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/12/01/k8s-descheduler/" class="title">k8s descheduler</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-01T09:05:04.000Z" itemprop="datePublished">2020-12-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/21/nginx-ingress-ldap/" class="title">nginx-ingress下使用ldap 实现ingress auth认证</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-21T09:05:04.000Z" itemprop="datePublished">2020-11-21</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-kong-notebook" class="article article-type-post" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+      
+  
+    <h1 class="article-title" itemprop="name">
+      kong 学习随记
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/11/02/kong-notebook/" class="article-date">
+	  <time datetime="2020-11-02T02:52:00.000Z" itemprop="datePublished">2020-11-02</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/kong/">kong</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/kong/">kong</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/11/02/kong-notebook/#comments"
+            class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+      <h4 id="模式"><a href="#模式" class="headerlink" title="模式"></a>模式</h4><ul>
+<li>db</li>
+<li>dbless</li>
+</ul>
+<hr>
+<h4 id="install"><a href="#install" class="headerlink" title="install"></a>install</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name kong \</span><br><span class="line">     -v "kong.yaml:/usr/local/kong/declarative" \</span><br><span class="line">     -e "KONG_DATABASE=off" \</span><br><span class="line">     -e "KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yml" \</span><br><span class="line">     -e "KONG_PROXY_ACCESS_LOG=/dev/stdout" \</span><br><span class="line">     -e "KONG_ADMIN_ACCESS_LOG=/dev/stdout" \</span><br><span class="line">     -e "KONG_PROXY_ERROR_LOG=/dev/stderr" \</span><br><span class="line">     -e "KONG_ADMIN_ERROR_LOG=/dev/stderr" \</span><br><span class="line">     -e "KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl" \</span><br><span class="line">     -p 8000:8000 \</span><br><span class="line">     -p 8443:8443 \</span><br><span class="line">     -p 8001:8001 \</span><br><span class="line">     -p 8444:8444 \</span><br><span class="line">     kong:latest</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>plugins –&gt; module</li>
+<li>comsumer –&gt; 消费者目前只看到用作auth认证用</li>
+<li>services –&gt; upstream</li>
+<li>routes –&gt; server</li>
+</ul>
+<hr>
+<h4 id="debug-模式"><a href="#debug-模式" class="headerlink" title="debug 模式"></a>debug 模式</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -H "X-Kong-Debug: 1" http://localhost:8000</span><br></pre></td></tr></table></figure>
+
+<h4 id="注入环境变量"><a href="#注入环境变量" class="headerlink" title="注入环境变量"></a>注入环境变量</h4><p>从配置文件中加载属性时，Kong还将寻找同名的环境变量。声明前缀<code>KONG_</code>并大写可以覆盖默认配置。<br>example:</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="builtin-name">export</span> <span class="attribute">KONG_DATABASE</span>=off</span><br><span class="line">使用dbless 模式启动kong</span><br></pre></td></tr></table></figure>
+
+<h4 id="注入nginx变量"><a href="#注入nginx变量" class="headerlink" title="注入nginx变量"></a>注入nginx变量</h4><p>前缀为的条目<code>nginx_http_</code>将注入到整体http 块指令中。</p>
+<p>前缀为的条目<code>nginx_proxy_</code>将注入到server处理Kong代理端口的block指令中。</p>
+<p>前缀为的条目<code>nginx_admin_</code>将注入到server处理Kong的Admin API端口的block指令中。</p>
+<p>example：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="builtin-name">export</span> <span class="attribute">KONG_NGINX_HTTP_OUTPUT_BUFFERS</span>=<span class="string">"4 64k"</span></span><br><span class="line"></span><br><span class="line">将会在nginx的http 代码段中加入一条 </span><br><span class="line"><span class="attribute">output_buffers</span>=<span class="string">"4 64k"</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="HOST传递"><a href="#HOST传递" class="headerlink" title="HOST传递"></a>HOST传递</h4><p><code>preserve_host: true</code> 将会传递request原始的host，相当于<code>proxy_set_header host $host</code></p>
+<p>expamle:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">test</span></span><br><span class="line"><span class="attr">  preserve_host:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  url:</span> <span class="attr">http://mockbin.org</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="request-header区分路由"><a href="#request-header区分路由" class="headerlink" title="request header区分路由"></a>request header区分路由</h4><p>注意：headers键是逻辑键AND，其值是逻辑键OR。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">routes:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">test</span></span><br><span class="line"><span class="attr">  service:</span> <span class="string">test</span></span><br><span class="line"><span class="attr">  hosts:</span> <span class="string">["x.t.xiemx.com"]</span></span><br><span class="line"><span class="attr">  headers:</span> <span class="string">&#123;</span> <span class="string">"version"</span><span class="string">:</span> <span class="string">["v1","v2"]&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">➜</span>  <span class="string">Documents</span> <span class="string">curl</span> <span class="attr">localhost:8000</span> <span class="bullet">-H</span> <span class="attr">version:v1</span> <span class="bullet">-H</span> <span class="attr">host:x.t.xiemx.com</span> <span class="bullet">-I</span></span><br><span class="line"><span class="string">HTTP/1.1</span> <span class="number">200</span> <span class="string">OK</span></span><br><span class="line"><span class="attr">Content-Type:</span> <span class="string">text/html;</span> <span class="string">charset=utf-8</span></span><br><span class="line"><span class="attr">Content-Length:</span> <span class="number">10695</span></span><br><span class="line"><span class="attr">Connection:</span> <span class="string">keep-alive</span></span><br><span class="line"><span class="attr">Server:</span> <span class="string">Cowboy</span></span><br><span class="line"><span class="attr">Etag:</span> <span class="string">W/"29c7-XG+PICJmz/J+UYWt5gkKqqAUXjc"</span></span><br><span class="line"><span class="attr">Vary:</span> <span class="string">Accept-Encoding</span></span><br><span class="line"><span class="attr">Date:</span> <span class="string">Fri,</span> <span class="number">03</span> <span class="string">Jan</span> <span class="number">2020</span> <span class="number">03</span><span class="string">:19:08</span> <span class="string">GMT</span></span><br><span class="line"><span class="attr">Via:</span> <span class="string">kong/1.4.2</span></span><br><span class="line"><span class="attr">X-Kong-Upstream-Status:</span> <span class="number">200</span></span><br><span class="line"><span class="attr">X-Kong-Upstream-Latency:</span> <span class="number">517</span></span><br><span class="line"><span class="attr">X-Kong-Proxy-Latency:</span> <span class="number">34</span></span><br><span class="line"><span class="attr">Kong-Cloud-Request-ID:</span> <span class="string">eeb277b4d0df3eb242e92dc0c669f8bc</span></span><br><span class="line"></span><br><span class="line"><span class="string">➜</span>  <span class="string">Documents</span> <span class="string">curl</span> <span class="attr">localhost:8000</span> <span class="bullet">-H</span> <span class="attr">version:v2</span> <span class="bullet">-H</span> <span class="attr">host:x.t.xiemx.com</span> <span class="bullet">-I</span></span><br><span class="line"><span class="string">HTTP/1.1</span> <span class="number">200</span> <span class="string">OK</span></span><br><span class="line"><span class="attr">Content-Type:</span> <span class="string">text/html;</span> <span class="string">charset=utf-8</span></span><br><span class="line"><span class="attr">Content-Length:</span> <span class="number">10695</span></span><br><span class="line"><span class="attr">Connection:</span> <span class="string">keep-alive</span></span><br><span class="line"><span class="attr">Server:</span> <span class="string">Cowboy</span></span><br><span class="line"><span class="attr">Etag:</span> <span class="string">W/"29c7-XG+PICJmz/J+UYWt5gkKqqAUXjc"</span></span><br><span class="line"><span class="attr">Vary:</span> <span class="string">Accept-Encoding</span></span><br><span class="line"><span class="attr">Date:</span> <span class="string">Fri,</span> <span class="number">03</span> <span class="string">Jan</span> <span class="number">2020</span> <span class="number">03</span><span class="string">:19:17</span> <span class="string">GMT</span></span><br><span class="line"><span class="attr">Via:</span> <span class="string">kong/1.4.2</span></span><br><span class="line"><span class="attr">X-Kong-Upstream-Status:</span> <span class="number">200</span></span><br><span class="line"><span class="attr">X-Kong-Upstream-Latency:</span> <span class="number">566</span></span><br><span class="line"><span class="attr">X-Kong-Proxy-Latency:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">Kong-Cloud-Request-ID:</span> <span class="string">f3eaf8e27f3d3f9510f1c0c4619df035</span></span><br><span class="line"></span><br><span class="line"><span class="string">➜</span>  <span class="string">Documents</span> <span class="string">curl</span> <span class="attr">localhost:8000</span> <span class="bullet">-H</span> <span class="attr">version:v3</span> <span class="bullet">-H</span> <span class="attr">host:x.t.xiemx.com</span> <span class="bullet">-I</span></span><br><span class="line"><span class="string">HTTP/1.1</span> <span class="number">404</span> <span class="string">Not</span> <span class="string">Found</span></span><br><span class="line"><span class="attr">Date:</span> <span class="string">Fri,</span> <span class="number">03</span> <span class="string">Jan</span> <span class="number">2020</span> <span class="number">03</span><span class="string">:19:23</span> <span class="string">GMT</span></span><br><span class="line"><span class="attr">Content-Type:</span> <span class="string">application/json;</span> <span class="string">charset=utf-8</span></span><br><span class="line"><span class="attr">Connection:</span> <span class="string">keep-alive</span></span><br><span class="line"><span class="attr">Content-Length:</span> <span class="number">48</span></span><br><span class="line"><span class="attr">X-Kong-Response-Latency:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">Server:</span> <span class="string">kong/1.4.2</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="path优先级"><a href="#path优先级" class="headerlink" title="path优先级"></a>path优先级</h4><ul>
+<li>用路径前缀代理时，最长的路径将首先被评估</li>
+<li>regex_priority 优先级</li>
+</ul>
+<h4 id="src-dest-ip白名单"><a href="#src-dest-ip白名单" class="headerlink" title="src/dest ip白名单"></a>src/dest ip白名单</h4><p>sources/destinations路由属性仅适用于TCP和TLS路线。它允许通过传入连接IP、网段或端口源的列表来匹配路由</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">service: TCPService</span><br><span class="line">protocols: </span><br><span class="line">  - tls</span><br><span class="line">  - tcp</span><br><span class="line">sources: </span><br><span class="line">  - &#123; ip: <span class="number">1.1</span><span class="number">.1</span><span class="number">.1</span>/<span class="number">32</span>, port: <span class="number">1234</span> &#125;</span><br><span class="line">  - ip: <span class="number">127.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">8</span></span><br><span class="line">destinations:</span><br><span class="line">  - &#123; ip: <span class="number">2.2</span><span class="number">.2</span><span class="number">.2</span>/<span class="number">32</span>, port: <span class="number">1234</span> &#125;</span><br><span class="line">  - ip: <span class="number">10.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="strip-path-转发时删除路径"><a href="#strip-path-转发时删除路径" class="headerlink" title="strip_path 转发时删除路径"></a>strip_path 转发时删除路径</h4><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"paths"</span>: [<span class="string">"/service"</span>],</span><br><span class="line">    <span class="string">"strip_path"</span>: <span class="literal">true</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">request_url<span class="function"> -&gt;</span> <span class="regexp">/service/1/</span></span><br><span class="line">proxy_url<span class="function"> -&gt;</span> <span class="regexp">/1/</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="Kong-proxy时默认处理的HEADER"><a href="#Kong-proxy时默认处理的HEADER" class="headerlink" title="Kong proxy时默认处理的HEADER"></a>Kong proxy时默认处理的HEADER</h3><ul>
+<li>Host: <your_upstream_host></your_upstream_host></li>
+<li>Connection: keep-alive，以允许重用上游连接。</li>
+<li>X-Real-IP: <remote_addr>，其中<code>$remote_addr</code>变量的名称与ngx_http_core_module提供的名称相同。<code>$remote_addr</code>可能被ngx_http_realip_module覆盖。</remote_addr></li>
+<li>X-Forwarded-For: <ip>, 访问路径。</ip></li>
+<li>X-Forwarded-Proto: <protocol>，客户端使用的协议。使用ngx_http_core_module <code>$scheme</code>提供的变量的值。</protocol></li>
+<li>X-Forwarded-Host: <host>，客户端发送的主机名。</host></li>
+<li>X-Forwarded-Port: <port>，服务器的端口。使用ngx_http_core_module <code>$server_port</code>变量的值。</port></li>
+</ul>
+<hr>
+<h3 id="Kong-Response-headers"><a href="#Kong-Response-headers" class="headerlink" title="Kong Response headers"></a>Kong Response headers</h3><p>nginx 接收到upstream 的响应只会执行header-filter阶段将下面的header封装进header，后续会在执行body—filter阶段</p>
+<ul>
+<li>Via: kong/x.x.x，x.x.x使用的Kong版本在哪里</li>
+<li>X-Kong-Proxy-Latency: <latency>，Kong从客户端接收请求到将请求发送到上游服务之间的时间（以毫秒为单位）。</latency></li>
+<li>X-Kong-Upstream-Latency: <latency>，Kong等待上游服务响应的第一个字节的时间（以毫秒为单位）。</latency></li>
+</ul>
+<hr>
+<h3 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h3><ul>
+<li><h4 id="DNS负载均衡-ttl-0"><a href="#DNS负载均衡-ttl-0" class="headerlink" title="DNS负载均衡(ttl=0)"></a>DNS负载均衡(ttl=0)</h4><ul>
+<li>SRV record</li>
+<li>A record</li>
+<li>CNAME record</li>
+</ul>
+<p><strong>优先级：</strong></p>
+<ul>
+<li>LAST(最后一次成功的类型) -&gt; SRV -&gt; A -&gt; CNAME</li>
+<li>可以在Kong的配置文件中修改,默认<code>dns_order:LAST,SRV,A,CNAME</code></li>
+</ul>
+<p><strong>问题：</strong></p>
+<ul>
+<li>DNS可能不会返回所有的记录，导致下游服务器负载不均衡</li>
+</ul>
+</li>
+<li><h4 id="Ring-balancer"><a href="#Ring-balancer" class="headerlink" title="Ring-balancer"></a>Ring-balancer</h4><ul>
+<li><p>upstream</p>
+<ul>
+<li>service中host=”upstream_name”使用的名字，使用方法同nginx类似</li>
+<li>upstream 需要预先分配一个slots，target会根据weight分配到slots上，默认upstream的slots=10000，范围（1 - 65536）。</li>
+<li>插槽数越多，随机分布越好，但是更改的开销就越大（添加/删除目标）</li>
+<li>当插槽数量更改时，将需要重建</li>
+<li>which can be overwritten before proxying, using upstream’s property <code>host_header</code></li>
+</ul>
+</li>
+<li><p>target</p>
+<ul>
+<li>实际upstream中使用的主机地址，等同于nginx upstream中的server指令，支持定义<code>weight</code></li>
+<li>当target使用域名时，会将域名进行解析，然后将每条记录都设置到slots上，切遵循DNS TTL过期时间，去重复查询</li>
+<li>如果存在SRV记录，会优先使用SRV 记录的weight/port</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><h4 id="负载均衡算法"><a href="#负载均衡算法" class="headerlink" title="负载均衡算法"></a>负载均衡算法</h4><ul>
+<li><p>HASH（如下hash key）</p>
+<ul>
+<li>none 不使用哈希，而采用weighted-round-robin（默认值）。</li>
+<li>cookie</li>
+<li>ip</li>
+<li>header</li>
+<li>consumer</li>
+</ul>
+</li>
+<li><p>WRR(weighted-round-robin)</p>
+</li>
+</ul>
+<p><strong>PS</strong>: upstream 中的target 如未指定port则使用requst 请求中的port 不会使用，service中定义的port</p>
+</li>
+</ul>
+<hr>
+<h3 id="健康检测"><a href="#健康检测" class="headerlink" title="健康检测"></a>健康检测</h3><ul>
+<li><p>active<br>主动发出http/https request轮询target</p>
+</li>
+<li><p>passive<br>分析backend response的状态码，不需要指定URL等参数</p>
+<p>PS: interval=0时禁止，healthcheck可以同时开启被动检测，已实现断路功能，并开启主动检测中的unhealthcheck实现target故障自愈后自动加入</p>
+</li>
+</ul>
+<hr>
+<h3 id="kong-cluster"><a href="#kong-cluster" class="headerlink" title="kong cluster"></a>kong cluster</h3><ul>
+<li><p>集群之间的节点流量不会自动负载均衡，需要在node前面有一个负载均衡器</p>
+</li>
+<li><p>由于性能的原因，node不会在proxy流量时去链接PG，而是将数据cache在内存中，多node集群中需要保证节点的数据同步更新</p>
+<ul>
+<li>db_update_frequency: 5 #node节点去db中同步数据的间隔，数据刷新间隔</li>
+<li>db_update_propagation: 0 #如果后端是分布式数据库的话，则需要配置这个值。此值应该等于分布式数据库内部传播数据最终达到数据一致的时间。如果设置这个值，数据库更新时间将会为<code>db_update_frequency + db_update_propagation</code>，并且设置的节点也会等待一个propagation时间再去update cache</li>
+<li>db_cache_ttl: 0 #防止invalid event事件node没有接收到而错过更新，可以设置一个主动过期时间</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.xiemx.com/2020/11/02/kong-notebook/" title="kong 学习随记" target="_blank" rel="external">https://www.xiemx.com/2020/11/02/kong-notebook/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客只是作者自己用来记录工作、学习中的笔记，如有版权问题请联系作者。另外，转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128"
+            class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span
+              class="text-dark">Mingxu.Xie</span><small class="ml-1x">DevOps</small></a>
+        </h3>
+        <div>一个普通devops。最近有点沉迷户外，可能逐渐驴化！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+    </div>
+  </article>
+  
+  
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+<nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/11/03/aws-alb-ingress/" title="kong ingress"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/10/03/kong-ingress/" title="aws alb ingress controller"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq"></div>
+    
+  </div>
+  </div>
+</nav>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+    
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiemx" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xiemx1991" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://facebook.com/xiemx1991" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+        
+        &copy; 2020 Mingxu.xie
+        
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'ccf366da75afeaf5215a',
+    clientSecret: 'ab4c80318537cc3fae0a62dcbd11fd206b57ac6e',
+    repo: 'xray',
+    owner: 'xiemx',
+    admin: ['xiemx'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+    <script defer type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-89045515-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
