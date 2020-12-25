@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html lang=zh>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
   <meta name="renderer" content="webkit">
-  <meta http-equiv="Cache-Control" content="no-transform">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="format-detection" content="telephone=no,email=no,adress=no">
   <!-- Color theme for statusbar -->
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#000000" />
   <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
-  <meta http-equiv="window-target" content="_top">
+  <meta http-equiv="window-target" content="_top" />
   
   
   <title>zombie/orphan process | 求索</title>
-  <meta name="description" content="zombie process / orphan process父进程通过fork()函数来创建子进程。子进程会copy 当前父进程的状态和运行代码，独立运行，子进程和父进程的的运行和结束是一个异步的过程，fork出来之后运行的先后顺序也取决于系统的调度，不存在绝对的顺序。linux 为了进程退出能被正确回收，会维护一张进程的映射表，当进程结束时，系统会将进程的信息存储起来，等待父进程去处理回收子进">
-<meta name="keywords" content="linux">
+  <meta name="description" content="zombie process &#x2F; orphan process父进程通过fork()函数来创建子进程。子进程会copy 当前父进程的状态和运行代码，独立运行，子进程和父进程的的运行和结束是一个异步的过程，fork出来之后运行的先后顺序也取决于系统的调度，不存在绝对的顺序。linux 为了进程退出能被正确回收，会维护一张进程的映射表，当进程结束时，系统会将进程的信息存储起来，等待父进程去处理回收子进">
 <meta property="og:type" content="article">
 <meta property="og:title" content="zombie&#x2F;orphan process">
 <meta property="og:url" content="https://www.xiemx.com/2020/01/22/zombie-and-orphan-process/index.html">
 <meta property="og:site_name" content="求索">
-<meta property="og:description" content="zombie process / orphan process父进程通过fork()函数来创建子进程。子进程会copy 当前父进程的状态和运行代码，独立运行，子进程和父进程的的运行和结束是一个异步的过程，fork出来之后运行的先后顺序也取决于系统的调度，不存在绝对的顺序。linux 为了进程退出能被正确回收，会维护一张进程的映射表，当进程结束时，系统会将进程的信息存储起来，等待父进程去处理回收子进">
-<meta property="og:locale" content="zh">
-<meta property="og:updated_time" content="2020-01-22T03:02:33.828Z">
+<meta property="og:description" content="zombie process &#x2F; orphan process父进程通过fork()函数来创建子进程。子进程会copy 当前父进程的状态和运行代码，独立运行，子进程和父进程的的运行和结束是一个异步的过程，fork出来之后运行的先后顺序也取决于系统的调度，不存在绝对的顺序。linux 为了进程退出能被正确回收，会维护一张进程的映射表，当进程结束时，系统会将进程的信息存储起来，等待父进程去处理回收子进">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-01-22T02:52:00.000Z">
+<meta property="article:modified_time" content="2020-12-14T06:37:28.260Z">
+<meta property="article:author" content="Mingxu.xie">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zombie&#x2F;orphan process">
-<meta name="twitter:description" content="zombie process / orphan process父进程通过fork()函数来创建子进程。子进程会copy 当前父进程的状态和运行代码，独立运行，子进程和父进程的的运行和结束是一个异步的过程，fork出来之后运行的先后顺序也取决于系统的调度，不存在绝对的顺序。linux 为了进程退出能被正确回收，会维护一张进程的映射表，当进程结束时，系统会将进程的信息存储起来，等待父进程去处理回收子进">
   <!-- Canonical links -->
   <link rel="canonical" href="https://www.xiemx.com/2020/01/22/zombie-and-orphan-process/index.html">
   
@@ -38,14 +39,16 @@
   
   <link rel="icon" href="/favicon.png" type="image/x-icon">
   
-  <link rel="stylesheet" href="/css/style.css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
   
   
   
   
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
   
-</head>
+<meta name="generator" content="Hexo 5.3.0"></head>
 
 <body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
   <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -210,7 +213,7 @@
   <div class="widget">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget-body tagcloud">
-      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/HPA/" style="font-size: 13px;">HPA</a> <a href="/tags/QOS/" style="font-size: 13px;">QOS</a> <a href="/tags/ResourceQuota/" style="font-size: 13px;">ResourceQuota</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.23px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.15px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.54px;">cluster</a> <a href="/tags/cluster-autoscaler/" style="font-size: 13px;">cluster-autoscaler</a> <a href="/tags/command/" style="font-size: 13.54px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.46px;">database</a> <a href="/tags/debug/" style="font-size: 13.85px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/descheduler/" style="font-size: 13px;">descheduler</a> <a href="/tags/django/" style="font-size: 13.08px;">django</a> <a href="/tags/dns/" style="font-size: 13.08px;">dns</a> <a href="/tags/docker/" style="font-size: 13.15px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.46px;">http</a> <a href="/tags/iis/" style="font-size: 13.31px;">iis</a> <a href="/tags/ingress/" style="font-size: 13.23px;">ingress</a> <a href="/tags/initContainer/" style="font-size: 13px;">initContainer</a> <a href="/tags/iptables/" style="font-size: 13.08px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.08px;">issue</a> <a href="/tags/k8s/" style="font-size: 13.92px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.08px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/kong/" style="font-size: 13.15px;">kong</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/ldap/" style="font-size: 13px;">ldap</a> <a href="/tags/limitRange/" style="font-size: 13px;">limitRange</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.15px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.08px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.15px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.08px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.62px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.08px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.23px;">network</a> <a href="/tags/nginx/" style="font-size: 13.69px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/openresty/" style="font-size: 13px;">openresty</a> <a href="/tags/pdb/" style="font-size: 13px;">pdb</a> <a href="/tags/php/" style="font-size: 13.31px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13.08px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.46px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.15px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.08px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.31px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.08px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.08px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.08px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.08px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.08px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/webserver/" style="font-size: 13.77px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.62px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.54px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/HPA/" style="font-size: 13px;">HPA</a> <a href="/tags/QOS/" style="font-size: 13px;">QOS</a> <a href="/tags/ResourceQuota/" style="font-size: 13px;">ResourceQuota</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/aliyun/" style="font-size: 13px;">aliyun</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.23px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.15px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.54px;">cluster</a> <a href="/tags/cluster-autoscaler/" style="font-size: 13px;">cluster-autoscaler</a> <a href="/tags/command/" style="font-size: 13.54px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.46px;">database</a> <a href="/tags/debug/" style="font-size: 13.85px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/descheduler/" style="font-size: 13px;">descheduler</a> <a href="/tags/django/" style="font-size: 13.08px;">django</a> <a href="/tags/dns/" style="font-size: 13.08px;">dns</a> <a href="/tags/docker/" style="font-size: 13.15px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.46px;">http</a> <a href="/tags/iis/" style="font-size: 13.31px;">iis</a> <a href="/tags/ingress/" style="font-size: 13.23px;">ingress</a> <a href="/tags/initContainer/" style="font-size: 13px;">initContainer</a> <a href="/tags/iptables/" style="font-size: 13.08px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.08px;">issue</a> <a href="/tags/k8s/" style="font-size: 13.92px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.08px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/kong/" style="font-size: 13.15px;">kong</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/ldap/" style="font-size: 13px;">ldap</a> <a href="/tags/limitRange/" style="font-size: 13px;">limitRange</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.15px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.08px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.15px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.08px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.62px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.08px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.23px;">network</a> <a href="/tags/nginx/" style="font-size: 13.69px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/openresty/" style="font-size: 13px;">openresty</a> <a href="/tags/pdb/" style="font-size: 13px;">pdb</a> <a href="/tags/php/" style="font-size: 13.31px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13.08px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.46px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.15px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.08px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.31px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.08px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.08px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.08px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.08px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.08px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/webserver/" style="font-size: 13.77px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.62px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.54px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
     </div>
   </div>
 
@@ -221,6 +224,21 @@
     <div class="widget-body">
       <ul class="recent-post-list list-unstyled no-thumbnail">
         
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/k8s/">k8s</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/12/17/aliyun-ack-sls/" class="title">alicloud k8s 日志接入 sls</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-17T02:01:04.000Z" itemprop="datePublished">2020-12-17</time>
+              </p>
+            </div>
+          </li>
+          
           <li>
             
             <div class="item-inner">
@@ -281,21 +299,6 @@
             </div>
           </li>
           
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/k8s/">k8s</a>
-              </p>
-              <p class="item-title">
-                <a href="/2020/11/21/nginx-ingress-ldap/" class="title">nginx-ingress下使用ldap 实现ingress auth认证</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2020-11-21T09:05:04.000Z" itemprop="datePublished">2020-11-21</time>
-              </p>
-            </div>
-          </li>
-          
       </ul>
     </div>
   </div>
@@ -338,7 +341,7 @@
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/linux/">linux</a>
+	<a class="article-tag-link-link" href="/tags/linux/" rel="tag">linux</a>
   </span>
 
 
@@ -369,9 +372,8 @@
 <li>orphan process<br>  理论上孤儿进程不会对系统有影响，init 进程会接管成为父进程，负责进程回收，linux中也会有很多主动的操作来避免子进程被主动回收，比如说<code>nohup</code>、<code>disown</code> ，都是通过屏蔽信号来使子进程成为orphan process最终被init接收，实现终端关闭但是进程不退出</li>
 <li>zombie process<br>  理论上zombie process是由于父进程不wait(), 可以直接干掉父进程，让init接手来处理</li>
 </ul>
-<h4 id="fork"><a href="#fork" class="headerlink" title="fork()"></a>fork()</h4><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">pid = fork()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> pid &gt; <span class="number">0</span> &#123; printf "this is father"&#125;</span><br><span class="line"><span class="keyword">if</span> pid = <span class="number">0</span> &#123; printf "this is child" &#125;</span><br><span class="line"><span class="keyword">if</span> pid &lt; <span class="number">0</span> &#123; printf "fork error" &#125;</span><br><span class="line"></span><br><span class="line">fork()后会<span class="keyword">copy</span>一个进程出来，fork后的代码会分布在子进程和当前进程中独立运行。也就是会有<span class="number">2</span>次输出。</span><br><span class="line">linux man page的说明：</span><br><span class="line"></span><br><span class="line">DESCRIPTION</span><br><span class="line">       The fork <span class="keyword">extension</span> adds three <span class="keyword">functions</span>, <span class="keyword">as</span> follows.</span><br><span class="line"></span><br><span class="line">       fork() This  <span class="keyword">function</span>  creates  a <span class="built_in">new</span> process. The <span class="keyword">return</span> <span class="keyword">value</span> <span class="keyword">is</span> the zero <span class="keyword">in</span> the child <span class="keyword">and</span> the process-id number <span class="keyword">of</span> the</span><br><span class="line">              child <span class="keyword">in</span> the parent, <span class="keyword">or</span> <span class="number">-1</span> upon  error.  <span class="keyword">In</span>  the  latter  <span class="keyword">case</span>,  ERRNO  indicates  the  problem.   <span class="keyword">In</span>  the  child,</span><br><span class="line">              PROCINFO["pid"] <span class="keyword">and</span> PROCINFO["ppid"] are updated <span class="keyword">to</span> reflect the correct <span class="keyword">values</span>.</span><br><span class="line"></span><br><span class="line">       waitpid()</span><br><span class="line">              This <span class="keyword">function</span> takes a <span class="type">numeric</span> argument, which <span class="keyword">is</span> the process-id <span class="keyword">to</span> wait <span class="keyword">for</span>. The <span class="keyword">return</span> <span class="keyword">value</span> <span class="keyword">is</span> that <span class="keyword">of</span> the wait-</span><br><span class="line">              pid(<span class="number">2</span>) <span class="keyword">system</span> <span class="keyword">call</span>.</span><br><span class="line"></span><br><span class="line">       wait() This <span class="keyword">function</span> waits <span class="keyword">for</span> the first child <span class="keyword">to</span> die.  The <span class="keyword">return</span> <span class="keyword">value</span> <span class="keyword">is</span> that <span class="keyword">of</span> the wait(<span class="number">2</span>) <span class="keyword">system</span> <span class="keyword">call</span>.</span><br></pre></td></tr></table></figure>
-
-<p>参考：<a href="https://www.cnblogs.com/anker/p/3271773.html" target="_blank" rel="noopener">https://www.cnblogs.com/anker/p/3271773.html</a></p>
+<h4 id="fork"><a href="#fork" class="headerlink" title="fork()"></a>fork()</h4><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">pid = fork()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> pid &gt; <span class="number">0</span> &#123; printf &quot;this is father&quot;&#125;</span><br><span class="line"><span class="keyword">if</span> pid = <span class="number">0</span> &#123; printf &quot;this is child&quot; &#125;</span><br><span class="line"><span class="keyword">if</span> pid &lt; <span class="number">0</span> &#123; printf &quot;fork error&quot; &#125;</span><br><span class="line"></span><br><span class="line">fork()后会<span class="keyword">copy</span>一个进程出来，fork后的代码会分布在子进程和当前进程中独立运行。也就是会有<span class="number">2</span>次输出。</span><br><span class="line">linux man page的说明：</span><br><span class="line"></span><br><span class="line">DESCRIPTION</span><br><span class="line">       The fork <span class="keyword">extension</span> adds three <span class="keyword">functions</span>, <span class="keyword">as</span> follows.</span><br><span class="line"></span><br><span class="line">       fork() This  <span class="keyword">function</span>  creates  a <span class="built_in">new</span> process. The <span class="keyword">return</span> <span class="keyword">value</span> <span class="keyword">is</span> the zero <span class="keyword">in</span> the child <span class="keyword">and</span> the process-id number <span class="keyword">of</span> the</span><br><span class="line">              child <span class="keyword">in</span> the parent, <span class="keyword">or</span> <span class="number">-1</span> upon  error.  <span class="keyword">In</span>  the  latter  <span class="keyword">case</span>,  ERRNO  indicates  the  problem.   <span class="keyword">In</span>  the  child,</span><br><span class="line">              PROCINFO[&quot;pid&quot;] <span class="keyword">and</span> PROCINFO[&quot;ppid&quot;] are updated <span class="keyword">to</span> reflect the correct <span class="keyword">values</span>.</span><br><span class="line"></span><br><span class="line">       waitpid()</span><br><span class="line">              This <span class="keyword">function</span> takes a <span class="type">numeric</span> argument, which <span class="keyword">is</span> the process-id <span class="keyword">to</span> wait <span class="keyword">for</span>. The <span class="keyword">return</span> <span class="keyword">value</span> <span class="keyword">is</span> that <span class="keyword">of</span> the wait-</span><br><span class="line">              pid(<span class="number">2</span>) <span class="keyword">system</span> <span class="keyword">call</span>.</span><br><span class="line"></span><br><span class="line">       wait() This <span class="keyword">function</span> waits <span class="keyword">for</span> the first child <span class="keyword">to</span> die.  The <span class="keyword">return</span> <span class="keyword">value</span> <span class="keyword">is</span> that <span class="keyword">of</span> the wait(<span class="number">2</span>) <span class="keyword">system</span> <span class="keyword">call</span>.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/anker/p/3271773.html">https://www.cnblogs.com/anker/p/3271773.html</a></p>
 
       
     </div>
@@ -430,12 +432,12 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2020/01/25/k8s-predicate-and-priority/" title="K8S 预选优选"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+      <a href="/2020/01/22/nginx-tick/" title="《nginx 变量漫谈》随记"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2020/01/22/nginx-tick/" title="《nginx 变量漫谈》随记"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2020/01/21/k8s-pod-lifecycle/" title="k8s pod lifecycle"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
@@ -483,8 +485,12 @@
 <script>
 window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 </script>
+
 <script src="/js/plugin.min.js"></script>
+
+
 <script src="/js/application.js"></script>
+
 
     <script>
 (function (window) {
@@ -502,7 +508,9 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 
 
