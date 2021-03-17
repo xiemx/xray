@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.xiemx.com//2021/02/13/vue-slot/</loc>
+    <lastmod>2021-03-17</lastmod>
+  </url>  <url>
+    <loc>https://www.xiemx.com//2021/02/13/vue-component/</loc>
+    <lastmod>2021-03-17</lastmod>
+  </url>  <url>
+    <loc>https://www.xiemx.com//2021/02/13/vue-keepalived/</loc>
+    <lastmod>2021-03-17</lastmod>
+  </url>  <url>
+    <loc>https://www.xiemx.com//2021/02/15/vue-ref/</loc>
+    <lastmod>2021-03-17</lastmod>
+  </url>  <url>
+    <loc>https://www.xiemx.com//2021/02/15/vue-fetch/</loc>
+    <lastmod>2021-03-17</lastmod>
+  </url>  <url>
+    <loc>https://www.xiemx.com//2021/02/13/vue-bus/</loc>
+    <lastmod>2021-03-17</lastmod>
+  </url>  <url>
+    <loc>https://www.xiemx.com//2021/02/12/vue-computed/</loc>
+    <lastmod>2021-03-17</lastmod>
+  </url>  <url>
+    <loc>https://www.xiemx.com//2021/02/15/vue-axios/</loc>
+    <lastmod>2021-03-17</lastmod>
+  </url>  <url>
+    <loc>https://www.xiemx.com//2021/02/10/vue-notebook-1/</loc>
+    <lastmod>2021-03-17</lastmod>
+  </url>  <url>
     <loc>https://www.xiemx.com//2020/12/17/aliyun-ack-sls/</loc>
     <lastmod>2020-12-25</lastmod>
   </url>  <url>
@@ -178,10 +205,10 @@
     <loc>https://www.xiemx.com//2016/03/29/python-is/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2016/03/04/python-tab/</loc>
+    <loc>https://www.xiemx.com//2016/04/28/python-send-mail/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2016/04/28/python-send-mail/</loc>
+    <loc>https://www.xiemx.com//2016/03/04/python-tab/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2020/01/09/nginx-decode-uri/</loc>
@@ -205,13 +232,10 @@
     <loc>https://www.xiemx.com//2016/07/26/nginx-uwsgi-deploy-django/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2016/12/14/nginx-websocket-proxying/</loc>
-    <lastmod>2020-12-14</lastmod>
-  </url>  <url>
     <loc>https://www.xiemx.com//2015/11/29/ntp-server/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2016/01/31/mysql-master-master/</loc>
+    <loc>https://www.xiemx.com//2016/12/14/nginx-websocket-proxying/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2016/01/31/mysql-master-slave/</loc>
@@ -224,6 +248,9 @@
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2019/05/06/mysqldump-error/</loc>
+    <lastmod>2020-12-14</lastmod>
+  </url>  <url>
+    <loc>https://www.xiemx.com//2016/01/31/mysql-master-master/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2020/02/28/nginx-and-openresty-phases/</loc>
@@ -355,10 +382,10 @@
     <loc>https://www.xiemx.com//2020/12/03/k8s-services-iptables/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2020/12/02/k8s-cluster-autoscaler/</loc>
+    <loc>https://www.xiemx.com//2016/02/18/iscsi-store/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2016/02/18/iscsi-store/</loc>
+    <loc>https://www.xiemx.com//2020/12/02/k8s-cluster-autoscaler/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2020/12/01/k8s-descheduler/</loc>
@@ -367,10 +394,10 @@
     <loc>https://www.xiemx.com//2020/01/25/k8s-hpa/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2020/02/25/k8s-initContainer/</loc>
+    <loc>https://www.xiemx.com//2019/09/16/k8s-ingress-nginx/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2019/09/16/k8s-ingress-nginx/</loc>
+    <loc>https://www.xiemx.com//2020/02/25/k8s-initContainer/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2020/01/21/k8s-fannel/</loc>
@@ -385,10 +412,10 @@
     <loc>https://www.xiemx.com//2015/08/24/iis-auth/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2017/01/17/iis-get-pid/</loc>
+    <loc>https://www.xiemx.com//2017/03/31/iis-backup-restore/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2017/03/31/iis-backup-restore/</loc>
+    <loc>https://www.xiemx.com//2017/01/17/iis-get-pid/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2015/08/21/iis-set-urlrewrite/</loc>
@@ -442,10 +469,10 @@
     <loc>https://www.xiemx.com//2016/01/17/apache-webserver/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2015/09/29/apppool-0x80-error/</loc>
+    <loc>https://www.xiemx.com//2016/08/15/apachetop/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
-    <loc>https://www.xiemx.com//2016/08/15/apachetop/</loc>
+    <loc>https://www.xiemx.com//2015/09/29/apppool-0x80-error/</loc>
     <lastmod>2020-12-14</lastmod>
   </url>  <url>
     <loc>https://www.xiemx.com//2018/10/11/aws-edge-lambda-modify-origin-host/</loc>
