@@ -19,17 +19,17 @@
   
   
   <title>ISCSI存储网络构建 | 求索</title>
-  <meta name="description" content="iscsi的结构和san的结构  iSCSI 通信端 发起 I&#x2F;O 请求的启动设备(Initiator) 响应请求并执行实际 I&#x2F;O 操作的目标设备(Target)  iSCSI工作过程 target端导出共享设备 initiator端发现设备 initiator端导入设备 initiator端分区、格式化、挂接设备  iSCSI实现套件服务端（target）：scsi-target-utils软">
+  <meta name="description" content="iscsi的结构和san的结构   iSCSI 通信端  发起 I&#x2F;O 请求的启动设备(Initiator) 响应请求并执行实际 I&#x2F;O 操作的目标设备(Target)   iSCSI工作过程  target端导出共享设备 initiator端发现设备 initiator端导入设备 initiator端分区、格式化、挂接设备   iSCSI实现套件 服务端（target）：scsi-target-">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ISCSI存储网络构建">
 <meta property="og:url" content="https://www.xiemx.com/2016/02/18/iscsi-store/index.html">
 <meta property="og:site_name" content="求索">
-<meta property="og:description" content="iscsi的结构和san的结构  iSCSI 通信端 发起 I&#x2F;O 请求的启动设备(Initiator) 响应请求并执行实际 I&#x2F;O 操作的目标设备(Target)  iSCSI工作过程 target端导出共享设备 initiator端发现设备 initiator端导入设备 initiator端分区、格式化、挂接设备  iSCSI实现套件服务端（target）：scsi-target-utils软">
+<meta property="og:description" content="iscsi的结构和san的结构   iSCSI 通信端  发起 I&#x2F;O 请求的启动设备(Initiator) 响应请求并执行实际 I&#x2F;O 操作的目标设备(Target)   iSCSI工作过程  target端导出共享设备 initiator端发现设备 initiator端导入设备 initiator端分区、格式化、挂接设备   iSCSI实现套件 服务端（target）：scsi-target-">
 <meta property="og:locale">
 <meta property="og:image" content="https://www.xiemx.com/images/san.png">
 <meta property="article:published_time" content="2016-02-17T20:02:11.000Z">
-<meta property="article:modified_time" content="2020-12-14T06:37:28.244Z">
-<meta property="article:author" content="Mingxu.xie">
+<meta property="article:modified_time" content="2023-06-09T07:36:51.495Z">
+<meta property="article:author" content="mingxu.xie">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="iscsi">
 <meta property="article:tag" content="store">
@@ -52,9 +52,9 @@
   
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
   
-<meta name="generator" content="Hexo 5.3.0"></head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
-<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
   <header class="header" itemscope itemtype="http://schema.org/WPHeader">
   <div class="slimContent">
     <div class="navbar-header">
@@ -63,11 +63,11 @@
       <div class="profile-block text-center">
         <a id="avatar" href="https://github.com/xiemx" target="_blank">
           <img class="img-circle img-rotate"
-            src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200"
+            src="/images/avatar.jpg" width="200"
             height="200">
         </a>
-        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.Xie</h2>
-        <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
+        <h2 id="name" class="hidden-xs hidden-sm">mingxu.xie</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">devops、sre</h3>
         <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>
           Shanghai, China</small>
       </div>
@@ -169,16 +169,6 @@
           </a>
         </li>
         
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about">
-            
-            <i class="icon icon-cup-fill"></i>
-            
-            <span class="menu-title">About</span>
-          </a>
-        </li>
-        
       </ul>
       
 	
@@ -217,7 +207,7 @@
   <div class="widget">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget-body tagcloud">
-      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/HPA/" style="font-size: 13px;">HPA</a> <a href="/tags/QOS/" style="font-size: 13px;">QOS</a> <a href="/tags/ResourceQuota/" style="font-size: 13px;">ResourceQuota</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/aliyun/" style="font-size: 13px;">aliyun</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.23px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.15px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.54px;">cluster</a> <a href="/tags/cluster-autoscaler/" style="font-size: 13px;">cluster-autoscaler</a> <a href="/tags/command/" style="font-size: 13.54px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.46px;">database</a> <a href="/tags/debug/" style="font-size: 13.85px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/descheduler/" style="font-size: 13px;">descheduler</a> <a href="/tags/django/" style="font-size: 13.08px;">django</a> <a href="/tags/dns/" style="font-size: 13.08px;">dns</a> <a href="/tags/docker/" style="font-size: 13.15px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.46px;">http</a> <a href="/tags/iis/" style="font-size: 13.31px;">iis</a> <a href="/tags/ingress/" style="font-size: 13.23px;">ingress</a> <a href="/tags/initContainer/" style="font-size: 13px;">initContainer</a> <a href="/tags/iptables/" style="font-size: 13.08px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.08px;">issue</a> <a href="/tags/k8s/" style="font-size: 13.92px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.08px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/kong/" style="font-size: 13.15px;">kong</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/ldap/" style="font-size: 13px;">ldap</a> <a href="/tags/limitRange/" style="font-size: 13px;">limitRange</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.15px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.08px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.15px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.08px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.62px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.08px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.23px;">network</a> <a href="/tags/nginx/" style="font-size: 13.69px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/openresty/" style="font-size: 13px;">openresty</a> <a href="/tags/pdb/" style="font-size: 13px;">pdb</a> <a href="/tags/php/" style="font-size: 13.31px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13.08px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.46px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.15px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.08px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.31px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.08px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.08px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.08px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.08px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.08px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/vue/" style="font-size: 13.54px;">vue</a> <a href="/tags/webserver/" style="font-size: 13.77px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.62px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.54px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/HPA/" style="font-size: 13px;">HPA</a> <a href="/tags/QOS/" style="font-size: 13px;">QOS</a> <a href="/tags/ResourceQuota/" style="font-size: 13px;">ResourceQuota</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/aliyun/" style="font-size: 13px;">aliyun</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.23px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.15px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.54px;">cluster</a> <a href="/tags/cluster-autoscaler/" style="font-size: 13px;">cluster-autoscaler</a> <a href="/tags/command/" style="font-size: 13.54px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.46px;">database</a> <a href="/tags/debug/" style="font-size: 13.85px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/descheduler/" style="font-size: 13px;">descheduler</a> <a href="/tags/django/" style="font-size: 13.08px;">django</a> <a href="/tags/dns/" style="font-size: 13.08px;">dns</a> <a href="/tags/docker/" style="font-size: 13.15px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.46px;">http</a> <a href="/tags/iis/" style="font-size: 13.31px;">iis</a> <a href="/tags/ingress/" style="font-size: 13.23px;">ingress</a> <a href="/tags/initContainer/" style="font-size: 13px;">initContainer</a> <a href="/tags/iptables/" style="font-size: 13.08px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.08px;">issue</a> <a href="/tags/java/" style="font-size: 13px;">java</a> <a href="/tags/k8s/" style="font-size: 13.92px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.08px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/kong/" style="font-size: 13.15px;">kong</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/ldap/" style="font-size: 13px;">ldap</a> <a href="/tags/limitRange/" style="font-size: 13px;">limitRange</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.15px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.08px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.15px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.08px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.62px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.08px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.23px;">network</a> <a href="/tags/nginx/" style="font-size: 13.69px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/openresty/" style="font-size: 13px;">openresty</a> <a href="/tags/pdb/" style="font-size: 13px;">pdb</a> <a href="/tags/php/" style="font-size: 13.31px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13.08px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.46px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.15px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.08px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.31px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.08px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.08px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.08px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.08px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.08px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/vue/" style="font-size: 13.54px;">vue</a> <a href="/tags/webserver/" style="font-size: 13.77px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.62px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.54px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
     </div>
   </div>
 
@@ -226,9 +216,119 @@
   <div class="widget">
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget-body">
-      <ul class="recent-post-list list-unstyled no-thumbnail">
+      <ul class="recent-post-list list-unstyled ">
         
           <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/synchronized%E9%94%81/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/synchronized%E9%94%81/" class="title">synchronized锁</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T07:54:11.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="title">单例模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T06:34:20.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" class="title">工厂模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T02:52:41.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E6%B3%9B%E5%9E%8B%E5%8D%8F%E5%8F%98/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E6%B3%9B%E5%9E%8B%E5%8D%8F%E5%8F%98/" class="title">泛型协变</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T01:47:20.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2021/02/15/vue-axios/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
             
             <div class="item-inner">
               <p class="item-category">
@@ -239,66 +339,6 @@
               </p>
               <p class="item-date">
                 <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/15/vue-fetch/" class="title">vue fetch</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/15/vue-ref/" class="title">vue ref</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/13/vue-slot/" class="title">vue component slot</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-13T07:01:04.000Z" itemprop="datePublished">2021-02-13</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/13/vue-bus/" class="title">vue bus</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-13T06:01:04.000Z" itemprop="datePublished">2021-02-13</time>
               </p>
             </div>
           </li>
@@ -366,39 +406,43 @@
     <div class="article-entry marked-body" itemprop="articleBody">
       
       <p>iscsi的结构和san的结构</p>
-<p><a href="http://www.xiemx.com/wp-content/uploads/2016/02/san.png"><img src="/images/san.png" alt="san"></a></p>
-<h4 id="iSCSI-通信端"><a href="#iSCSI-通信端" class="headerlink" title="iSCSI 通信端"></a>iSCSI 通信端</h4><ul>
+<p><a href="http://www.xiemx.com/wp-content/uploads/2016/02/san.png"><img src="/images/san.png" alt="san" /></a></p>
+<h4 id="iscsi-通信端"><a class="markdownIt-Anchor" href="#iscsi-通信端"></a> iSCSI 通信端</h4>
+<ul>
 <li>发起 I/O 请求的启动设备(Initiator)</li>
 <li>响应请求并执行实际 I/O 操作的目标设备(Target)</li>
 </ul>
-<h4 id="iSCSI工作过程"><a href="#iSCSI工作过程" class="headerlink" title="iSCSI工作过程"></a>iSCSI工作过程</h4><ul>
+<h4 id="iscsi工作过程"><a class="markdownIt-Anchor" href="#iscsi工作过程"></a> iSCSI工作过程</h4>
+<ul>
 <li>target端导出共享设备</li>
 <li>initiator端发现设备</li>
 <li>initiator端导入设备</li>
 <li>initiator端分区、格式化、挂接设备</li>
 </ul>
-<h4 id="iSCSI实现套件"><a href="#iSCSI实现套件" class="headerlink" title="iSCSI实现套件"></a>iSCSI实现套件</h4><p>服务端（target）：scsi-target-utils软件包<br>客户端（initiator）：iscsi-initiator-utils软件包</p>
-<h3 id="部署过程："><a href="#部署过程：" class="headerlink" title="部署过程："></a>部署过程：</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum <span class="keyword">insitall </span><span class="keyword">scsi-target-utils</span></span><br><span class="line"><span class="keyword">yum </span><span class="keyword">insitall </span>iscsi-initiator-utils</span><br></pre></td></tr></table></figure>
+<h4 id="iscsi实现套件"><a class="markdownIt-Anchor" href="#iscsi实现套件"></a> iSCSI实现套件</h4>
+<p>服务端（target）：scsi-target-utils软件包<br />
+客户端（initiator）：iscsi-initiator-utils软件包</p>
+<h3 id="部署过程"><a class="markdownIt-Anchor" href="#部署过程"></a> 部署过程：</h3>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum <span class="keyword">insitall </span><span class="keyword">scsi-target-utils</span></span><br><span class="line"><span class="keyword"></span>yum <span class="keyword">insitall </span>iscsi-initiator-utils</span><br></pre></td></tr></table></figure>
 <p>服务器端导出共享设备： 配置文件如下</p>
 <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@rhel6 ~]# <span class="keyword">grep</span> -v <span class="string">&#x27;#\|^$&#x27;</span> <span class="regexp">/etc/</span>tgt/targets.conf</span><br><span class="line"><span class="keyword">default</span>-driver iscsi</span><br><span class="line">&lt;target iqn.<span class="number">2015</span>-<span class="number">10</span>.com.example-f30:vdb1-<span class="number">1</span>g&gt;</span><br><span class="line">  backing-store <span class="regexp">/dev/</span>vdb1</span><br><span class="line">&lt;/target&gt;</span><br></pre></td></tr></table></figure>
-<p> 启动tgtd服务</p>
+<p>启动tgtd服务</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@rhel6 ~]# /etc/init.d/tgtd start</span><br><span class="line">Starting SCSI target daemon:                [ OK ]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>查看客户端本地有无/dev/sda设备</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@rhel6 ~]# ll /dev/sda</span><br><span class="line">ls: cannot access /dev/sda: No such file or directory</span><br></pre></td></tr></table></figure>
 <p>搜索target端的共享设备</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@rhel6 ~]# iscsiadm -m discovery -t st -p 172.25.30.10</span><br><span class="line">172.25.30.10:3260,1 iqn.2015-10.com.example-f30:vdb1-1g</span><br></pre></td></tr></table></figure>
-<p> 导入target端的共享设备</p>
+<p>导入target端的共享设备</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@rhel6 ~]# iscsiadm -m node -l</span><br><span class="line">Logging in to [iface: default, target: iqn.2015-10.com.example-f30:vdb1-1g, portal: 172.25.30.10,3260] (multiple)</span><br><span class="line">Login to [iface: default, target: iqn.2015-10.com.example-f30:vdb1-1g, portal: 172.25.30.10,3260] successful.</span><br></pre></td></tr></table></figure>
-<p> 查看本地/dev/sda设备</p>
+<p>查看本地/dev/sda设备</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@rhel6 ~]# ll /dev/sda</span><br><span class="line">brw-rw----. 1 root disk 8, 0 Jan 14 14:51 /dev/sda</span><br></pre></td></tr></table></figure>
 <p>卸载导入的设备</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@rhel6 nodes]# ll /dev/sd*</span><br><span class="line">brw-rw----. 1 root disk 8, 0 Jan 14 14:53 /dev/sda</span><br><span class="line">brw-rw----. 1 root disk 8, 16 Jan 14 15:35 /dev/sdb</span><br><span class="line">brw-rw----. 1 root disk 8, 17 Jan 14 15:35 /dev/sdb1</span><br><span class="line"></span><br><span class="line">[root@rhel6 nodes]# iscsiadm -m node -T iqn.2016-01-14.com.example.node4-f24:vdb1-1G -u</span><br><span class="line">Logging out of session [sid: 2, target: iqn.2016-01-14.com.example.node4-f24:vdb1-1G, portal: 172.25.24.13,3260]</span><br><span class="line">Logout of [sid: 2, target: iqn.2016-01-14.com.example.node4-f24:vdb1-1G, portal: 172.25.24.13,3260] successful.</span><br><span class="line"></span><br><span class="line">[root@rhel6 nodes]# ll /dev/sd*</span><br><span class="line">brw-rw----. 1 root disk 8, 0 Jan 14 14:53 /dev/sda</span><br></pre></td></tr></table></figure>
-<h3 id="配置iSCSI的acl和验证"><a href="#配置iSCSI的acl和验证" class="headerlink" title="配置iSCSI的acl和验证"></a>配置iSCSI的acl和验证</h3><p>在target主配置文件中添加如下两行</p>
+<h3 id="配置iscsi的acl和验证"><a class="markdownIt-Anchor" href="#配置iscsi的acl和验证"></a> 配置iSCSI的acl和验证</h3>
+<p>在target主配置文件中添加如下两行</p>
 <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@rhel6 ~]# <span class="keyword">grep</span> -v <span class="string">&#x27;#\|^$&#x27;</span> <span class="regexp">/etc/</span>tgt/targets.conf</span><br><span class="line"><span class="keyword">default</span>-driver iscsi</span><br><span class="line">&lt;target iqn.<span class="number">2015</span>-<span class="number">10</span>.com.example-f30:vdb1-<span class="number">1</span>g&gt;</span><br><span class="line">  backing-store <span class="regexp">/dev/</span>vdb1</span><br><span class="line">&lt;/target&gt;</span><br><span class="line"></span><br><span class="line">&lt;target iqn.<span class="number">2015</span>-<span class="number">10</span>.com.example-f30:vdb2-<span class="number">2</span>g&gt;</span><br><span class="line">  backing-store <span class="regexp">/dev/</span>vdb2</span><br><span class="line">  initiator-address <span class="number">172.25</span>.<span class="number">30.0</span>/<span class="number">24</span></span><br><span class="line">  incominguser xiemx uplooking</span><br><span class="line">&lt;/target&gt;</span><br></pre></td></tr></table></figure>
 <p>重新加载配置文件</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/etc/i</span>nit.d/tgtd   reload</span><br><span class="line"><span class="regexp">/etc/i</span>nit.d/tgtd   force-reload</span><br></pre></td></tr></table></figure>
-
-
 <p>查看配置导出的设备信息</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">[root@rhel6 ~]# tgtadm --lld iscsi --mode target --op show</span><br><span class="line">Target 1: iqn.2015-10.com.example-f30:vdb1-1g</span><br><span class="line">  System information:</span><br><span class="line">​    Driver: iscsi</span><br><span class="line">​    State: ready</span><br><span class="line">  I_T nexus information:</span><br><span class="line">  LUN information:</span><br><span class="line">​    LUN: 0</span><br><span class="line">​      Type: controller</span><br><span class="line">​      SCSI ID: IET   00010000</span><br><span class="line">​      SCSI SN: beaf10</span><br><span class="line">​      Size: 0 MB, Block size: 1</span><br><span class="line">​      Online: Yes</span><br><span class="line">​      Removable media: No</span><br><span class="line">​      Prevent removal: No</span><br><span class="line">​      Readonly: No</span><br><span class="line">​      Backing store type: null</span><br><span class="line">​      Backing store path: None</span><br><span class="line">​      Backing store flags:</span><br><span class="line">​    LUN: 1</span><br><span class="line">​      Type: disk</span><br><span class="line">​      SCSI ID: IET   00010001</span><br><span class="line">​      SCSI SN: beaf11</span><br><span class="line">​      Size: 1074 MB, Block size: 512</span><br><span class="line">​      Online: Yes</span><br><span class="line">​      Removable media: No</span><br><span class="line">​      Prevent removal: No</span><br><span class="line">​      Readonly: No</span><br><span class="line">​      Backing store type: rdwr</span><br><span class="line">​      Backing store path: /dev/vdb1</span><br><span class="line">​      Backing store flags:</span><br><span class="line">  Account information:</span><br><span class="line">  ACL information:</span><br><span class="line">​    ALL</span><br><span class="line"> Target 2: iqn.2015-10.com.example-f30:vdb2-2g</span><br><span class="line">  System information:</span><br><span class="line">​     Driver: iscsi</span><br><span class="line">​     State: ready</span><br><span class="line">  I_T nexus information:</span><br><span class="line">  LUN information:</span><br><span class="line">​    LUN: 0</span><br><span class="line">​      Type: controller</span><br><span class="line">​      SCSI ID: IET   00020000</span><br><span class="line">​      SCSI SN: beaf20</span><br><span class="line">​      Size: 0 MB, Block size: 1</span><br><span class="line">​      Online: Yes</span><br><span class="line">​      Removable media: No</span><br><span class="line">​      Prevent removal: No</span><br><span class="line">​      Readonly: No</span><br><span class="line">​      Backing store type: null</span><br><span class="line">​      Backing store path: None</span><br><span class="line">​      Backing store flags:</span><br><span class="line">​    LUN: 1</span><br><span class="line">​      Type: disk</span><br><span class="line">​      SCSI ID: IET   00020001</span><br><span class="line">​      SCSI SN: beaf21</span><br><span class="line">​      Size: 2148 MB, Block size: 512</span><br><span class="line">​      Online: Yes</span><br><span class="line">​      Removable media: No</span><br><span class="line">​      Prevent removal: No</span><br><span class="line">​      Readonly: No</span><br><span class="line">​      Backing store type: rdwr</span><br><span class="line">​      Backing store path: /dev/vdb2</span><br><span class="line">​      Backing store flags:</span><br><span class="line">  Account information:</span><br><span class="line">​     xiemx</span><br><span class="line">  ACL information:</span><br><span class="line">​    172.25.30.0/24</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>initiator端开启CHAP验证并配置用户密码</p>
@@ -428,15 +472,15 @@
     <figure class="media">
       <div class="media-left">
         <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
-          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128"
+          <img src="/images/avatar.jpg"
             class="img-rounded w-full" alt="">
         </a>
       </div>
       <div class="media-body">
         <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span
-              class="text-dark">Mingxu.Xie</span><small class="ml-1x">DevOps</small></a>
+              class="text-dark">mingxu.xie</span><small class="ml-1x">devops、sre</small></a>
         </h3>
-        <div>一个普通devops。最近有点沉迷户外，可能逐渐驴化！</div>
+        <div>农民工、打工人</div>
       </div>
     </figure>
   </div>
@@ -504,7 +548,7 @@
 
     <div class="copyright">
         
-        &copy; 2021 Mingxu.xie
+        &copy; 2023 mingxu.xie
         
         <!-- <div class="publishby">
         	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.

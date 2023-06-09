@@ -19,17 +19,17 @@
   
   
   <title>k8s Flannel | 求索</title>
-  <meta name="description" content="K8S Flannel hostgwFlannel 的网络个人理解为，flannel接管了所有k8s node节点上的docker 网络的配置，在docker 启动之前，flannel通过在etcd 中共享 flannel的subnet等网段信息来给每个node的docker 预设网络信息，以及分配子网段和bridge地址，以保证在分布式的环境下不会出现网络冲突，因此flannel 可以看作是侵入">
+  <meta name="description" content="K8S Flannel hostgw Flannel 的网络个人理解为，flannel接管了所有k8s node节点上的docker 网络的配置，在docker 启动之前，flannel通过在etcd 中共享 flannel的subnet等网段信息来给每个node的docker 预设网络信息，以及分配子网段和bridge地址，以保证在分布式的环境下不会出现网络冲突，因此flannel 可以看作是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="k8s Flannel">
 <meta property="og:url" content="https://www.xiemx.com/2020/01/21/k8s-fannel/index.html">
 <meta property="og:site_name" content="求索">
-<meta property="og:description" content="K8S Flannel hostgwFlannel 的网络个人理解为，flannel接管了所有k8s node节点上的docker 网络的配置，在docker 启动之前，flannel通过在etcd 中共享 flannel的subnet等网段信息来给每个node的docker 预设网络信息，以及分配子网段和bridge地址，以保证在分布式的环境下不会出现网络冲突，因此flannel 可以看作是侵入">
+<meta property="og:description" content="K8S Flannel hostgw Flannel 的网络个人理解为，flannel接管了所有k8s node节点上的docker 网络的配置，在docker 启动之前，flannel通过在etcd 中共享 flannel的subnet等网段信息来给每个node的docker 预设网络信息，以及分配子网段和bridge地址，以保证在分布式的环境下不会出现网络冲突，因此flannel 可以看作是">
 <meta property="og:locale">
 <meta property="og:image" content="https://www.xiemx.com/2020/01/21/images/flannel-networking-20200121145349208.png">
 <meta property="article:published_time" content="2020-01-21T02:01:04.000Z">
-<meta property="article:modified_time" content="2020-12-14T06:37:28.244Z">
-<meta property="article:author" content="Mingxu.xie">
+<meta property="article:modified_time" content="2023-06-09T07:36:51.496Z">
+<meta property="article:author" content="mingxu.xie">
 <meta property="article:tag" content="k8s">
 <meta property="article:tag" content="network">
 <meta property="article:tag" content="flannel">
@@ -52,9 +52,9 @@
   
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
   
-<meta name="generator" content="Hexo 5.3.0"></head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
-<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
   <header class="header" itemscope itemtype="http://schema.org/WPHeader">
   <div class="slimContent">
     <div class="navbar-header">
@@ -63,11 +63,11 @@
       <div class="profile-block text-center">
         <a id="avatar" href="https://github.com/xiemx" target="_blank">
           <img class="img-circle img-rotate"
-            src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200"
+            src="/images/avatar.jpg" width="200"
             height="200">
         </a>
-        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.Xie</h2>
-        <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
+        <h2 id="name" class="hidden-xs hidden-sm">mingxu.xie</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">devops、sre</h3>
         <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>
           Shanghai, China</small>
       </div>
@@ -169,16 +169,6 @@
           </a>
         </li>
         
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about">
-            
-            <i class="icon icon-cup-fill"></i>
-            
-            <span class="menu-title">About</span>
-          </a>
-        </li>
-        
       </ul>
       
 	
@@ -217,7 +207,7 @@
   <div class="widget">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget-body tagcloud">
-      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/HPA/" style="font-size: 13px;">HPA</a> <a href="/tags/QOS/" style="font-size: 13px;">QOS</a> <a href="/tags/ResourceQuota/" style="font-size: 13px;">ResourceQuota</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/aliyun/" style="font-size: 13px;">aliyun</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.23px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.15px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.54px;">cluster</a> <a href="/tags/cluster-autoscaler/" style="font-size: 13px;">cluster-autoscaler</a> <a href="/tags/command/" style="font-size: 13.54px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.46px;">database</a> <a href="/tags/debug/" style="font-size: 13.85px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/descheduler/" style="font-size: 13px;">descheduler</a> <a href="/tags/django/" style="font-size: 13.08px;">django</a> <a href="/tags/dns/" style="font-size: 13.08px;">dns</a> <a href="/tags/docker/" style="font-size: 13.15px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.46px;">http</a> <a href="/tags/iis/" style="font-size: 13.31px;">iis</a> <a href="/tags/ingress/" style="font-size: 13.23px;">ingress</a> <a href="/tags/initContainer/" style="font-size: 13px;">initContainer</a> <a href="/tags/iptables/" style="font-size: 13.08px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.08px;">issue</a> <a href="/tags/k8s/" style="font-size: 13.92px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.08px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/kong/" style="font-size: 13.15px;">kong</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/ldap/" style="font-size: 13px;">ldap</a> <a href="/tags/limitRange/" style="font-size: 13px;">limitRange</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.15px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.08px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.15px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.08px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.62px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.08px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.23px;">network</a> <a href="/tags/nginx/" style="font-size: 13.69px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/openresty/" style="font-size: 13px;">openresty</a> <a href="/tags/pdb/" style="font-size: 13px;">pdb</a> <a href="/tags/php/" style="font-size: 13.31px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13.08px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.46px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.15px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.08px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.31px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.08px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.08px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.08px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.08px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.08px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/vue/" style="font-size: 13.54px;">vue</a> <a href="/tags/webserver/" style="font-size: 13.77px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.62px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.54px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/HPA/" style="font-size: 13px;">HPA</a> <a href="/tags/QOS/" style="font-size: 13px;">QOS</a> <a href="/tags/ResourceQuota/" style="font-size: 13px;">ResourceQuota</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/aliyun/" style="font-size: 13px;">aliyun</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.23px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.15px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.54px;">cluster</a> <a href="/tags/cluster-autoscaler/" style="font-size: 13px;">cluster-autoscaler</a> <a href="/tags/command/" style="font-size: 13.54px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.46px;">database</a> <a href="/tags/debug/" style="font-size: 13.85px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/descheduler/" style="font-size: 13px;">descheduler</a> <a href="/tags/django/" style="font-size: 13.08px;">django</a> <a href="/tags/dns/" style="font-size: 13.08px;">dns</a> <a href="/tags/docker/" style="font-size: 13.15px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.46px;">http</a> <a href="/tags/iis/" style="font-size: 13.31px;">iis</a> <a href="/tags/ingress/" style="font-size: 13.23px;">ingress</a> <a href="/tags/initContainer/" style="font-size: 13px;">initContainer</a> <a href="/tags/iptables/" style="font-size: 13.08px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.08px;">issue</a> <a href="/tags/java/" style="font-size: 13px;">java</a> <a href="/tags/k8s/" style="font-size: 13.92px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.08px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/kong/" style="font-size: 13.15px;">kong</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/ldap/" style="font-size: 13px;">ldap</a> <a href="/tags/limitRange/" style="font-size: 13px;">limitRange</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.15px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.08px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.15px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.08px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.62px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.08px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.23px;">network</a> <a href="/tags/nginx/" style="font-size: 13.69px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/openresty/" style="font-size: 13px;">openresty</a> <a href="/tags/pdb/" style="font-size: 13px;">pdb</a> <a href="/tags/php/" style="font-size: 13.31px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13.08px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.46px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.15px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.08px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.31px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.08px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.08px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.08px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.08px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.08px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/vue/" style="font-size: 13.54px;">vue</a> <a href="/tags/webserver/" style="font-size: 13.77px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.62px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.54px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
     </div>
   </div>
 
@@ -226,9 +216,119 @@
   <div class="widget">
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget-body">
-      <ul class="recent-post-list list-unstyled no-thumbnail">
+      <ul class="recent-post-list list-unstyled ">
         
           <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/synchronized%E9%94%81/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/synchronized%E9%94%81/" class="title">synchronized锁</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T07:54:11.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="title">单例模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T06:34:20.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" class="title">工厂模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T02:52:41.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E6%B3%9B%E5%9E%8B%E5%8D%8F%E5%8F%98/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E6%B3%9B%E5%9E%8B%E5%8D%8F%E5%8F%98/" class="title">泛型协变</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T01:47:20.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2021/02/15/vue-axios/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
             
             <div class="item-inner">
               <p class="item-category">
@@ -239,66 +339,6 @@
               </p>
               <p class="item-date">
                 <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/15/vue-fetch/" class="title">vue fetch</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/15/vue-ref/" class="title">vue ref</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/13/vue-slot/" class="title">vue component slot</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-13T07:01:04.000Z" itemprop="datePublished">2021-02-13</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/13/vue-bus/" class="title">vue bus</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-13T06:01:04.000Z" itemprop="datePublished">2021-02-13</time>
               </p>
             </div>
           </li>
@@ -365,8 +405,9 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-      <h4 id="K8S-Flannel-hostgw"><a href="#K8S-Flannel-hostgw" class="headerlink" title="K8S Flannel hostgw"></a>K8S Flannel hostgw</h4><p>Flannel 的网络个人理解为，flannel接管了所有k8s node节点上的docker 网络的配置，在docker 启动之前，flannel通过在etcd 中共享 flannel的subnet等网段信息来给每个node的docker 预设网络信息，以及分配子网段和bridge地址，以保证在分布式的环境下不会出现网络冲突，因此flannel 可以看作是侵入了docker层面，在底层系统启动container的时候就处理了网络相关，构建了一个大内网。在宿主机的docker控制了所有节点的bridge，并更新所有node上的网段信息的对应路由表，在同一个大网段内，来保证网络连通性。</p>
-<hr>
+      <h4 id="k8s-flannel-hostgw"><a class="markdownIt-Anchor" href="#k8s-flannel-hostgw"></a> K8S Flannel hostgw</h4>
+<p>Flannel 的网络个人理解为，flannel接管了所有k8s node节点上的docker 网络的配置，在docker 启动之前，flannel通过在etcd 中共享 flannel的subnet等网段信息来给每个node的docker 预设网络信息，以及分配子网段和bridge地址，以保证在分布式的环境下不会出现网络冲突，因此flannel 可以看作是侵入了docker层面，在底层系统启动container的时候就处理了网络相关，构建了一个大内网。在宿主机的docker控制了所有节点的bridge，并更新所有node上的网段信息的对应路由表，在同一个大网段内，来保证网络连通性。</p>
+<hr />
 <p>以下配置参考信息转自：<a target="_blank" rel="noopener" href="https://jimmysong.io/kubernetes-handbook/concepts/flannel.html">https://jimmysong.io/kubernetes-handbook/concepts/flannel.html</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># kubectl get nodes -o wide</span></span><br><span class="line">NAME      STATUS    ROLES     AGE       VERSION   EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION               CONTAINER-RUNTIME</span><br><span class="line">node1     Ready     &lt;none&gt;    2d        v1.9.1    &lt;none&gt;        CentOS Linux 7 (Core)   3.10.0-693.11.6.el7.x86_64   docker://1.12.6</span><br><span class="line">node2     Ready     &lt;none&gt;    2d        v1.9.1    &lt;none&gt;        CentOS Linux 7 (Core)   3.10.0-693.11.6.el7.x86_64   docker://1.12.6</span><br><span class="line">node3     Ready     &lt;none&gt;    2d        v1.9.1    &lt;none&gt;        CentOS Linux 7 (Core)   3.10.0-693.11.6.el7.x86_64   docker://1.12.6</span><br><span class="line">Copy</span><br></pre></td></tr></table></figure>
 <p>当前Kubernetes集群中运行的所有Pod信息：</p>
@@ -382,13 +423,14 @@
 <li>Cluster IP：虚拟IP，通过iptables规则访问服务</li>
 </ul>
 <p>在安装node节点的时候，节点上的进程是按照flannel -&gt; docker -&gt; kubelet -&gt; kube-proxy的顺序启动的，我们下面也会按照该顺序来讲解，flannel的网络划分和如何与docker交互，如何通过iptables访问service。</p>
-<h3 id="Flannel"><a href="#Flannel" class="headerlink" title="Flannel"></a>Flannel</h3><p>Flannel是作为一个二进制文件的方式部署在每个node上，主要实现两个功能：</p>
+<h3 id="flannel"><a class="markdownIt-Anchor" href="#flannel"></a> Flannel</h3>
+<p>Flannel是作为一个二进制文件的方式部署在每个node上，主要实现两个功能：</p>
 <ul>
 <li>为每个node分配subnet，容器将自动从该子网中获取IP地址</li>
 <li>当有node加入到网络中时，为每个node增加路由配置</li>
 </ul>
 <p>下面是使用<code>host-gw</code> backend的flannel网络架构图：</p>
-<p><a target="_blank" rel="noopener" href="https://jimmysong.io/kubernetes-handbook/images/flannel-networking.png"><img src="../images/flannel-networking-20200121145349208.png" alt="flannel网络架构（图片来自openshift）"></a>图片 - flannel网络架构（图片来自openshift）。以上IP非本示例中的IP。</p>
+<p><a target="_blank" rel="noopener" href="https://jimmysong.io/kubernetes-handbook/images/flannel-networking.png"><img src="../images/flannel-networking-20200121145349208.png" alt="flannel网络架构（图片来自openshift）" /></a>图片 - flannel网络架构（图片来自openshift）。以上IP非本示例中的IP。</p>
 <p>Node1上的flannel配置如下:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># cat /usr/lib/systemd/system/flanneld.service</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Flanneld overlay address etcd agent</span><br><span class="line">After=network.target</span><br><span class="line">After=network-online.target</span><br><span class="line">Wants=network-online.target</span><br><span class="line">After=etcd.service</span><br><span class="line">Before=docker.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">EnvironmentFile=/etc/sysconfig/flanneld</span><br><span class="line">EnvironmentFile=-/etc/sysconfig/docker-network</span><br><span class="line">ExecStart=/usr/bin/flanneld-start <span class="variable">$FLANNEL_OPTIONS</span></span><br><span class="line">ExecStartPost=/usr/libexec/flannel/mk-docker-opts.sh -k DOCKER_NETWORK_OPTIONS -d /run/flannel/docker</span><br><span class="line">Restart=on-failure</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">RequiredBy=docker.service</span><br><span class="line">Copy</span><br></pre></td></tr></table></figure>
 <p>其中有两个环境变量文件的配置如下：</p>
@@ -406,26 +448,33 @@
 <p>我们再来看下<code>/run/flannel/subnet.env</code>的配置。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># cat /run/flannel/subnet.env</span></span><br><span class="line">FLANNEL_NETWORK=172.33.0.0/16</span><br><span class="line">FLANNEL_SUBNET=172.33.68.1/24</span><br><span class="line">FLANNEL_MTU=1500</span><br><span class="line">FLANNEL_IPMASQ=<span class="literal">false</span></span><br><span class="line">Copy</span><br></pre></td></tr></table></figure>
 <p>以上环境变量是flannel向etcd中注册的。</p>
-<h3 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h3><p>Node1的docker配置如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># cat /usr/lib/systemd/system/docker.service</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Docker Application Container Engine</span><br><span class="line">Documentation=http://docs.docker.com</span><br><span class="line">After=network.target rhel-push-plugin.socket registries.service</span><br><span class="line">Wants=docker-storage-setup.service</span><br><span class="line">Requires=docker-cleanup.timer</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">NotifyAccess=all</span><br><span class="line">EnvironmentFile=-/run/containers/registries.conf</span><br><span class="line">EnvironmentFile=-/etc/sysconfig/docker</span><br><span class="line">EnvironmentFile=-/etc/sysconfig/docker-storage</span><br><span class="line">EnvironmentFile=-/etc/sysconfig/docker-network</span><br><span class="line">Environment=GOTRACEBACK=crash</span><br><span class="line">Environment=DOCKER_HTTP_HOST_COMPAT=1</span><br><span class="line">Environment=PATH=/usr/libexec/docker:/usr/bin:/usr/sbin</span><br><span class="line">ExecStart=/usr/bin/dockerd-current \</span><br><span class="line">          --add-runtime docker-runc=/usr/libexec/docker/docker-runc-current \</span><br><span class="line">          --default-runtime=docker-runc \</span><br><span class="line">          --exec-opt native.cgroupdriver=systemd \</span><br><span class="line">          --userland-proxy-path=/usr/libexec/docker/docker-proxy-current \</span><br><span class="line">          <span class="variable">$OPTIONS</span> \</span><br><span class="line">          <span class="variable">$DOCKER_STORAGE_OPTIONS</span> \</span><br><span class="line">          <span class="variable">$DOCKER_NETWORK_OPTIONS</span> \</span><br><span class="line">          <span class="variable">$ADD_REGISTRY</span> \</span><br><span class="line">          <span class="variable">$BLOCK_REGISTRY</span> \</span><br><span class="line">          <span class="variable">$INSECURE_REGISTRY</span>\</span><br><span class="line">          <span class="variable">$REGISTRIES</span></span><br><span class="line">ExecReload=/bin/<span class="built_in">kill</span> -s HUP <span class="variable">$MAINPID</span></span><br><span class="line">LimitNOFILE=1048576</span><br><span class="line">LimitNPROC=1048576</span><br><span class="line">LimitCORE=infinity</span><br><span class="line">TimeoutStartSec=0</span><br><span class="line">Restart=on-abnormal</span><br><span class="line">MountFlags=slave</span><br><span class="line">KillMode=process</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">Copy</span><br></pre></td></tr></table></figure>
+<h3 id="docker"><a class="markdownIt-Anchor" href="#docker"></a> Docker</h3>
+<p>Node1的docker配置如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># cat /usr/lib/systemd/system/docker.service</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Docker Application Container Engine</span><br><span class="line">Documentation=http://docs.docker.com</span><br><span class="line">After=network.target rhel-push-plugin.socket registries.service</span><br><span class="line">Wants=docker-storage-setup.service</span><br><span class="line">Requires=docker-cleanup.timer</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">NotifyAccess=all</span><br><span class="line">EnvironmentFile=-/run/containers/registries.conf</span><br><span class="line">EnvironmentFile=-/etc/sysconfig/docker</span><br><span class="line">EnvironmentFile=-/etc/sysconfig/docker-storage</span><br><span class="line">EnvironmentFile=-/etc/sysconfig/docker-network</span><br><span class="line">Environment=GOTRACEBACK=crash</span><br><span class="line">Environment=DOCKER_HTTP_HOST_COMPAT=1</span><br><span class="line">Environment=PATH=/usr/libexec/docker:/usr/bin:/usr/sbin</span><br><span class="line">ExecStart=/usr/bin/dockerd-current \</span><br><span class="line">          --add-runtime docker-runc=/usr/libexec/docker/docker-runc-current \</span><br><span class="line">          --default-runtime=docker-runc \</span><br><span class="line">          --exec-opt native.cgroupdriver=systemd \</span><br><span class="line">          --userland-proxy-path=/usr/libexec/docker/docker-proxy-current \</span><br><span class="line">          <span class="variable">$OPTIONS</span> \</span><br><span class="line">          <span class="variable">$DOCKER_STORAGE_OPTIONS</span> \</span><br><span class="line">          <span class="variable">$DOCKER_NETWORK_OPTIONS</span> \</span><br><span class="line">          <span class="variable">$ADD_REGISTRY</span> \</span><br><span class="line">          <span class="variable">$BLOCK_REGISTRY</span> \</span><br><span class="line">          <span class="variable">$INSECURE_REGISTRY</span>\</span><br><span class="line">          <span class="variable">$REGISTRIES</span></span><br><span class="line">ExecReload=/bin/kill -s HUP <span class="variable">$MAINPID</span></span><br><span class="line">LimitNOFILE=1048576</span><br><span class="line">LimitNPROC=1048576</span><br><span class="line">LimitCORE=infinity</span><br><span class="line">TimeoutStartSec=0</span><br><span class="line">Restart=on-abnormal</span><br><span class="line">MountFlags=slave</span><br><span class="line">KillMode=process</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">Copy</span><br></pre></td></tr></table></figure>
 <p>查看Node1上的docker启动参数：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># systemctl status -l docker</span></span><br><span class="line">● docker.service - Docker Application Container Engine</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; vendor preset: disabled)</span><br><span class="line">  Drop-In: /usr/lib/systemd/system/docker.service.d</span><br><span class="line">           └─flannel.conf</span><br><span class="line">   Active: active (running) since Fri 2018-02-02 22:52:43 CST; 2h 28min ago</span><br><span class="line">     Docs: http://docs.docker.com</span><br><span class="line"> Main PID: 4334 (dockerd-current)</span><br><span class="line">   CGroup: /system.slice/docker.service</span><br><span class="line">           ‣ 4334 /usr/bin/dockerd-current --add-runtime docker-runc=/usr/libexec/docker/docker-runc-current --default-runtime=docker-runc --exec-opt native.cgroupdriver=systemd --userland-proxy-path=/usr/libexec/docker/docker-proxy-current --selinux-enabled --log-driver=journald --signature-verification=<span class="literal">false</span> --bip=172.33.68.1/24 --ip-masq=<span class="literal">true</span> --mtu=1500</span><br><span class="line">Copy</span><br></pre></td></tr></table></figure>
 <p>我们可以看到在docker在启动时有如下参数：<code>--bip=172.33.68.1/24 --ip-masq=true --mtu=1500</code>。上述参数flannel启动时运行的脚本生成的，通过环境变量传递过来的。</p>
 <p>我们查看下node1宿主机上的网络接口：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># ip addr</span></span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN qlen 1</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000</span><br><span class="line">    link/ether 52:54:00:00:57:32 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic eth0</span><br><span class="line">       valid_lft 85095sec preferred_lft 85095sec</span><br><span class="line">    inet6 fe80::5054:ff:fe00:5732/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">3: eth1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000</span><br><span class="line">    link/ether 08:00:27:7b:0f:b1 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.17.8.101/24 brd 172.17.8.255 scope global eth1</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">4: eth2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000</span><br><span class="line">    link/ether 08:00:27:ef:25:06 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.30.113.231/21 brd 172.30.119.255 scope global dynamic eth2</span><br><span class="line">       valid_lft 85096sec preferred_lft 85096sec</span><br><span class="line">    inet6 fe80::a00:27ff:feef:2506/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">5: docker0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP</span><br><span class="line">    link/ether 02:42:d0:ae:80:ea brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.33.68.1/24 scope global docker0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::42:d0ff:feae:80ea/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">7: veth295bef2@if6: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue master docker0 state UP</span><br><span class="line">    link/ether 6a:72:d7:9f:29:19 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet6 fe80::6872:d7ff:fe9f:2919/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">Copy</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># ip addr</span></span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN qlen 1</span><br><span class="line">    <span class="built_in">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/ether 52:54:00:00:57:32 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic eth0</span><br><span class="line">       valid_lft 85095sec preferred_lft 85095sec</span><br><span class="line">    inet6 fe80::5054:ff:fe00:5732/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">3: eth1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/ether 08:00:27:7b:0f:b1 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.17.8.101/24 brd 172.17.8.255 scope global eth1</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">4: eth2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/ether 08:00:27:ef:25:06 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.30.113.231/21 brd 172.30.119.255 scope global dynamic eth2</span><br><span class="line">       valid_lft 85096sec preferred_lft 85096sec</span><br><span class="line">    inet6 fe80::a00:27ff:feef:2506/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">5: docker0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP</span><br><span class="line">    <span class="built_in">link</span>/ether 02:42:d0:ae:80:ea brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.33.68.1/24 scope global docker0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::42:d0ff:feae:80ea/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">7: veth295bef2@if6: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue master docker0 state UP</span><br><span class="line">    <span class="built_in">link</span>/ether 6a:72:d7:9f:29:19 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet6 fe80::6872:d7ff:fe9f:2919/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">Copy</span><br></pre></td></tr></table></figure>
 <p>我们分类来解释下该虚拟机中的网络接口。</p>
 <ul>
-<li><p>lo：回环网络，127.0.0.1</p>
+<li>
+<p>lo：回环网络，127.0.0.1</p>
 </li>
-<li><p>eth0：NAT网络，虚拟机创建时自动分配，仅可以在几台虚拟机之间访问</p>
+<li>
+<p>eth0：NAT网络，虚拟机创建时自动分配，仅可以在几台虚拟机之间访问</p>
 </li>
-<li><p>eth1：bridge网络，使用vagrant分配给虚拟机的地址，虚拟机之间和本地电脑都可以访问</p>
+<li>
+<p>eth1：bridge网络，使用vagrant分配给虚拟机的地址，虚拟机之间和本地电脑都可以访问</p>
 </li>
-<li><p>eth2：bridge网络，使用DHCP分配，用于访问互联网的网卡</p>
+<li>
+<p>eth2：bridge网络，使用DHCP分配，用于访问互联网的网卡</p>
 </li>
-<li><p>docker0：bridge网络，docker默认使用的网卡，作为该节点上所有容器的虚拟交换机</p>
+<li>
+<p>docker0：bridge网络，docker默认使用的网卡，作为该节点上所有容器的虚拟交换机</p>
 </li>
-<li><p>veth295bef2@if6：veth pair，连接docker0和Pod中的容器。veth pair可以理解为使用网线连接好的两个接口，把两个端口放到两个namespace中，那么这两个namespace就能打通。</p>
+<li>
+<p>veth295bef2@if6：veth pair，连接docker0和Pod中的容器。veth pair可以理解为使用网线连接好的两个接口，把两个端口放到两个namespace中，那么这两个namespace就能打通。</p>
 </li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]<span class="comment"># docker network ls</span></span><br><span class="line">NETWORK ID          NAME                DRIVER              SCOPE</span><br><span class="line">940bb75e653b        bridge              bridge              <span class="built_in">local</span></span><br><span class="line">d94c046e105d        host                host                <span class="built_in">local</span></span><br><span class="line">2db7597fd546        none                null                <span class="built_in">local</span></span><br><span class="line">Copy</span><br></pre></td></tr></table></figure>
@@ -467,15 +516,15 @@
     <figure class="media">
       <div class="media-left">
         <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
-          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128"
+          <img src="/images/avatar.jpg"
             class="img-rounded w-full" alt="">
         </a>
       </div>
       <div class="media-body">
         <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span
-              class="text-dark">Mingxu.Xie</span><small class="ml-1x">DevOps</small></a>
+              class="text-dark">mingxu.xie</span><small class="ml-1x">devops、sre</small></a>
         </h3>
-        <div>一个普通devops。最近有点沉迷户外，可能逐渐驴化！</div>
+        <div>农民工、打工人</div>
       </div>
     </figure>
   </div>
@@ -543,7 +592,7 @@
 
     <div class="copyright">
         
-        &copy; 2021 Mingxu.xie
+        &copy; 2023 mingxu.xie
         
         <!-- <div class="publishby">
         	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.

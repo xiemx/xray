@@ -27,8 +27,8 @@
 <meta property="og:description" content="当我们运行程序时，Linux会为程序创建一个特殊的环境，该环境包含程序运行需要的所有资源，以保证程序能够独立运行，不受其他程序的干扰。 在系统中我们调用一个指令，Linux 就会创建一个新的进程。例如使用 ls 命令遍历目录中的文件时，就创建了一个进程。进程就是程序的实例。 系统通过一个五位数字跟踪程序的运行状态，这个数字称为 pid 或进程ID。每个进程都拥有唯一的 pid。两个 pid 一样的">
 <meta property="og:locale">
 <meta property="article:published_time" content="2015-11-14T20:11:14.000Z">
-<meta property="article:modified_time" content="2020-12-14T06:37:28.249Z">
-<meta property="article:author" content="Mingxu.xie">
+<meta property="article:modified_time" content="2023-06-09T07:36:51.514Z">
+<meta property="article:author" content="mingxu.xie">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="tool">
 <meta name="twitter:card" content="summary">
@@ -49,9 +49,9 @@
   
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
   
-<meta name="generator" content="Hexo 5.3.0"></head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
-<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
   <header class="header" itemscope itemtype="http://schema.org/WPHeader">
   <div class="slimContent">
     <div class="navbar-header">
@@ -60,11 +60,11 @@
       <div class="profile-block text-center">
         <a id="avatar" href="https://github.com/xiemx" target="_blank">
           <img class="img-circle img-rotate"
-            src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200"
+            src="/images/avatar.jpg" width="200"
             height="200">
         </a>
-        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.Xie</h2>
-        <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
+        <h2 id="name" class="hidden-xs hidden-sm">mingxu.xie</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">devops、sre</h3>
         <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>
           Shanghai, China</small>
       </div>
@@ -166,16 +166,6 @@
           </a>
         </li>
         
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about">
-            
-            <i class="icon icon-cup-fill"></i>
-            
-            <span class="menu-title">About</span>
-          </a>
-        </li>
-        
       </ul>
       
 	
@@ -214,7 +204,7 @@
   <div class="widget">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget-body tagcloud">
-      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/HPA/" style="font-size: 13px;">HPA</a> <a href="/tags/QOS/" style="font-size: 13px;">QOS</a> <a href="/tags/ResourceQuota/" style="font-size: 13px;">ResourceQuota</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/aliyun/" style="font-size: 13px;">aliyun</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.23px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.15px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.54px;">cluster</a> <a href="/tags/cluster-autoscaler/" style="font-size: 13px;">cluster-autoscaler</a> <a href="/tags/command/" style="font-size: 13.54px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.46px;">database</a> <a href="/tags/debug/" style="font-size: 13.85px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/descheduler/" style="font-size: 13px;">descheduler</a> <a href="/tags/django/" style="font-size: 13.08px;">django</a> <a href="/tags/dns/" style="font-size: 13.08px;">dns</a> <a href="/tags/docker/" style="font-size: 13.15px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.46px;">http</a> <a href="/tags/iis/" style="font-size: 13.31px;">iis</a> <a href="/tags/ingress/" style="font-size: 13.23px;">ingress</a> <a href="/tags/initContainer/" style="font-size: 13px;">initContainer</a> <a href="/tags/iptables/" style="font-size: 13.08px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.08px;">issue</a> <a href="/tags/k8s/" style="font-size: 13.92px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.08px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/kong/" style="font-size: 13.15px;">kong</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/ldap/" style="font-size: 13px;">ldap</a> <a href="/tags/limitRange/" style="font-size: 13px;">limitRange</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.15px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.08px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.15px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.08px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.62px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.08px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.23px;">network</a> <a href="/tags/nginx/" style="font-size: 13.69px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/openresty/" style="font-size: 13px;">openresty</a> <a href="/tags/pdb/" style="font-size: 13px;">pdb</a> <a href="/tags/php/" style="font-size: 13.31px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13.08px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.46px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.15px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.08px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.31px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.08px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.08px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.08px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.08px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.08px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/vue/" style="font-size: 13.54px;">vue</a> <a href="/tags/webserver/" style="font-size: 13.77px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.62px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.54px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/HPA/" style="font-size: 13px;">HPA</a> <a href="/tags/QOS/" style="font-size: 13px;">QOS</a> <a href="/tags/ResourceQuota/" style="font-size: 13px;">ResourceQuota</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/aliyun/" style="font-size: 13px;">aliyun</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.23px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.15px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.54px;">cluster</a> <a href="/tags/cluster-autoscaler/" style="font-size: 13px;">cluster-autoscaler</a> <a href="/tags/command/" style="font-size: 13.54px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.46px;">database</a> <a href="/tags/debug/" style="font-size: 13.85px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/descheduler/" style="font-size: 13px;">descheduler</a> <a href="/tags/django/" style="font-size: 13.08px;">django</a> <a href="/tags/dns/" style="font-size: 13.08px;">dns</a> <a href="/tags/docker/" style="font-size: 13.15px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.46px;">http</a> <a href="/tags/iis/" style="font-size: 13.31px;">iis</a> <a href="/tags/ingress/" style="font-size: 13.23px;">ingress</a> <a href="/tags/initContainer/" style="font-size: 13px;">initContainer</a> <a href="/tags/iptables/" style="font-size: 13.08px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.08px;">issue</a> <a href="/tags/java/" style="font-size: 13px;">java</a> <a href="/tags/k8s/" style="font-size: 13.92px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.08px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/kong/" style="font-size: 13.15px;">kong</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/ldap/" style="font-size: 13px;">ldap</a> <a href="/tags/limitRange/" style="font-size: 13px;">limitRange</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.15px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.08px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.15px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.08px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.62px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.08px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.23px;">network</a> <a href="/tags/nginx/" style="font-size: 13.69px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/openresty/" style="font-size: 13px;">openresty</a> <a href="/tags/pdb/" style="font-size: 13px;">pdb</a> <a href="/tags/php/" style="font-size: 13.31px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13.08px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.46px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.15px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.08px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.31px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.08px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.08px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.08px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.08px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.08px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/vue/" style="font-size: 13.54px;">vue</a> <a href="/tags/webserver/" style="font-size: 13.77px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.62px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.54px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
     </div>
   </div>
 
@@ -223,9 +213,119 @@
   <div class="widget">
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget-body">
-      <ul class="recent-post-list list-unstyled no-thumbnail">
+      <ul class="recent-post-list list-unstyled ">
         
           <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/synchronized%E9%94%81/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/synchronized%E9%94%81/" class="title">synchronized锁</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T07:54:11.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="title">单例模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T06:34:20.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" class="title">工厂模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T02:52:41.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E6%B3%9B%E5%9E%8B%E5%8D%8F%E5%8F%98/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E6%B3%9B%E5%9E%8B%E5%8D%8F%E5%8F%98/" class="title">泛型协变</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T01:47:20.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2021/02/15/vue-axios/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
             
             <div class="item-inner">
               <p class="item-category">
@@ -236,66 +336,6 @@
               </p>
               <p class="item-date">
                 <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/15/vue-fetch/" class="title">vue fetch</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/15/vue-ref/" class="title">vue ref</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/13/vue-slot/" class="title">vue component slot</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-13T07:01:04.000Z" itemprop="datePublished">2021-02-13</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/13/vue-bus/" class="title">vue bus</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-13T06:01:04.000Z" itemprop="datePublished">2021-02-13</time>
               </p>
             </div>
           </li>
@@ -365,16 +405,32 @@
       <p>当我们运行程序时，Linux会为程序创建一个特殊的环境，该环境包含程序运行需要的所有资源，以保证程序能够独立运行，不受其他程序的干扰。</p>
 <p>在系统中我们调用一个指令，Linux 就会创建一个新的进程。例如使用 ls 命令遍历目录中的文件时，就创建了一个进程。进程就是程序的实例。</p>
 <p>系统通过一个五位数字跟踪程序的运行状态，这个数字称为 pid 或进程ID。每个进程都拥有唯一的 pid。两个 pid 一样的进程不能同时存在，Linux用 pid 来跟踪程序的运行状态。</p>
-<h3 id="进程查看"><a href="#进程查看" class="headerlink" title="进程查看"></a>进程查看</h3><h4 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h4><figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ps aux</span></span><br><span class="line">USER PID  %CPU   %MEM    VSZ    RSS    TTY    STAT    START   TIME   COMMAND</span><br><span class="line">root      1       0.0        0.0       <span class="number"> 19356 </span> <span class="number"> 1540 </span>    ?        Ss         02:09         0:01      /sbin/init</span><br><span class="line">root      2      0.0         0.0        0           0           ?        S           02:09         0:00     [kthreadd]</span><br><span class="line">root     <span class="number"> 3 </span>     0.0         0.0        0          <span class="number"> 0 </span>          ?        S           02:09         0:00     [migration/0]</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># ps -ef</span></span><br><span class="line">UID     PID     PPID    C    STIME    TTY    TIME       CMD</span><br><span class="line">root     <span class="number"> 1 </span>       <span class="number"> 0 </span>          <span class="number"> 0 </span>    02:09        ?      00:00:01     /sbin/init</span><br><span class="line">root     2        <span class="number"> 0 </span>           0     02:09        ?      00:00:00     [kthreadd]</span><br><span class="line">root    <span class="number"> 3 </span>       <span class="number"> 2 </span>          <span class="number"> 0 </span>    02:09        ?      00:00:00     [migration/0]</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># ps -le</span></span><br><span class="line">F  S   UID PID PPID  C   PRI   NI   ADDR   SZ       WCHAN   TTY   TIME         CMD</span><br><span class="line">4  S    <span class="number"> 0 </span>     1       0       0   80     <span class="number"> 0 </span>      -         <span class="number"> 4839 </span>   poll_s       ?         00:00:01    init</span><br><span class="line">1  S     0      2      <span class="number"> 0 </span>     <span class="number"> 0 </span>  80     <span class="number"> 0 </span>      -           0          kthrea       ?         00:00:00   kthreadd</span><br><span class="line">1  S     0      3       2      <span class="number"> 0 </span>  -40      -       -           0          migrat      ?         00:00:00    migration/0</span><br><span class="line"></span><br><span class="line">USER 用户名 </span><br><span class="line">UID 用户ID（User ID） </span><br><span class="line">PID 进程ID（Process ID） </span><br><span class="line">PPID 父进程的进程ID（Parent Process id） </span><br><span class="line">SID 会话ID（Session id） </span><br><span class="line">%CPU 进程的cpu占用率 </span><br><span class="line">%MEM 进程的内存占用率 </span><br><span class="line">VSZ 进程所使用的虚存的大小（Virtual Size） </span><br><span class="line">RSS 进程使用的实际内存的大小 </span><br><span class="line">TTY 与进程关联的终端（tty） </span><br><span class="line">STAT 进程的状态：进程状态使用字符表示的（STAT的状态码） </span><br><span class="line">START 进程启动时间和日期 </span><br><span class="line">TIME 进程使用的总cpu时间 </span><br><span class="line">COMMAND 正在执行的命令行命令 </span><br><span class="line">NI 优先级(Nice) </span><br><span class="line">PRI 进程优先级编号(Priority)</span><br><span class="line">进程状态（S字段）： D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="title">@localhost</span> ~]# top</span><br><span class="line">top - <span class="number">02</span>:<span class="number">45</span>:<span class="number">58</span> up <span class="number">36</span> <span class="keyword">min</span><span class="punctuation">,</span> <span class="number">4</span> users<span class="punctuation">,</span> <span class="keyword">load</span> average: <span class="number">0.00</span><span class="punctuation">,</span> <span class="number">0.00</span><span class="punctuation">,</span> <span class="number">0.00</span></span><br><span class="line">Tasks: <span class="number">175</span> total<span class="punctuation">,</span> <span class="number">1</span> running<span class="punctuation">,</span> <span class="number">174</span> sleeping<span class="punctuation">,</span> <span class="number">0</span> stopped<span class="punctuation">,</span> <span class="number">0</span> zombie</span><br><span class="line">Cpu(s): <span class="number">0.3</span><span class="variable">%us</span><span class="punctuation">,</span> <span class="number">0.3</span><span class="variable">%sy</span><span class="punctuation">,</span> <span class="number">0.0</span><span class="variable">%ni</span><span class="punctuation">,</span> <span class="number">99.3</span><span class="variable">%id</span><span class="punctuation">,</span> <span class="number">0.0</span><span class="variable">%wa</span><span class="punctuation">,</span> <span class="number">0.0</span><span class="variable">%hi</span><span class="punctuation">,</span> <span class="number">0.0</span><span class="variable">%si</span><span class="punctuation">,</span> <span class="number">0.0</span><span class="variable">%st</span></span><br><span class="line">Mem: <span class="number">1907580</span>k total<span class="punctuation">,</span> <span class="number">528968</span>k used<span class="punctuation">,</span> <span class="number">1378612</span>k <span class="keyword">free</span><span class="punctuation">,</span> <span class="number">26060</span>k buffers</span><br><span class="line">Swap: <span class="number">2097144</span>k total<span class="punctuation">,</span> <span class="number">0</span>k used<span class="punctuation">,</span> <span class="number">2097144</span>k <span class="keyword">free</span><span class="punctuation">,</span> <span class="number">173020</span>k cached</span><br><span class="line">PID   USER   PR   NI    VIRT     RES    SHR     S    <span class="variable">%CPU</span> <span class="variable">%MEM</span> TIME+     COMMAND</span><br><span class="line"><span class="number">2603</span>  root      <span class="number">20</span>    <span class="number">0</span>      <span class="number">15028</span>   <span class="number">1372</span>    <span class="number">1000</span>    R   <span class="number">0.3</span>       <span class="number">0.1</span>         <span class="number">0</span>:<span class="number">00.21</span>     top</span><br><span class="line"><span class="number">1</span>          root      <span class="number">20</span>    <span class="number">0</span>     <span class="number">19356</span>    <span class="number">1540</span>    <span class="number">1228</span>    S    <span class="number">0.0</span>      <span class="number">0.1</span>          <span class="number">0</span>:<span class="number">01.04</span>     init</span><br><span class="line"><span class="number">2</span>         root      <span class="number">20</span>    <span class="number">0</span>      <span class="number">0</span>            <span class="number">0</span>          <span class="number">0</span>           S   <span class="number">0.0</span>       <span class="number">0.0</span>        <span class="number">0</span>:<span class="number">00.00</span>    kthreadd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">第一行显示系统运行时间，用户数，系统负载<span class="number">1</span>分钟 ，<span class="number">5</span>分钟，<span class="number">15</span>分钟的情况</span><br><span class="line">第二行显示经常总数，不同stat下的进程数量 </span><br><span class="line">第三行显示cpu使用情况 第四行显示物理内存使用情况 第五行显示swap交换分区使用情况</span><br></pre></td></tr></table></figure>
-<h4 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h4>  <figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# kill -l</span><br><span class="line">1) SIGHUP 2) SIGINT 3) SIGQUIT 4) SIGILL 5) SIGTRAP</span><br><span class="line">6) SIGABRT 7) SIGBUS 8) SIGFPE 9) SIGKILL 10) SIGUSR1</span><br><span class="line">11) SIGSEGV 12) SIGUSR2 13) SIGPIPE 14) SIGALRM 15) SIGTERM</span><br><span class="line">16) SIGSTKFLT 17) SIGCHLD 18) SIGCONT 19) SIGSTOP 20) SIGTSTP</span><br><span class="line">21) SIGTTIN 22) SIGTTOU 23) SIGURG 24) SIGXCPU 25) SIGXFSZ</span><br><span class="line">26) SIGVTALRM 27) SIGPROF 28) SIGWINCH 29) SIGIO 30) SIGPWR</span><br><span class="line">31) SIGSYS 34) SIGRTMIN 35) SIGRTMIN<span class="string">+1</span> 36) SIGRTMIN<span class="string">+2</span> 37) SIGRTMIN<span class="string">+3</span></span><br><span class="line">38) SIGRTMIN<span class="string">+4</span> 39) SIGRTMIN<span class="string">+5</span> 40) SIGRTMIN<span class="string">+6</span> 41) SIGRTMIN<span class="string">+7</span> 42) SIGRTMIN<span class="string">+8</span></span><br><span class="line">43) SIGRTMIN<span class="string">+9</span> 44) SIGRTMIN<span class="string">+10</span> 45) SIGRTMIN<span class="string">+11</span> 46) SIGRTMIN<span class="string">+12</span> 47) SIGRTMIN<span class="string">+13</span></span><br><span class="line">48) SIGRTMIN<span class="string">+14</span> 49) SIGRTMIN<span class="string">+15</span> 50) SIGRTMAX<span class="string">-14</span> 51) SIGRTMAX<span class="string">-13</span> 52) SIGRTMAX<span class="string">-12</span></span><br><span class="line">53) SIGRTMAX<span class="string">-11</span> 54) SIGRTMAX<span class="string">-10</span> 55) SIGRTMAX<span class="string">-9</span> 56) SIGRTMAX<span class="string">-8</span> 57) SIGRTMAX<span class="string">-7</span></span><br><span class="line">58) SIGRTMAX<span class="string">-6</span> 59) SIGRTMAX<span class="string">-5</span> 60) SIGRTMAX<span class="string">-4</span> 61) SIGRTMAX<span class="string">-3</span> 62) SIGRTMAX<span class="string">-2</span></span><br><span class="line">63) SIGRTMAX<span class="string">-1</span> 64) SIGRTMAX</span><br></pre></td></tr></table></figure>
+<h3 id="进程查看"><a class="markdownIt-Anchor" href="#进程查看"></a> 进程查看</h3>
+<h4 id="ps"><a class="markdownIt-Anchor" href="#ps"></a> ps</h4>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ps aux</span></span><br><span class="line">USER PID  %CPU   %MEM    VSZ    RSS    TTY    STAT    START   TIME   COMMAND</span><br><span class="line">root      1       0.0        0.0       <span class="number"> 19356 </span> <span class="number"> 1540 </span>    ?        Ss         02:09         0:01      /sbin/init</span><br><span class="line">root      2      0.0         0.0        0           0           ?        S           02:09         0:00     [kthreadd]</span><br><span class="line">root     <span class="number"> 3 </span>     0.0         0.0        0          <span class="number"> 0 </span>          ?        S           02:09         0:00     [migration/0]</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># ps -ef</span></span><br><span class="line">UID     PID     PPID    C    STIME    TTY    TIME       CMD</span><br><span class="line">root     <span class="number"> 1 </span>       <span class="number"> 0 </span>          <span class="number"> 0 </span>    02:09        ?      00:00:01     /sbin/init</span><br><span class="line">root     2        <span class="number"> 0 </span>           0     02:09        ?      00:00:00     [kthreadd]</span><br><span class="line">root    <span class="number"> 3 </span>       <span class="number"> 2 </span>          <span class="number"> 0 </span>    02:09        ?      00:00:00     [migration/0]</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># ps -le</span></span><br><span class="line">F  S   UID PID PPID  C   PRI   NI   ADDR   SZ       WCHAN   TTY   TIME         CMD</span><br><span class="line">4  S    <span class="number"> 0 </span>     1       0       0   80     <span class="number"> 0 </span>      -         <span class="number"> 4839 </span>   poll_s       ?         00:00:01    init</span><br><span class="line">1  S     0      2      <span class="number"> 0 </span>     <span class="number"> 0 </span>  80     <span class="number"> 0 </span>      -           0          kthrea       ?         00:00:00   kthreadd</span><br><span class="line">1  S     0      3       2      <span class="number"> 0 </span>  -40      -       -           0          migrat      ?         00:00:00    migration/0</span><br><span class="line"></span><br><span class="line">USER 用户名 </span><br><span class="line">UID 用户ID（User ID） </span><br><span class="line">PID 进程ID（Process ID） </span><br><span class="line">PPID 父进程的进程ID（Parent Process id） </span><br><span class="line">SID 会话ID（Session id） </span><br><span class="line">%CPU 进程的cpu占用率 </span><br><span class="line">%MEM 进程的内存占用率 </span><br><span class="line">VSZ 进程所使用的虚存的大小（Virtual Size） </span><br><span class="line">RSS 进程使用的实际内存的大小 </span><br><span class="line">TTY 与进程关联的终端（tty） </span><br><span class="line">STAT 进程的状态：进程状态使用字符表示的（STAT的状态码） </span><br><span class="line">START 进程启动时间和日期 </span><br><span class="line">TIME 进程使用的总cpu时间 </span><br><span class="line">COMMAND 正在执行的命令行命令 </span><br><span class="line">NI 优先级(Nice) </span><br><span class="line">PRI 进程优先级编号(Priority)</span><br><span class="line">进程状态（S字段）： D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="top"><a class="markdownIt-Anchor" href="#top"></a> top</h4>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="title">@localhost</span> ~]# top</span><br><span class="line">top - <span class="number">02</span>:<span class="number">45</span>:<span class="number">58</span> up <span class="number">36</span> <span class="keyword">min</span><span class="punctuation">,</span> <span class="number">4</span> users<span class="punctuation">,</span> <span class="keyword">load</span> average: <span class="number">0.00</span><span class="punctuation">,</span> <span class="number">0.00</span><span class="punctuation">,</span> <span class="number">0.00</span></span><br><span class="line">Tasks: <span class="number">175</span> total<span class="punctuation">,</span> <span class="number">1</span> running<span class="punctuation">,</span> <span class="number">174</span> sleeping<span class="punctuation">,</span> <span class="number">0</span> stopped<span class="punctuation">,</span> <span class="number">0</span> zombie</span><br><span class="line">Cpu(s): <span class="number">0.3</span><span class="variable">%us</span><span class="punctuation">,</span> <span class="number">0.3</span><span class="variable">%sy</span><span class="punctuation">,</span> <span class="number">0.0</span><span class="variable">%ni</span><span class="punctuation">,</span> <span class="number">99.3</span><span class="variable">%id</span><span class="punctuation">,</span> <span class="number">0.0</span><span class="variable">%wa</span><span class="punctuation">,</span> <span class="number">0.0</span><span class="variable">%hi</span><span class="punctuation">,</span> <span class="number">0.0</span><span class="variable">%si</span><span class="punctuation">,</span> <span class="number">0.0</span><span class="variable">%st</span></span><br><span class="line">Mem: <span class="number">1907580</span>k total<span class="punctuation">,</span> <span class="number">528968</span>k used<span class="punctuation">,</span> <span class="number">1378612</span>k <span class="keyword">free</span><span class="punctuation">,</span> <span class="number">26060</span>k buffers</span><br><span class="line">Swap: <span class="number">2097144</span>k total<span class="punctuation">,</span> <span class="number">0</span>k used<span class="punctuation">,</span> <span class="number">2097144</span>k <span class="keyword">free</span><span class="punctuation">,</span> <span class="number">173020</span>k cached</span><br><span class="line">PID   USER   PR   NI    VIRT     RES    SHR     S    <span class="variable">%CPU</span> <span class="variable">%MEM</span> TIME+     COMMAND</span><br><span class="line"><span class="number">2603</span>  root      <span class="number">20</span>    <span class="number">0</span>      <span class="number">15028</span>   <span class="number">1372</span>    <span class="number">1000</span>    R   <span class="number">0.3</span>       <span class="number">0.1</span>         <span class="number">0</span>:<span class="number">00.21</span>     top</span><br><span class="line"><span class="number">1</span>          root      <span class="number">20</span>    <span class="number">0</span>     <span class="number">19356</span>    <span class="number">1540</span>    <span class="number">1228</span>    S    <span class="number">0.0</span>      <span class="number">0.1</span>          <span class="number">0</span>:<span class="number">01.04</span>     init</span><br><span class="line"><span class="number">2</span>         root      <span class="number">20</span>    <span class="number">0</span>      <span class="number">0</span>            <span class="number">0</span>          <span class="number">0</span>           S   <span class="number">0.0</span>       <span class="number">0.0</span>        <span class="number">0</span>:<span class="number">00.00</span>    kthreadd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">第一行显示系统运行时间，用户数，系统负载<span class="number">1</span>分钟 ，<span class="number">5</span>分钟，<span class="number">15</span>分钟的情况</span><br><span class="line">第二行显示经常总数，不同stat下的进程数量 </span><br><span class="line">第三行显示cpu使用情况 第四行显示物理内存使用情况 第五行显示swap交换分区使用情况</span><br></pre></td></tr></table></figure>
+<h4 id="信号"><a class="markdownIt-Anchor" href="#信号"></a> 信号</h4>
+  <figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# kill -l</span><br><span class="line">1) SIGHUP 2) SIGINT 3) SIGQUIT 4) SIGILL 5) SIGTRAP</span><br><span class="line">6) SIGABRT 7) SIGBUS 8) SIGFPE 9) SIGKILL 10) SIGUSR1</span><br><span class="line">11) SIGSEGV 12) SIGUSR2 13) SIGPIPE 14) SIGALRM 15) SIGTERM</span><br><span class="line">16) SIGSTKFLT 17) SIGCHLD 18) SIGCONT 19) SIGSTOP 20) SIGTSTP</span><br><span class="line">21) SIGTTIN 22) SIGTTOU 23) SIGURG 24) SIGXCPU 25) SIGXFSZ</span><br><span class="line">26) SIGVTALRM 27) SIGPROF 28) SIGWINCH 29) SIGIO 30) SIGPWR</span><br><span class="line">31) SIGSYS 34) SIGRTMIN 35) SIGRTMIN<span class="string">+1</span> 36) SIGRTMIN<span class="string">+2</span> 37) SIGRTMIN<span class="string">+3</span></span><br><span class="line">38) SIGRTMIN<span class="string">+4</span> 39) SIGRTMIN<span class="string">+5</span> 40) SIGRTMIN<span class="string">+6</span> 41) SIGRTMIN<span class="string">+7</span> 42) SIGRTMIN<span class="string">+8</span></span><br><span class="line">43) SIGRTMIN<span class="string">+9</span> 44) SIGRTMIN<span class="string">+10</span> 45) SIGRTMIN<span class="string">+11</span> 46) SIGRTMIN<span class="string">+12</span> 47) SIGRTMIN<span class="string">+13</span></span><br><span class="line">48) SIGRTMIN<span class="string">+14</span> 49) SIGRTMIN<span class="string">+15</span> 50) SIGRTMAX<span class="string">-14</span> 51) SIGRTMAX<span class="string">-13</span> 52) SIGRTMAX<span class="string">-12</span></span><br><span class="line">53) SIGRTMAX<span class="string">-11</span> 54) SIGRTMAX<span class="string">-10</span> 55) SIGRTMAX<span class="string">-9</span> 56) SIGRTMAX<span class="string">-8</span> 57) SIGRTMAX<span class="string">-7</span></span><br><span class="line">58) SIGRTMAX<span class="string">-6</span> 59) SIGRTMAX<span class="string">-5</span> 60) SIGRTMAX<span class="string">-4</span> 61) SIGRTMAX<span class="string">-3</span> 62) SIGRTMAX<span class="string">-2</span></span><br><span class="line">63) SIGRTMAX<span class="string">-1</span> 64) SIGRTMAX</span><br></pre></td></tr></table></figure>
 <p>Linux中信号有64种，通过kill命令我们可以对进程发送这些信号来告知这些进程，做什么操作。常用的以下四种</p>
-<p>1) SIGHUP<br>这个信号用于通知它重新读取配置文件但不关闭进程，相当于reload。<br>2) SIGINT<br>程序终止(interrupt)信号, 在用户键入INTR字符(通常是Ctrl-C)时发出，用于通知前台进程组终止进程。<br>9) SIGKILL<br>用来立即结束程序的运行. 本信号不能被阻塞、处理和忽略。如果管理员发现某个进程终止不了，可尝试发送这个信号<br>15) SIGTERM<br>程序结束(terminate)信号, 与SIGKILL不同的是该信号可以被阻塞和处理。通常用来要求程序自己正常退出，shell命令kill缺省产生这个信号。如果进程终止不了，我们才会尝试SIGKILL。<br>  例：kill -1 2205 ——告知PID为2205的进程重载下配置文件 kill -9 2205 ——直接杀死2205进程 kill -15 2205 ——通知2205进程关闭，进程会在收到信号后结束工作后自行关闭，有些进程会屏蔽15信号如bash，此时我们只能通过9信号强制结束。</p>
-<h4 id="进程优先级"><a href="#进程优先级" class="headerlink" title="进程优先级"></a>进程优先级</h4><p>假设系统中有多个进程同时在排队是，cpu应该有限处理哪个进程哪？这就取决于进程的优先级，优先级高的优先处理。进程在创建是我们可以通过nice命令指定他的优先级，对于已经开始的进程我们可以通过renice来修改他的优先级。</p>
+<ol>
+<li>SIGHUP<br />
+这个信号用于通知它重新读取配置文件但不关闭进程，相当于reload。</li>
+<li>SIGINT<br />
+程序终止(interrupt)信号, 在用户键入INTR字符(通常是Ctrl-C)时发出，用于通知前台进程组终止进程。</li>
+<li>SIGKILL<br />
+用来立即结束程序的运行. 本信号不能被阻塞、处理和忽略。如果管理员发现某个进程终止不了，可尝试发送这个信号</li>
+<li>SIGTERM<br />
+程序结束(terminate)信号, 与SIGKILL不同的是该信号可以被阻塞和处理。通常用来要求程序自己正常退出，shell命令kill缺省产生这个信号。如果进程终止不了，我们才会尝试SIGKILL。<br />
+例：kill -1 2205 ——告知PID为2205的进程重载下配置文件 kill -9 2205 ——直接杀死2205进程 kill -15 2205 ——通知2205进程关闭，进程会在收到信号后结束工作后自行关闭，有些进程会屏蔽15信号如bash，此时我们只能通过9信号强制结束。</li>
+</ol>
+<h4 id="进程优先级"><a class="markdownIt-Anchor" href="#进程优先级"></a> 进程优先级</h4>
+<p>假设系统中有多个进程同时在排队是，cpu应该有限处理哪个进程哪？这就取决于进程的优先级，优先级高的优先处理。进程在创建是我们可以通过nice命令指定他的优先级，对于已经开始的进程我们可以通过renice来修改他的优先级。</p>
 <p>优先级范围：-20~19 数字越小优先级越高，默认创建的进程优先级为0。</p>
 <p>例：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">nice</span> <span class="string">-n</span> <span class="number">10</span> <span class="string">vim</span> <span class="string">——</span> <span class="string">创建一个优先级为10的vim进程</span></span><br><span class="line">[<span class="string">root@localhost</span> <span class="string">~</span>]<span class="comment"># ps -el | grep vim</span></span><br><span class="line"><span class="string">F</span> <span class="string">S</span> <span class="string">UID</span> <span class="string">PID</span> <span class="string">PPID</span> <span class="string">C</span> <span class="string">PRI</span> <span class="string">NI</span> <span class="string">ADDR</span> <span class="string">SZ</span> <span class="string">WCHAN</span> <span class="string">TTY</span> <span class="string">TIME</span> <span class="string">CMD</span></span><br><span class="line"><span class="number">0</span> <span class="string">T</span> <span class="number">0</span> <span class="number">6891 </span><span class="number">2563 </span><span class="number">0</span> <span class="number">90</span> <span class="number">10</span> <span class="bullet">-</span> <span class="number">35930</span> <span class="string">signal</span> <span class="string">pts/2</span> <span class="number">00</span><span class="string">:00:00</span> <span class="string">vim</span></span><br><span class="line"></span><br><span class="line"><span class="string">renice</span> <span class="string">-n</span> <span class="number">-10</span> <span class="number">6891</span> <span class="string">——调整6891进程的有限级为-10</span></span><br><span class="line">[<span class="string">root@localhost</span> <span class="string">~</span>]<span class="comment"># renice -n -10 6891</span></span><br><span class="line"><span class="attr">6891:</span> <span class="string">old</span> <span class="string">priority</span> <span class="number">10</span><span class="string">,</span> <span class="string">new</span> <span class="string">priority</span> <span class="number">-10</span></span><br><span class="line"></span><br><span class="line"><span class="string">root用户可以自由调整经常的优先级，普通用户只能调低不能调高。</span></span><br><span class="line">  </span><br><span class="line">[<span class="string">testuser@localhost</span> <span class="string">root</span>]<span class="string">$</span> <span class="string">renice</span> <span class="string">-n</span> <span class="number">5</span> <span class="number">6925</span></span><br><span class="line"><span class="attr">6925:</span> <span class="string">old</span> <span class="string">priority</span> <span class="number">0</span><span class="string">,</span> <span class="string">new</span> <span class="string">priority</span> <span class="number">5</span></span><br><span class="line">  </span><br><span class="line">[<span class="string">testuser@localhost</span> <span class="string">root</span>]<span class="string">$</span> <span class="string">renice</span> <span class="string">-n</span> <span class="number">2</span> <span class="number">6925</span></span><br><span class="line"><span class="attr">renice: 6925: setpriority:</span> <span class="string">Permission</span> <span class="string">denied</span></span><br></pre></td></tr></table></figure>
-<h4 id="前台进程-后台进程"><a href="#前台进程-后台进程" class="headerlink" title="前台进程/后台进程"></a>前台进程/后台进程</h4><p>由于一个终端在处理工作时只能处理一个，当我们想在处理第二个进程时会由于终端被占用而无法处理。这时我们可以将前台的这个进程放到后台去运行，把前台的终端空出让我们运行新的进程。</p>
+<h4 id="前台进程后台进程"><a class="markdownIt-Anchor" href="#前台进程后台进程"></a> 前台进程/后台进程</h4>
+<p>由于一个终端在处理工作时只能处理一个，当我们想在处理第二个进程时会由于终端被占用而无法处理。这时我们可以将前台的这个进程放到后台去运行，把前台的终端空出让我们运行新的进程。</p>
 <p>命令：</p>
 <ul>
 <li>command &amp;让进程在后台运行</li>
@@ -408,15 +464,15 @@
     <figure class="media">
       <div class="media-left">
         <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
-          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128"
+          <img src="/images/avatar.jpg"
             class="img-rounded w-full" alt="">
         </a>
       </div>
       <div class="media-body">
         <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span
-              class="text-dark">Mingxu.Xie</span><small class="ml-1x">DevOps</small></a>
+              class="text-dark">mingxu.xie</span><small class="ml-1x">devops、sre</small></a>
         </h3>
-        <div>一个普通devops。最近有点沉迷户外，可能逐渐驴化！</div>
+        <div>农民工、打工人</div>
       </div>
     </figure>
   </div>
@@ -484,7 +540,7 @@
 
     <div class="copyright">
         
-        &copy; 2021 Mingxu.xie
+        &copy; 2023 mingxu.xie
         
         <!-- <div class="publishby">
         	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.

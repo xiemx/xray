@@ -19,16 +19,16 @@
   
   
   <title>Linux计划任务 | 求索</title>
-  <meta name="description" content="计划任务种类：  一次性计划任务（at）：由进程atd守护 周期性计划任务（cron）：由进程crond守护  一次性计划任务（at）生成的文件存放在／var&#x2F;spool&#x2F;at&#x2F;目录下，任务执行一次之后自动删除。一次性计划任务还可以用batch命令去执行。batch命令会在系统空闲的情况下执行任务，用法和at相同但优先级低延时执行。 命令： 1234567［root@localhost ~]# a">
+  <meta name="description" content="计划任务种类：  一次性计划任务（at）：由进程atd守护 周期性计划任务（cron）：由进程crond守护   一次性计划任务（at） 生成的文件存放在／var&#x2F;spool&#x2F;at&#x2F;目录下，任务执行一次之后自动删除。一次性计划任务还可以用batch命令去执行。batch命令会在系统空闲的情况下执行任务，用法和at相同但优先级低延时执行。 命令： 1234567［root@localhost ~]#">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux计划任务">
 <meta property="og:url" content="https://www.xiemx.com/2015/11/28/linux-crontab-and-at/index.html">
 <meta property="og:site_name" content="求索">
-<meta property="og:description" content="计划任务种类：  一次性计划任务（at）：由进程atd守护 周期性计划任务（cron）：由进程crond守护  一次性计划任务（at）生成的文件存放在／var&#x2F;spool&#x2F;at&#x2F;目录下，任务执行一次之后自动删除。一次性计划任务还可以用batch命令去执行。batch命令会在系统空闲的情况下执行任务，用法和at相同但优先级低延时执行。 命令： 1234567［root@localhost ~]# a">
+<meta property="og:description" content="计划任务种类：  一次性计划任务（at）：由进程atd守护 周期性计划任务（cron）：由进程crond守护   一次性计划任务（at） 生成的文件存放在／var&#x2F;spool&#x2F;at&#x2F;目录下，任务执行一次之后自动删除。一次性计划任务还可以用batch命令去执行。batch命令会在系统空闲的情况下执行任务，用法和at相同但优先级低延时执行。 命令： 1234567［root@localhost ~]#">
 <meta property="og:locale">
 <meta property="article:published_time" content="2015-11-28T03:11:05.000Z">
-<meta property="article:modified_time" content="2020-12-14T06:37:28.247Z">
-<meta property="article:author" content="Mingxu.xie">
+<meta property="article:modified_time" content="2023-06-09T07:36:51.509Z">
+<meta property="article:author" content="mingxu.xie">
 <meta property="article:tag" content="command">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
@@ -49,9 +49,9 @@
   
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
   
-<meta name="generator" content="Hexo 5.3.0"></head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
-<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
   <header class="header" itemscope itemtype="http://schema.org/WPHeader">
   <div class="slimContent">
     <div class="navbar-header">
@@ -60,11 +60,11 @@
       <div class="profile-block text-center">
         <a id="avatar" href="https://github.com/xiemx" target="_blank">
           <img class="img-circle img-rotate"
-            src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200"
+            src="/images/avatar.jpg" width="200"
             height="200">
         </a>
-        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.Xie</h2>
-        <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
+        <h2 id="name" class="hidden-xs hidden-sm">mingxu.xie</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">devops、sre</h3>
         <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>
           Shanghai, China</small>
       </div>
@@ -166,16 +166,6 @@
           </a>
         </li>
         
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about">
-            
-            <i class="icon icon-cup-fill"></i>
-            
-            <span class="menu-title">About</span>
-          </a>
-        </li>
-        
       </ul>
       
 	
@@ -214,7 +204,7 @@
   <div class="widget">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget-body tagcloud">
-      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/HPA/" style="font-size: 13px;">HPA</a> <a href="/tags/QOS/" style="font-size: 13px;">QOS</a> <a href="/tags/ResourceQuota/" style="font-size: 13px;">ResourceQuota</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/aliyun/" style="font-size: 13px;">aliyun</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.23px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.15px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.54px;">cluster</a> <a href="/tags/cluster-autoscaler/" style="font-size: 13px;">cluster-autoscaler</a> <a href="/tags/command/" style="font-size: 13.54px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.46px;">database</a> <a href="/tags/debug/" style="font-size: 13.85px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/descheduler/" style="font-size: 13px;">descheduler</a> <a href="/tags/django/" style="font-size: 13.08px;">django</a> <a href="/tags/dns/" style="font-size: 13.08px;">dns</a> <a href="/tags/docker/" style="font-size: 13.15px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.46px;">http</a> <a href="/tags/iis/" style="font-size: 13.31px;">iis</a> <a href="/tags/ingress/" style="font-size: 13.23px;">ingress</a> <a href="/tags/initContainer/" style="font-size: 13px;">initContainer</a> <a href="/tags/iptables/" style="font-size: 13.08px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.08px;">issue</a> <a href="/tags/k8s/" style="font-size: 13.92px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.08px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/kong/" style="font-size: 13.15px;">kong</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/ldap/" style="font-size: 13px;">ldap</a> <a href="/tags/limitRange/" style="font-size: 13px;">limitRange</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.15px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.08px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.15px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.08px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.62px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.08px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.23px;">network</a> <a href="/tags/nginx/" style="font-size: 13.69px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/openresty/" style="font-size: 13px;">openresty</a> <a href="/tags/pdb/" style="font-size: 13px;">pdb</a> <a href="/tags/php/" style="font-size: 13.31px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13.08px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.46px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.15px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.08px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.31px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.08px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.08px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.08px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.08px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.08px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/vue/" style="font-size: 13.54px;">vue</a> <a href="/tags/webserver/" style="font-size: 13.77px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.62px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.54px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/HPA/" style="font-size: 13px;">HPA</a> <a href="/tags/QOS/" style="font-size: 13px;">QOS</a> <a href="/tags/ResourceQuota/" style="font-size: 13px;">ResourceQuota</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/aliyun/" style="font-size: 13px;">aliyun</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.23px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.15px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.54px;">cluster</a> <a href="/tags/cluster-autoscaler/" style="font-size: 13px;">cluster-autoscaler</a> <a href="/tags/command/" style="font-size: 13.54px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.46px;">database</a> <a href="/tags/debug/" style="font-size: 13.85px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/descheduler/" style="font-size: 13px;">descheduler</a> <a href="/tags/django/" style="font-size: 13.08px;">django</a> <a href="/tags/dns/" style="font-size: 13.08px;">dns</a> <a href="/tags/docker/" style="font-size: 13.15px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.46px;">http</a> <a href="/tags/iis/" style="font-size: 13.31px;">iis</a> <a href="/tags/ingress/" style="font-size: 13.23px;">ingress</a> <a href="/tags/initContainer/" style="font-size: 13px;">initContainer</a> <a href="/tags/iptables/" style="font-size: 13.08px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.08px;">issue</a> <a href="/tags/java/" style="font-size: 13px;">java</a> <a href="/tags/k8s/" style="font-size: 13.92px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.08px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/kong/" style="font-size: 13.15px;">kong</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/ldap/" style="font-size: 13px;">ldap</a> <a href="/tags/limitRange/" style="font-size: 13px;">limitRange</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.15px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.08px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.15px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.08px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.62px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.08px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.23px;">network</a> <a href="/tags/nginx/" style="font-size: 13.69px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/openresty/" style="font-size: 13px;">openresty</a> <a href="/tags/pdb/" style="font-size: 13px;">pdb</a> <a href="/tags/php/" style="font-size: 13.31px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13.08px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.46px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.15px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.08px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.31px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.08px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.08px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.08px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.08px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.08px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/vue/" style="font-size: 13.54px;">vue</a> <a href="/tags/webserver/" style="font-size: 13.77px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.62px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.54px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
     </div>
   </div>
 
@@ -223,9 +213,119 @@
   <div class="widget">
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget-body">
-      <ul class="recent-post-list list-unstyled no-thumbnail">
+      <ul class="recent-post-list list-unstyled ">
         
           <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/synchronized%E9%94%81/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/synchronized%E9%94%81/" class="title">synchronized锁</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T07:54:11.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="title">单例模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T06:34:20.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" class="title">工厂模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T02:52:41.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E6%B3%9B%E5%9E%8B%E5%8D%8F%E5%8F%98/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E6%B3%9B%E5%9E%8B%E5%8D%8F%E5%8F%98/" class="title">泛型协变</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T01:47:20.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2021/02/15/vue-axios/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
             
             <div class="item-inner">
               <p class="item-category">
@@ -236,66 +336,6 @@
               </p>
               <p class="item-date">
                 <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/15/vue-fetch/" class="title">vue fetch</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/15/vue-ref/" class="title">vue ref</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/13/vue-slot/" class="title">vue component slot</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-13T07:01:04.000Z" itemprop="datePublished">2021-02-13</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/13/vue-bus/" class="title">vue bus</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-13T06:01:04.000Z" itemprop="datePublished">2021-02-13</time>
               </p>
             </div>
           </li>
@@ -367,17 +407,20 @@
 <li>一次性计划任务（at）：由进程atd守护</li>
 <li>周期性计划任务（cron）：由进程crond守护</li>
 </ul>
-<h4 id="一次性计划任务（at）"><a href="#一次性计划任务（at）" class="headerlink" title="一次性计划任务（at）"></a>一次性计划任务（at）</h4><p>生成的文件存放在／var/spool/at/目录下，任务执行一次之后自动删除。一次性计划任务还可以用batch命令去执行。batch命令会在系统空闲的情况下执行任务，用法和at相同但优先级低延时执行。</p>
+<h4 id="一次性计划任务at"><a class="markdownIt-Anchor" href="#一次性计划任务at"></a> 一次性计划任务（at）</h4>
+<p>生成的文件存放在／var/spool/at/目录下，任务执行一次之后自动删除。一次性计划任务还可以用batch命令去执行。batch命令会在系统空闲的情况下执行任务，用法和at相同但优先级低延时执行。</p>
 <p>命令：</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">［root@localhost ~]<span class="comment"># at  now + 5 minutes</span></span><br><span class="line">  at&gt; <span class="regexp">/bin/m</span>ail  root -s <span class="string">&quot;testing at job&quot;</span> &lt; <span class="regexp">/root/</span>.bashrc</span><br><span class="line">  at&gt; &lt;EOF&gt;         &lt;==输入 [ctrl] + d 结束编辑！此时会在／var<span class="regexp">/spool/</span>at/目录下生成一个任务文件</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># atq</span></span><br><span class="line"><span class="number">5</span> <span class="number">2015</span>-<span class="number">11</span>-<span class="number">25</span> <span class="number">23</span>:<span class="number">00</span> a root</span><br><span class="line">[root@localhost ~]<span class="comment"># atrm 5</span></span><br></pre></td></tr></table></figure>
 <p>一次性计划任务的时间写法支持很多可以查看man page！当我们制定计划任务之后，由于种种原因而要去取消计划任务我们可以使用atq去查询当前系统中有多少为执行的计划，每个计划的编号是多少。在通过atrm＋任务编号来删除这个任务。／etc/at.allow和／etc/at.deny文件规范了哪些用户可以使用at那些用户无法使用at。写在allow文件表明了写在此文件中的用户才可以使用at，deny文件中的用户无法使用。</p>
-<h4 id="周期性计划任务（cron）"><a href="#周期性计划任务（cron）" class="headerlink" title="周期性计划任务（cron）"></a>周期性计划任务（cron）</h4><p>由进程crond守护，生成的任务文件存放在／var/spool/cron/目录下文件会以用户名命名。也采用了／etc/cron.allow和／etc/cron.deny的授权方式。配置文件为／etc/crontab 。周期性计划任务分为两种，一种是用户级别（通过crontab －e来制定），一种为系统级别（写在／etc/crontab文件中），建议使用crontab来制定。</p>
+<h4 id="周期性计划任务cron"><a class="markdownIt-Anchor" href="#周期性计划任务cron"></a> 周期性计划任务（cron）</h4>
+<p>由进程crond守护，生成的任务文件存放在／var/spool/cron/目录下文件会以用户名命名。也采用了／etc/cron.allow和／etc/cron.deny的授权方式。配置文件为／etc/crontab 。周期性计划任务分为两种，一种是用户级别（通过crontab －e来制定），一种为系统级别（写在／etc/crontab文件中），建议使用crontab来制定。</p>
 <p>命令用法</p>
-<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">crontab   参数</span><br><span class="line"><span class="deletion">-u ：只有 root 才能进行这个任务，亦即帮其他使用者创建/移除 crontab 工作排程；</span></span><br><span class="line"><span class="deletion">-e ：编辑 crontab 的工作内容，同vi编辑文件相同（其实就是vi了一个新文件到／var/spool/cron下）</span></span><br><span class="line"><span class="deletion">-l ：查阅 crontab 的工作内容</span></span><br><span class="line"><span class="deletion">-r ：移除所有的 crontab 的工作内容，若仅要移除一项，请用 -e 去编辑。</span></span><br><span class="line"></span><br><span class="line">［root@localhost ～］#crontab  -u  testuser  -e    #为testuser用户制定计划任务，会打开vi的编辑界面，每一行就是一个任务</span><br></pre></td></tr></table></figure>
+<figure class="highlight ldif"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">crontab   参数</span><br><span class="line"><span class="literal">-</span>u ：只有 root 才能进行这个任务，亦即帮其他使用者创建/移除 crontab 工作排程；</span><br><span class="line"><span class="literal">-</span>e ：编辑 crontab 的工作内容，同vi编辑文件相同（其实就是vi了一个新文件到／var/spool/cron下）</span><br><span class="line"><span class="literal">-</span>l ：查阅 crontab 的工作内容</span><br><span class="line"><span class="literal">-</span>r ：移除所有的 crontab 的工作内容，若仅要移除一项，请用 -e 去编辑。</span><br><span class="line"></span><br><span class="line">［root@localhost ～］<span class="comment">#crontab  -u  testuser  -e    #为testuser用户制定计划任务，会打开vi的编辑界面，每一行就是一个任务</span></span><br></pre></td></tr></table></figure>
 <p>例：</p>
 <figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">###时间的写法基本就是<span class="string">&quot;,&quot;</span> <span class="string">&quot;-&quot;</span> <span class="string">&quot;/&quot;</span>三种符号来间隔,“＊”代表所有都匹配。</span><br><span class="line"><span class="number">30</span> * * * *           &lt;==每小时的<span class="number">30</span>分，输出hello</span><br><span class="line">*/<span class="number">10</span> ＊ *  *  *      &lt;==每隔<span class="number">10</span>分钟</span><br><span class="line"><span class="number">30</span> <span class="number">12</span> * * <span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>      &lt;==每周<span class="number">1</span> <span class="number">3</span> <span class="number">5</span>的<span class="number">12</span>时<span class="number">30</span>分</span><br><span class="line"><span class="number">30</span> <span class="number">12</span> <span class="number">1</span> <span class="number">3</span><span class="number">-5</span> *        &lt;==每年的<span class="number">3</span> <span class="number">4</span> <span class="number">5</span>月<span class="number">1</span>日<span class="number">12</span>时<span class="number">30</span>分</span><br></pre></td></tr></table></figure>
 <p>同样的／etc/crontab 中的时间写法也是类似但<code>语法不同</code>cron每分钟都会去读一次计划任务同时也会读一次／etc/crontab文件，crontab文件中设置了4个文件夹（配置文件中的<code>run-parts</code>命令部分），系统会在不同的时间去读取运行其中的文件，我们可以将脚本文件放到对应的文件夹下也可以实现脚本的周期性执行。我们的locate数据库同步，logrotate等都是放在这些目录下来实现周期性的工作。</p>
 <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat <span class="regexp">/etc/</span>crontab</span><br><span class="line">SHELL=<span class="regexp">/bin/</span>bash</span><br><span class="line">PATH=<span class="regexp">/sbin:/</span>bin:<span class="regexp">/usr/</span>sbin:<span class="regexp">/usr/</span>bin</span><br><span class="line">MAILTO=root</span><br><span class="line">HOME=/</span><br><span class="line"></span><br><span class="line"># run-parts</span><br><span class="line"><span class="number">01</span> * * * * root run-parts <span class="regexp">/etc/</span>cron.hourly &lt;==每小时执行一次</span><br><span class="line"><span class="number">02</span> <span class="number">4</span> * * * root run-parts <span class="regexp">/etc/</span>cron.daily &lt;==每天执行一次</span><br><span class="line"><span class="number">22</span> <span class="number">4</span> * * <span class="number">0</span> root run-parts <span class="regexp">/etc/</span>cron.weekly &lt;==每周日执行一次</span><br><span class="line"><span class="number">42</span> <span class="number">4</span> <span class="number">1</span> * * root run-parts <span class="regexp">/etc/</span>cron.monthly &lt;==每个月 <span class="number">1</span> 号执行一次</span><br><span class="line"></span><br><span class="line">###run-parts 我们可以通过which命令来查看其实是<span class="regexp">/usr/</span>bin/run-parts命令，我们可以man一下这个命令，或者直接打开这个命令的脚本，会发现这个命令会将目录下的脚本全部执行一次。</span><br></pre></td></tr></table></figure>
+
       
     </div>
     <div class="article-footer">
@@ -401,15 +444,15 @@
     <figure class="media">
       <div class="media-left">
         <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
-          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128"
+          <img src="/images/avatar.jpg"
             class="img-rounded w-full" alt="">
         </a>
       </div>
       <div class="media-body">
         <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span
-              class="text-dark">Mingxu.Xie</span><small class="ml-1x">DevOps</small></a>
+              class="text-dark">mingxu.xie</span><small class="ml-1x">devops、sre</small></a>
         </h3>
-        <div>一个普通devops。最近有点沉迷户外，可能逐渐驴化！</div>
+        <div>农民工、打工人</div>
       </div>
     </figure>
   </div>
@@ -477,7 +520,7 @@
 
     <div class="copyright">
         
-        &copy; 2021 Mingxu.xie
+        &copy; 2023 mingxu.xie
         
         <!-- <div class="publishby">
         	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.

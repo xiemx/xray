@@ -19,16 +19,16 @@
   
   
   <title>DNS服务器搭建 | 求索</title>
-  <meta name="description" content="DNS即域名系统，用于将IP地址和域名之间的翻译。linux中搭建dns服务器一般使用BIND软件来实现。我们在网络中常常会有将域名转化成IP，和将IP转化成域名这两种需求，这两种需求对应了dns解析中的正向和反向解析。  正向解析：将域名解析成IP地址  反向解析：将ip地址解析成域名   完全合格域名（FQDN）：点结尾的域名，例如”www.xiemx.com.&quot; 就是一个完全合格域">
+  <meta name="description" content="DNS即域名系统，用于将IP地址和域名之间的翻译。linux中搭建dns服务器一般使用BIND软件来实现。我们在网络中常常会有将域名转化成IP，和将IP转化成域名这两种需求，这两种需求对应了dns解析中的正向和反向解析。   正向解析：将域名解析成IP地址   反向解析：将ip地址解析成域名   完全合格域名（FQDN）：点结尾的域名，例如&quot;www.xiemx.com.&quot; 就是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DNS服务器搭建">
 <meta property="og:url" content="https://www.xiemx.com/2015/11/30/dns-server/index.html">
 <meta property="og:site_name" content="求索">
-<meta property="og:description" content="DNS即域名系统，用于将IP地址和域名之间的翻译。linux中搭建dns服务器一般使用BIND软件来实现。我们在网络中常常会有将域名转化成IP，和将IP转化成域名这两种需求，这两种需求对应了dns解析中的正向和反向解析。  正向解析：将域名解析成IP地址  反向解析：将ip地址解析成域名   完全合格域名（FQDN）：点结尾的域名，例如”www.xiemx.com.&quot; 就是一个完全合格域">
+<meta property="og:description" content="DNS即域名系统，用于将IP地址和域名之间的翻译。linux中搭建dns服务器一般使用BIND软件来实现。我们在网络中常常会有将域名转化成IP，和将IP转化成域名这两种需求，这两种需求对应了dns解析中的正向和反向解析。   正向解析：将域名解析成IP地址   反向解析：将ip地址解析成域名   完全合格域名（FQDN）：点结尾的域名，例如&quot;www.xiemx.com.&quot; 就是">
 <meta property="og:locale">
 <meta property="article:published_time" content="2015-11-30T02:11:12.000Z">
-<meta property="article:modified_time" content="2020-12-14T06:37:28.241Z">
-<meta property="article:author" content="Mingxu.xie">
+<meta property="article:modified_time" content="2023-06-09T07:36:51.490Z">
+<meta property="article:author" content="mingxu.xie">
 <meta property="article:tag" content="dns">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
@@ -48,9 +48,9 @@
   
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
   
-<meta name="generator" content="Hexo 5.3.0"></head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
-<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
   <header class="header" itemscope itemtype="http://schema.org/WPHeader">
   <div class="slimContent">
     <div class="navbar-header">
@@ -59,11 +59,11 @@
       <div class="profile-block text-center">
         <a id="avatar" href="https://github.com/xiemx" target="_blank">
           <img class="img-circle img-rotate"
-            src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128" width="200"
+            src="/images/avatar.jpg" width="200"
             height="200">
         </a>
-        <h2 id="name" class="hidden-xs hidden-sm">Mingxu.Xie</h2>
-        <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps</h3>
+        <h2 id="name" class="hidden-xs hidden-sm">mingxu.xie</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">devops、sre</h3>
         <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>
           Shanghai, China</small>
       </div>
@@ -165,16 +165,6 @@
           </a>
         </li>
         
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about">
-            
-            <i class="icon icon-cup-fill"></i>
-            
-            <span class="menu-title">About</span>
-          </a>
-        </li>
-        
       </ul>
       
 	
@@ -213,7 +203,7 @@
   <div class="widget">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget-body tagcloud">
-      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/HPA/" style="font-size: 13px;">HPA</a> <a href="/tags/QOS/" style="font-size: 13px;">QOS</a> <a href="/tags/ResourceQuota/" style="font-size: 13px;">ResourceQuota</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/aliyun/" style="font-size: 13px;">aliyun</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.23px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.15px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.54px;">cluster</a> <a href="/tags/cluster-autoscaler/" style="font-size: 13px;">cluster-autoscaler</a> <a href="/tags/command/" style="font-size: 13.54px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.46px;">database</a> <a href="/tags/debug/" style="font-size: 13.85px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/descheduler/" style="font-size: 13px;">descheduler</a> <a href="/tags/django/" style="font-size: 13.08px;">django</a> <a href="/tags/dns/" style="font-size: 13.08px;">dns</a> <a href="/tags/docker/" style="font-size: 13.15px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.46px;">http</a> <a href="/tags/iis/" style="font-size: 13.31px;">iis</a> <a href="/tags/ingress/" style="font-size: 13.23px;">ingress</a> <a href="/tags/initContainer/" style="font-size: 13px;">initContainer</a> <a href="/tags/iptables/" style="font-size: 13.08px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.08px;">issue</a> <a href="/tags/k8s/" style="font-size: 13.92px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.08px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/kong/" style="font-size: 13.15px;">kong</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/ldap/" style="font-size: 13px;">ldap</a> <a href="/tags/limitRange/" style="font-size: 13px;">limitRange</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.15px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.08px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.15px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.08px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.62px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.08px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.23px;">network</a> <a href="/tags/nginx/" style="font-size: 13.69px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/openresty/" style="font-size: 13px;">openresty</a> <a href="/tags/pdb/" style="font-size: 13px;">pdb</a> <a href="/tags/php/" style="font-size: 13.31px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13.08px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.46px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.15px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.08px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.31px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.08px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.08px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.08px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.08px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.08px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/vue/" style="font-size: 13.54px;">vue</a> <a href="/tags/webserver/" style="font-size: 13.77px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.62px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.54px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
+      <a href="/tags/CMS/" style="font-size: 13px;">CMS</a> <a href="/tags/HPA/" style="font-size: 13px;">HPA</a> <a href="/tags/QOS/" style="font-size: 13px;">QOS</a> <a href="/tags/ResourceQuota/" style="font-size: 13px;">ResourceQuota</a> <a href="/tags/acl/" style="font-size: 13px;">acl</a> <a href="/tags/aliyun/" style="font-size: 13px;">aliyun</a> <a href="/tags/amoeba/" style="font-size: 13px;">amoeba</a> <a href="/tags/apache/" style="font-size: 13.23px;">apache</a> <a href="/tags/arp/" style="font-size: 13px;">arp</a> <a href="/tags/aws/" style="font-size: 13.15px;">aws</a> <a href="/tags/bash/" style="font-size: 13px;">bash</a> <a href="/tags/binlog/" style="font-size: 13px;">binlog</a> <a href="/tags/cache/" style="font-size: 13px;">cache</a> <a href="/tags/cloudfront/" style="font-size: 13px;">cloudfront</a> <a href="/tags/cluster/" style="font-size: 13.54px;">cluster</a> <a href="/tags/cluster-autoscaler/" style="font-size: 13px;">cluster-autoscaler</a> <a href="/tags/command/" style="font-size: 13.54px;">command</a> <a href="/tags/commands/" style="font-size: 13px;">commands</a> <a href="/tags/cpulimit/" style="font-size: 13px;">cpulimit</a> <a href="/tags/database/" style="font-size: 13.46px;">database</a> <a href="/tags/debug/" style="font-size: 13.85px;">debug</a> <a href="/tags/dedecms/" style="font-size: 13px;">dedecms</a> <a href="/tags/deployment/" style="font-size: 13px;">deployment</a> <a href="/tags/descheduler/" style="font-size: 13px;">descheduler</a> <a href="/tags/django/" style="font-size: 13.08px;">django</a> <a href="/tags/dns/" style="font-size: 13.08px;">dns</a> <a href="/tags/docker/" style="font-size: 13.15px;">docker</a> <a href="/tags/domain/" style="font-size: 13px;">domain</a> <a href="/tags/flannel/" style="font-size: 13px;">flannel</a> <a href="/tags/graphite/" style="font-size: 13px;">graphite</a> <a href="/tags/http/" style="font-size: 13.46px;">http</a> <a href="/tags/iis/" style="font-size: 13.31px;">iis</a> <a href="/tags/ingress/" style="font-size: 13.23px;">ingress</a> <a href="/tags/initContainer/" style="font-size: 13px;">initContainer</a> <a href="/tags/iptables/" style="font-size: 13.08px;">iptables</a> <a href="/tags/iscsi/" style="font-size: 13px;">iscsi</a> <a href="/tags/issue/" style="font-size: 13.08px;">issue</a> <a href="/tags/java/" style="font-size: 13px;">java</a> <a href="/tags/k8s/" style="font-size: 13.92px;">k8s</a> <a href="/tags/keepalived/" style="font-size: 13.08px;">keepalived</a> <a href="/tags/kernal/" style="font-size: 13px;">kernal</a> <a href="/tags/kickstart/" style="font-size: 13px;">kickstart</a> <a href="/tags/kong/" style="font-size: 13.15px;">kong</a> <a href="/tags/lambda/" style="font-size: 13px;">lambda</a> <a href="/tags/ldap/" style="font-size: 13px;">ldap</a> <a href="/tags/limitRange/" style="font-size: 13px;">limitRange</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/lvm/" style="font-size: 13px;">lvm</a> <a href="/tags/lvs/" style="font-size: 13.15px;">lvs</a> <a href="/tags/magent/" style="font-size: 13px;">magent</a> <a href="/tags/mail/" style="font-size: 13px;">mail</a> <a href="/tags/memcache/" style="font-size: 13.08px;">memcache</a> <a href="/tags/memcached/" style="font-size: 13.15px;">memcached</a> <a href="/tags/mime-type/" style="font-size: 13px;">mime-type</a> <a href="/tags/mongo/" style="font-size: 13px;">mongo</a> <a href="/tags/monitor/" style="font-size: 13.08px;">monitor</a> <a href="/tags/mssql/" style="font-size: 13px;">mssql</a> <a href="/tags/mysql/" style="font-size: 13.62px;">mysql</a> <a href="/tags/mysql-proxy/" style="font-size: 13.08px;">mysql-proxy</a> <a href="/tags/mysqlcheck/" style="font-size: 13px;">mysqlcheck</a> <a href="/tags/network/" style="font-size: 13.23px;">network</a> <a href="/tags/nginx/" style="font-size: 13.69px;">nginx</a> <a href="/tags/ntp/" style="font-size: 13px;">ntp</a> <a href="/tags/openresty/" style="font-size: 13px;">openresty</a> <a href="/tags/pdb/" style="font-size: 13px;">pdb</a> <a href="/tags/php/" style="font-size: 13.31px;">php</a> <a href="/tags/phpmyadmin/" style="font-size: 13px;">phpmyadmin</a> <a href="/tags/pod/" style="font-size: 13px;">pod</a> <a href="/tags/postgresql/" style="font-size: 13.08px;">postgresql</a> <a href="/tags/pxe/" style="font-size: 13px;">pxe</a> <a href="/tags/python/" style="font-size: 13.38px;">python</a> <a href="/tags/rbash/" style="font-size: 13px;">rbash</a> <a href="/tags/redis/" style="font-size: 13.46px;">redis</a> <a href="/tags/repcache/" style="font-size: 13px;">repcache</a> <a href="/tags/rhcs/" style="font-size: 13px;">rhcs</a> <a href="/tags/scripts/" style="font-size: 13px;">scripts</a> <a href="/tags/shell/" style="font-size: 13.15px;">shell</a> <a href="/tags/socket/" style="font-size: 13px;">socket</a> <a href="/tags/ssh/" style="font-size: 13px;">ssh</a> <a href="/tags/statsd/" style="font-size: 13px;">statsd</a> <a href="/tags/statusCode/" style="font-size: 13px;">statusCode</a> <a href="/tags/store/" style="font-size: 13px;">store</a> <a href="/tags/tcp/" style="font-size: 13.08px;">tcp</a> <a href="/tags/tcpdump/" style="font-size: 13px;">tcpdump</a> <a href="/tags/tomcat/" style="font-size: 13.31px;">tomcat</a> <a href="/tags/tool/" style="font-size: 13.08px;">tool</a> <a href="/tags/twemproxy/" style="font-size: 13.08px;">twemproxy</a> <a href="/tags/udev/" style="font-size: 13px;">udev</a> <a href="/tags/uwsgi/" style="font-size: 13.08px;">uwsgi</a> <a href="/tags/vagrant/" style="font-size: 13.08px;">vagrant</a> <a href="/tags/vcenter/" style="font-size: 13.08px;">vcenter</a> <a href="/tags/view/" style="font-size: 13px;">view</a> <a href="/tags/vue/" style="font-size: 13.54px;">vue</a> <a href="/tags/webserver/" style="font-size: 13.77px;">webserver</a> <a href="/tags/websocket/" style="font-size: 13px;">websocket</a> <a href="/tags/windows/" style="font-size: 13.62px;">windows</a> <a href="/tags/yum/" style="font-size: 13px;">yum</a> <a href="/tags/zabbix/" style="font-size: 13.54px;">zabbix</a> <a href="/tags/zentaopms/" style="font-size: 13px;">zentaopms</a>
     </div>
   </div>
 
@@ -222,9 +212,119 @@
   <div class="widget">
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget-body">
-      <ul class="recent-post-list list-unstyled no-thumbnail">
+      <ul class="recent-post-list list-unstyled ">
         
           <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/synchronized%E9%94%81/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/synchronized%E9%94%81/" class="title">synchronized锁</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T07:54:11.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="title">单例模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T06:34:20.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" class="title">工厂模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T02:52:41.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2023/06/08/%E6%B3%9B%E5%9E%8B%E5%8D%8F%E5%8F%98/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/08/%E6%B3%9B%E5%9E%8B%E5%8D%8F%E5%8F%98/" class="title">泛型协变</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-08T01:47:20.000Z" itemprop="datePublished">2023-06-08</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/2021/02/15/vue-axios/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
             
             <div class="item-inner">
               <p class="item-category">
@@ -235,66 +335,6 @@
               </p>
               <p class="item-date">
                 <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/15/vue-fetch/" class="title">vue fetch</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/15/vue-ref/" class="title">vue ref</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-15T06:01:04.000Z" itemprop="datePublished">2021-02-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/13/vue-slot/" class="title">vue component slot</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-13T07:01:04.000Z" itemprop="datePublished">2021-02-13</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/vue/">vue</a>
-              </p>
-              <p class="item-title">
-                <a href="/2021/02/13/vue-bus/" class="title">vue bus</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2021-02-13T06:01:04.000Z" itemprop="datePublished">2021-02-13</time>
               </p>
             </div>
           </li>
@@ -363,28 +403,37 @@
       
       <p>DNS即域名系统，用于将IP地址和域名之间的翻译。linux中搭建dns服务器一般使用BIND软件来实现。我们在网络中常常会有将域名转化成IP，和将IP转化成域名这两种需求，这两种需求对应了dns解析中的正向和反向解析。</p>
 <ul>
-<li><p>正向解析：将域名解析成IP地址</p>
+<li>
+<p>正向解析：将域名解析成IP地址</p>
 </li>
-<li><p>反向解析：将ip地址解析成域名</p>
+<li>
+<p>反向解析：将ip地址解析成域名</p>
 </li>
 </ul>
-<p><code>完全合格域名（FQDN）</code>：点结尾的域名，例如”<a target="_blank" rel="noopener" href="http://www.xiemx.com.&quot;">www.xiemx.com.&quot;</a> 就是一个完全合格域名。在一般的网络应用中，我们可以省略完全合格域名最右侧的点，但DNS对这个点不能随便省略。因为这个点代表了DNS的根，有了这个点，完全合格域名就可以表达为一个绝对路径，例如”<a target="_blank" rel="noopener" href="http://www.xiemx.com.&quot;就可以表示为DNS根下的com子域下xiemx.com域中一个名为www的主机。如果DNS发现一个域名不是以点结尾的完全合格域名，就会把这个域名加上当前的区域名称作为后缀，让其满足完全合格域名的形式需求。">www.xiemx.com.&quot;就可以表示为DNS根下的com子域下xiemx.com域中一个名为www的主机。如果DNS发现一个域名不是以点结尾的完全合格域名，就会把这个域名加上当前的区域名称作为后缀，让其满足完全合格域名的形式需求。</a></p>
+<p><code>完全合格域名（FQDN）</code>：点结尾的域名，例如&quot;<a href="http://www.xiemx.com">www.xiemx.com</a>.&quot; 就是一个完全合格域名。在一般的网络应用中，我们可以省略完全合格域名最右侧的点，但DNS对这个点不能随便省略。因为这个点代表了DNS的根，有了这个点，完全合格域名就可以表达为一个绝对路径，例如&quot;<a href="http://www.xiemx.com">www.xiemx.com</a>.&quot;就可以表示为DNS根下的com子域下xiemx.com域中一个名为www的主机。如果DNS发现一个域名不是以点结尾的完全合格域名，就会把这个域名加上当前的区域名称作为后缀，让其满足完全合格域名的形式需求。</p>
 <p>查询方法</p>
 <ol>
-<li>递归查询:<br>一般客户机和服务器之间属递归查询，即当客户机向DNS服务器发出请求后,若DNS服务器本身不能解析,则会向另外的DNS服务器发出查询请求，得到结果后转交给客户机；</li>
-<li>迭代查询(反复查询):<br>一般DNS服务器之间属迭代查询，如：若DNS2不能响应DNS1的请求，则它会将DNS3的IP给DNS1，以便其再向DNS3发出请求；DNS3不能响应DNS1的请求，则它会将DNS4的IP给DNS1。如此反复。</li>
+<li>递归查询:<br />
+一般客户机和服务器之间属递归查询，即当客户机向DNS服务器发出请求后,若DNS服务器本身不能解析,则会向另外的DNS服务器发出查询请求，得到结果后转交给客户机；</li>
+<li>迭代查询(反复查询):<br />
+一般DNS服务器之间属迭代查询，如：若DNS2不能响应DNS1的请求，则它会将DNS3的IP给DNS1，以便其再向DNS3发出请求；DNS3不能响应DNS1的请求，则它会将DNS4的IP给DNS1。如此反复。</li>
 </ol>
 <p>记录类型</p>
 <ul>
-<li><p>A记录：域名到IP地址的映射。</p>
+<li>
+<p>A记录：域名到IP地址的映射。</p>
 </li>
-<li><p>CNAME记录：也叫别名记录，用于定义A记录的别名</p>
+<li>
+<p>CNAME记录：也叫别名记录，用于定义A记录的别名</p>
 </li>
-<li><p>MX记录：邮件交换记录（MX）邮件服务器发送邮件时定位邮件服务器，可以有多个MX记录，但存在优先级差别</p>
+<li>
+<p>MX记录：邮件交换记录（MX）邮件服务器发送邮件时定位邮件服务器，可以有多个MX记录，但存在优先级差别</p>
 </li>
-<li><p>NS记录：用于标识区域的DNS服务器，即是说负责此DNS区域的权威名称服务器，用哪一台DNS服务器来解析该区域。</p>
+<li>
+<p>NS记录：用于标识区域的DNS服务器，即是说负责此DNS区域的权威名称服务器，用哪一台DNS服务器来解析该区域。</p>
 </li>
-<li><p>PTR记录：是IP地址到DNS名称的映射，用于反向解析</p>
+<li>
+<p>PTR记录：是IP地址到DNS名称的映射，用于反向解析</p>
 </li>
 </ul>
 <p>安装软件：</p>
@@ -392,9 +441,9 @@
 <p>配置文件：</p>
 <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/var/</span>run<span class="regexp">/named/</span>  ——进程pid文件</span><br><span class="line"><span class="regexp">/var/</span>named/  ——数据文件目录</span><br><span class="line"><span class="regexp">/etc/</span>named.conf ——主配置文件</span><br><span class="line"><span class="regexp">/etc/</span>named.rfc1912.zones ——辅配置文件</span><br><span class="line"><span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>named ——进程控制脚本文件</span><br><span class="line"></span><br><span class="line">[root@localhost ~]# cat <span class="regexp">/etc/</span>named.conf</span><br><span class="line"><span class="keyword">options</span> &#123;</span><br><span class="line">  listen-on port <span class="number">53</span> &#123; <span class="keyword">any</span>; &#125;;——设置监听那些ipv4地址的<span class="number">53</span>端口，默认为<span class="number">127.0</span>.<span class="number">0.1</span>。设置<span class="keyword">any</span>允许所有，也可以；号间隔一个个罗列IP。</span><br><span class="line">  listen-on-v6 port <span class="number">53</span> &#123; <span class="keyword">any</span>; &#125;;——ipv6</span><br><span class="line">  directory <span class="string">&quot;/var/named&quot;</span>;——数据目录</span><br><span class="line">  <span class="keyword">dump</span>-<span class="keyword">file</span> <span class="string">&quot;/var/named/data/cache_dump.db&quot;</span>;</span><br><span class="line">  statistics-<span class="keyword">file</span> <span class="string">&quot;/var/named/data/named_stats.txt&quot;</span>;</span><br><span class="line">  memstatistics-<span class="keyword">file</span> <span class="string">&quot;/var/named/data/named_mem_stats.txt&quot;</span>;</span><br><span class="line">  allow-query &#123; <span class="keyword">any</span>; &#125;;——允许哪些IP来查询，默认为localhost。<span class="keyword">any</span>为允许所有</span><br><span class="line">  recursion yes;——是否允许递归</span><br><span class="line"></span><br><span class="line">  dnssec-enable yes; ——是否启用DNSSEC支持，DNS安全扩展（DNSSEC）提供了验证DNS数据由效性的系统</span><br><span class="line">  dnssec-validation yes;</span><br><span class="line">  dnssec-lookaside auto;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Path to ISC DLV key */</span></span><br><span class="line">  bindkeys-<span class="keyword">file</span> <span class="string">&quot;/etc/named.iscdlv.key&quot;</span>;</span><br><span class="line"></span><br><span class="line">  managed-keys-directory <span class="string">&quot;/var/named/dynamic&quot;</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">logging &#123;</span><br><span class="line">  channel default_debug &#123;</span><br><span class="line">    <span class="keyword">file</span> <span class="string">&quot;data/named.run&quot;</span>;</span><br><span class="line">    severity dynamic;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">zone <span class="string">&quot;.&quot;</span> IN &#123;</span><br><span class="line">  type hint;</span><br><span class="line">  <span class="keyword">file</span> <span class="string">&quot;named.ca&quot;</span>;</span><br><span class="line">&#125;;  ——定义根域服务器</span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;/etc/named.rfc1912.zones&quot;</span>; ——装载辅配置文件，我们一般将需要解析的域名配置写在这个文件中。</span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;/etc/named.root.key&quot;</span>;</span><br></pre></td></tr></table></figure>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat /etc/named.rfc1912.zones</span><br><span class="line"></span><br><span class="line">zone &quot;xiemx.com&quot; IN &#123;                    ——&quot; &quot;内写要解析的域名</span><br><span class="line">  type master;                                      ——设置类型为master主类型，还有其它的hint根类型、slave从类型。当2台dns做主辅同步时会设置辅DNS中的域类型为slave。</span><br><span class="line">  file &quot;xiemx.com.zone&quot;;                    ——xiemx.com域的数据文件，默认在/var/named/中，缺省目录定义在主配置中directory行。</span><br><span class="line">  allow-update &#123; none; &#125;;</span><br><span class="line">&#125;;                                                          —— xiemx.com域名的正向解析配置</span><br><span class="line"></span><br><span class="line">zone &quot;1.168.192.in-addr.arpa&quot; IN &#123; ——&quot;&quot;内的IP反向写要解析的ip网段.in-addr-arpa,本条就是解析192.168.1这个网段</span><br><span class="line">  type master;</span><br><span class="line">  file &quot;192.168.1.zone&quot;;</span><br><span class="line">  allow-update &#123; none; &#125;;</span><br><span class="line">&#125;;                                                          ——192.168.1这个网段的反向解析配置</span><br><span class="line"></span><br><span class="line"> 以上的named.rfc1912.zones内容只是节选了部分，如我们手动添加容易出现语法错误时，可以复制文件中原有的localhost区域信息，直接修改即可。</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat /var/named/xiemx.com.zone</span><br><span class="line"><span class="meta">$</span><span class="bash">TTL    1D       ——TTL条目更新时间默认1D，当时间小时解析精度高，时间太大会导致更改解析记录后生效时间太长，TTL太小的话频繁更新也会影响域名访问速度。</span></span><br><span class="line">@          IN       SOA      @   rname.invalid. (</span><br><span class="line">0    ; serial   ——时间标识，一般都是写当前的日期，由于主辅同步时确定条目是不是新的</span><br><span class="line">1D    ; refresh——slave多长时间更新一次</span><br><span class="line">1H    ; retry——slave同步失败时间隔多长时间再次尝试</span><br><span class="line">1W    ; expire——当主辅不能同步时，1周之后认为其死亡，不再尝试同步</span><br><span class="line">3H )    ; minimum——条目缓存时间，一般为错误的记录保存此时间。当一个主机请求解析一条错误的条目时，3小时后才能再次请求查询</span><br><span class="line">NS              @</span><br><span class="line">A                 192.168.1.10</span><br><span class="line">www    A                 192.168.1.100</span><br><span class="line">MX  5          mail                 ——MX记录后接5为优先级，mx记录有优先级属性需要定义</span><br><span class="line">mail     A                 192.168.1.101</span><br><span class="line">ftp       CNAME      ftp1                </span><br><span class="line">ftp1       A                192.168.1.103  </span><br><span class="line"><span class="meta">$</span><span class="bash">generate  150-200   <span class="built_in">test</span>$        A           192.168.1.$      ——用变量定义一个连续范围的解析一一对应别名和IP 。例：test150.xiemx.com&lt;——&gt;192.168.1.150</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat /var/named/192.168.1.zone</span><br><span class="line"><span class="meta">$</span><span class="bash">TTL    1D</span></span><br><span class="line">@          IN       SOA      @   rname.invalid. (</span><br><span class="line">0    ; serial</span><br><span class="line">1D    ; refresh</span><br><span class="line">1H    ; retry</span><br><span class="line">1W    ; expire</span><br><span class="line">3H )    ; minimum</span><br><span class="line">NS              xiemx.com.</span><br><span class="line">101    PTR    www.xiemx.com.</span><br><span class="line">102    PTR    mail.xiemx.com.</span><br><span class="line">103    PTR    ftp.xiemx.com.</span><br><span class="line">103    PTR    xxx.xiemx.com.</span><br><span class="line"></span><br><span class="line">以上的正反解只是测试时随便写的，一般正反解会相互对应。另外在写条目是要注意：</span><br><span class="line"></span><br><span class="line">1.mx记录、cname记录的值一般都会有对应A记录</span><br><span class="line">2.正反解中的@会继承配置文件中&quot; &quot;内的内容</span><br><span class="line">3.正反解时如果写的域名不是完全合格域名，dns会自动用继承的@来补全你的域名：如正解中的www，dns会自动补全为www.xiemx.com.。</span><br><span class="line">4.同一个IP可对应多个域名（PTR记录可以存在多条），一个域名只能有1条A记录（一个域名只能对应一个IP）</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">测试：</span><br><span class="line"></span><br><span class="line">[root@localhost ~]# nslookup</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> server 192.168.17.6</span></span><br><span class="line">Default server: 192.168.17.6</span><br><span class="line">Address: 192.168.17.6#53</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> xiemx.com</span></span><br><span class="line">Server:        192.168.17.6</span><br><span class="line">Address:    192.168.17.6#53</span><br><span class="line"></span><br><span class="line">Name:    xiemx.com</span><br><span class="line">Address: 127.0.0.1</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> www.xiemx.com</span></span><br><span class="line">Server:        192.168.17.6</span><br><span class="line">Address:    192.168.17.6#53</span><br><span class="line"></span><br><span class="line">Name:    www.xiemx.com</span><br><span class="line">Address: 192.168.1.100</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> mail.xiemx.com</span></span><br><span class="line">Server:        192.168.17.6</span><br><span class="line">Address:    192.168.17.6#53</span><br><span class="line"></span><br><span class="line">Name:    mail.xiemx.com</span><br><span class="line">Address: 192.168.1.101</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> ftp.xiemx.com</span></span><br><span class="line">Server:        192.168.17.6</span><br><span class="line">Address:    192.168.17.6#53</span><br><span class="line"></span><br><span class="line">ftp.xiemx.com    canonical name = ftp1.xiemx.com.</span><br><span class="line">Name:    xxx.xiemx.com</span><br><span class="line">Address: 192.168.1.103</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> test88.xiemx.com</span></span><br><span class="line">Server:        192.168.17.6</span><br><span class="line">Address:    192.168.17.6#53</span><br><span class="line"></span><br><span class="line">Name:    test88.xiemx.com</span><br><span class="line">Address: 192.168.1.88</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> 192.168.1.181</span></span><br><span class="line">Server:        192.168.17.6</span><br><span class="line">Address:    192.168.17.6#53</span><br><span class="line"></span><br><span class="line">181.1.168.192.in-addr.arpa    name = test181.xiemx.com.</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat /var/named/xiemx.com.zone</span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">TTL    1D       ——TTL条目更新时间默认1D，当时间小时解析精度高，时间太大会导致更改解析记录后生效时间太长，TTL太小的话频繁更新也会影响域名访问速度。</span></span><br><span class="line">@          IN       SOA      @   rname.invalid. (</span><br><span class="line">0    ; serial   ——时间标识，一般都是写当前的日期，由于主辅同步时确定条目是不是新的</span><br><span class="line">1D    ; refresh——slave多长时间更新一次</span><br><span class="line">1H    ; retry——slave同步失败时间隔多长时间再次尝试</span><br><span class="line">1W    ; expire——当主辅不能同步时，1周之后认为其死亡，不再尝试同步</span><br><span class="line">3H )    ; minimum——条目缓存时间，一般为错误的记录保存此时间。当一个主机请求解析一条错误的条目时，3小时后才能再次请求查询</span><br><span class="line">NS              @</span><br><span class="line">A                 192.168.1.10</span><br><span class="line">www    A                 192.168.1.100</span><br><span class="line">MX  5          mail                 ——MX记录后接5为优先级，mx记录有优先级属性需要定义</span><br><span class="line">mail     A                 192.168.1.101</span><br><span class="line">ftp       CNAME      ftp1                </span><br><span class="line">ftp1       A                192.168.1.103  </span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">generate  150-200   <span class="built_in">test</span>$        A           192.168.1.$      ——用变量定义一个连续范围的解析一一对应别名和IP 。例：test150.xiemx.com&lt;——&gt;192.168.1.150</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat /var/named/192.168.1.zone</span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">TTL    1D</span></span><br><span class="line">@          IN       SOA      @   rname.invalid. (</span><br><span class="line">0    ; serial</span><br><span class="line">1D    ; refresh</span><br><span class="line">1H    ; retry</span><br><span class="line">1W    ; expire</span><br><span class="line">3H )    ; minimum</span><br><span class="line">NS              xiemx.com.</span><br><span class="line">101    PTR    www.xiemx.com.</span><br><span class="line">102    PTR    mail.xiemx.com.</span><br><span class="line">103    PTR    ftp.xiemx.com.</span><br><span class="line">103    PTR    xxx.xiemx.com.</span><br><span class="line"></span><br><span class="line">以上的正反解只是测试时随便写的，一般正反解会相互对应。另外在写条目是要注意：</span><br><span class="line"></span><br><span class="line">1.mx记录、cname记录的值一般都会有对应A记录</span><br><span class="line">2.正反解中的@会继承配置文件中&quot; &quot;内的内容</span><br><span class="line">3.正反解时如果写的域名不是完全合格域名，dns会自动用继承的@来补全你的域名：如正解中的www，dns会自动补全为www.xiemx.com.。</span><br><span class="line">4.同一个IP可对应多个域名（PTR记录可以存在多条），一个域名只能有1条A记录（一个域名只能对应一个IP）</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">测试：</span><br><span class="line"></span><br><span class="line">[root@localhost ~]# nslookup</span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">server 192.168.17.6</span></span><br><span class="line">Default server: 192.168.17.6</span><br><span class="line">Address: 192.168.17.6#53</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">xiemx.com</span></span><br><span class="line">Server:        192.168.17.6</span><br><span class="line">Address:    192.168.17.6#53</span><br><span class="line"></span><br><span class="line">Name:    xiemx.com</span><br><span class="line">Address: 127.0.0.1</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">www.xiemx.com</span></span><br><span class="line">Server:        192.168.17.6</span><br><span class="line">Address:    192.168.17.6#53</span><br><span class="line"></span><br><span class="line">Name:    www.xiemx.com</span><br><span class="line">Address: 192.168.1.100</span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">mail.xiemx.com</span></span><br><span class="line">Server:        192.168.17.6</span><br><span class="line">Address:    192.168.17.6#53</span><br><span class="line"></span><br><span class="line">Name:    mail.xiemx.com</span><br><span class="line">Address: 192.168.1.101</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">ftp.xiemx.com</span></span><br><span class="line">Server:        192.168.17.6</span><br><span class="line">Address:    192.168.17.6#53</span><br><span class="line"></span><br><span class="line">ftp.xiemx.com    canonical name = ftp1.xiemx.com.</span><br><span class="line">Name:    xxx.xiemx.com</span><br><span class="line">Address: 192.168.1.103</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">test88.xiemx.com</span></span><br><span class="line">Server:        192.168.17.6</span><br><span class="line">Address:    192.168.17.6#53</span><br><span class="line"></span><br><span class="line">Name:    test88.xiemx.com</span><br><span class="line">Address: 192.168.1.88</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">192.168.1.181</span></span><br><span class="line">Server:        192.168.17.6</span><br><span class="line">Address:    192.168.17.6#53</span><br><span class="line"></span><br><span class="line">181.1.168.192.in-addr.arpa    name = test181.xiemx.com.</span><br></pre></td></tr></table></figure>
       
     </div>
     <div class="article-footer">
@@ -418,15 +467,15 @@
     <figure class="media">
       <div class="media-left">
         <a href="https://github.com/xiemx" target="_blank" class="img-burn thumb-sm visible-lg">
-          <img src="https://www.gravatar.com/avatar/0c5c8c33820994ad4bd5f4d0645a482b?s=128"
+          <img src="/images/avatar.jpg"
             class="img-rounded w-full" alt="">
         </a>
       </div>
       <div class="media-body">
         <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span
-              class="text-dark">Mingxu.Xie</span><small class="ml-1x">DevOps</small></a>
+              class="text-dark">mingxu.xie</span><small class="ml-1x">devops、sre</small></a>
         </h3>
-        <div>一个普通devops。最近有点沉迷户外，可能逐渐驴化！</div>
+        <div>农民工、打工人</div>
       </div>
     </figure>
   </div>
@@ -494,7 +543,7 @@
 
     <div class="copyright">
         
-        &copy; 2021 Mingxu.xie
+        &copy; 2023 mingxu.xie
         
         <!-- <div class="publishby">
         	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
