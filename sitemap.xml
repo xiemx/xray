@@ -2,9 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://www.xiemx.com/2023/11/17/scripts-defer-asycn/</loc>
+    <loc>https://www.xiemx.com/2023/11/17/scripts-defer-async/</loc>
     
-    <lastmod>2023-11-17T01:55:39.492Z</lastmod>
+    <lastmod>2023-11-17T02:21:43.990Z</lastmod>
     
   </url>
   
@@ -65,13 +65,6 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2020/01/22/zombie-and-orphan-process/</loc>
-    
-    <lastmod>2023-06-09T07:36:51.556Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.xiemx.com/2023/06/08/%25E5%258D%2595%25E4%25BE%258B%25E6%25A8%25A1%25E5%25BC%258F/</loc>
     
     <lastmod>2023-06-09T07:36:51.556Z</lastmod>
@@ -86,6 +79,13 @@
   </url>
   
   <url>
+    <loc>https://www.xiemx.com/2020/01/22/zombie-and-orphan-process/</loc>
+    
+    <lastmod>2023-06-09T07:36:51.556Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.xiemx.com/2016/03/25/zentaopms-deployment/</loc>
     
     <lastmod>2023-06-09T07:36:51.555Z</lastmod>
@@ -93,14 +93,14 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/09/01/zabbix-server-configure/</loc>
+    <loc>https://www.xiemx.com/2016/12/05/zabbix-trigger-function/</loc>
     
     <lastmod>2023-06-09T07:36:51.554Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/12/05/zabbix-trigger-function/</loc>
+    <loc>https://www.xiemx.com/2016/09/01/zabbix-server-configure/</loc>
     
     <lastmod>2023-06-09T07:36:51.554Z</lastmod>
     
@@ -114,14 +114,14 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/12/05/zabbix-monitor-ssl-cert/</loc>
+    <loc>https://www.xiemx.com/2016/03/25/zabbix-monitor-process/</loc>
     
     <lastmod>2023-06-09T07:36:51.553Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/03/25/zabbix-monitor-process/</loc>
+    <loc>https://www.xiemx.com/2016/12/05/zabbix-monitor-ssl-cert/</loc>
     
     <lastmod>2023-06-09T07:36:51.553Z</lastmod>
     
@@ -149,6 +149,13 @@
   </url>
   
   <url>
+    <loc>https://www.xiemx.com/2016/08/09/zabbix-less-than-25-free-in-the-configuration-cache/</loc>
+    
+    <lastmod>2023-06-09T07:36:51.551Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.xiemx.com/2017/09/21/zabbix-distrubuted-monitor/</loc>
     
     <lastmod>2023-06-09T07:36:51.551Z</lastmod>
@@ -156,9 +163,9 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/08/09/zabbix-less-than-25-free-in-the-configuration-cache/</loc>
+    <loc>https://www.xiemx.com/2015/09/29/windows-cant-open-contral/</loc>
     
-    <lastmod>2023-06-09T07:36:51.551Z</lastmod>
+    <lastmod>2023-06-09T07:36:51.550Z</lastmod>
     
   </url>
   
@@ -177,9 +184,9 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2015/09/29/windows-cant-open-contral/</loc>
+    <loc>https://www.xiemx.com/2015/10/08/window-force-delete-file/</loc>
     
-    <lastmod>2023-06-09T07:36:51.550Z</lastmod>
+    <lastmod>2023-06-09T07:36:51.549Z</lastmod>
     
   </url>
   
@@ -191,14 +198,7 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2015/10/08/window-force-delete-file/</loc>
-    
-    <lastmod>2023-06-09T07:36:51.549Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.xiemx.com/2021/02/10/vue-notebook-1/</loc>
+    <loc>https://www.xiemx.com/2021/02/13/vue-slot/</loc>
     
     <lastmod>2023-06-09T07:36:51.548Z</lastmod>
     
@@ -212,7 +212,7 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2021/02/13/vue-slot/</loc>
+    <loc>https://www.xiemx.com/2021/02/10/vue-notebook-1/</loc>
     
     <lastmod>2023-06-09T07:36:51.548Z</lastmod>
     
@@ -226,14 +226,14 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2021/02/15/vue-fetch/</loc>
+    <loc>https://www.xiemx.com/2021/02/13/vue-keepalived/</loc>
     
     <lastmod>2023-06-09T07:36:51.547Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2021/02/13/vue-keepalived/</loc>
+    <loc>https://www.xiemx.com/2021/02/15/vue-fetch/</loc>
     
     <lastmod>2023-06-09T07:36:51.547Z</lastmod>
     
@@ -289,6 +289,13 @@
   </url>
   
   <url>
+    <loc>https://www.xiemx.com/2017/02/09/vagrant-mulit-vm/</loc>
+    
+    <lastmod>2023-06-09T07:36:51.543Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.xiemx.com/2016/02/18/udev/</loc>
     
     <lastmod>2023-06-09T07:36:51.543Z</lastmod>
@@ -303,21 +310,7 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2017/02/09/vagrant-mulit-vm/</loc>
-    
-    <lastmod>2023-06-09T07:36:51.543Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.xiemx.com/2017/02/09/twemproxu/</loc>
-    
-    <lastmod>2023-06-09T07:36:51.542Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.xiemx.com/2017/02/09/twemproxy-configure/</loc>
     
     <lastmod>2023-06-09T07:36:51.542Z</lastmod>
     
@@ -331,14 +324,21 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/01/24/tomcat-server/</loc>
+    <loc>https://www.xiemx.com/2017/02/09/twemproxy-configure/</loc>
+    
+    <lastmod>2023-06-09T07:36:51.542Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.xiemx.com/2016/01/30/tomcat-virtual-host/</loc>
     
     <lastmod>2023-06-09T07:36:51.541Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/01/30/tomcat-virtual-host/</loc>
+    <loc>https://www.xiemx.com/2016/01/24/tomcat-server/</loc>
     
     <lastmod>2023-06-09T07:36:51.541Z</lastmod>
     
@@ -352,14 +352,14 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/04/13/tomcat-server-name-alias/</loc>
+    <loc>https://www.xiemx.com/2016/03/29/tomcat-permgen-space/</loc>
     
     <lastmod>2023-06-09T07:36:51.540Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/03/29/tomcat-permgen-space/</loc>
+    <loc>https://www.xiemx.com/2016/04/13/tomcat-server-name-alias/</loc>
     
     <lastmod>2023-06-09T07:36:51.540Z</lastmod>
     
@@ -373,14 +373,14 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2018/01/23/tcp-state/</loc>
+    <loc>https://www.xiemx.com/2018/01/23/tcp-time_wait/</loc>
     
     <lastmod>2023-06-09T07:36:51.539Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2018/01/23/tcp-time_wait/</loc>
+    <loc>https://www.xiemx.com/2018/01/23/tcp-state/</loc>
     
     <lastmod>2023-06-09T07:36:51.539Z</lastmod>
     
@@ -429,6 +429,13 @@
   </url>
   
   <url>
+    <loc>https://www.xiemx.com/2017/02/09/repcache-magent/</loc>
+    
+    <lastmod>2023-06-09T07:36:51.535Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.xiemx.com/2016/02/01/rhcs-ha-cluster/</loc>
     
     <lastmod>2023-06-09T07:36:51.535Z</lastmod>
@@ -437,13 +444,6 @@
   
   <url>
     <loc>https://www.xiemx.com/2015/09/30/session_start-error/</loc>
-    
-    <lastmod>2023-06-09T07:36:51.535Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.xiemx.com/2017/02/09/repcache-magent/</loc>
     
     <lastmod>2023-06-09T07:36:51.535Z</lastmod>
     
@@ -471,14 +471,14 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/05/23/redis-slave-replica/</loc>
+    <loc>https://www.xiemx.com/2017/03/06/redis-repl_diskless_replication/</loc>
     
     <lastmod>2023-06-09T07:36:51.533Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2017/03/06/redis-repl_diskless_replication/</loc>
+    <loc>https://www.xiemx.com/2016/05/23/redis-slave-replica/</loc>
     
     <lastmod>2023-06-09T07:36:51.533Z</lastmod>
     
@@ -499,14 +499,14 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/03/29/python-is/</loc>
+    <loc>https://www.xiemx.com/2016/04/28/python-send-mail/</loc>
     
     <lastmod>2023-06-09T07:36:51.531Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/04/28/python-send-mail/</loc>
+    <loc>https://www.xiemx.com/2016/03/29/python-is/</loc>
     
     <lastmod>2023-06-09T07:36:51.531Z</lastmod>
     
@@ -527,14 +527,14 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/04/28/python-code-socket/</loc>
+    <loc>https://www.xiemx.com/2019/07/08/postgresql-replica-status/</loc>
     
     <lastmod>2023-06-09T07:36:51.530Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2019/07/08/postgresql-replica-status/</loc>
+    <loc>https://www.xiemx.com/2016/04/28/python-code-socket/</loc>
     
     <lastmod>2023-06-09T07:36:51.530Z</lastmod>
     
@@ -555,14 +555,14 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/07/06/php_curl/</loc>
+    <loc>https://www.xiemx.com/2015/10/11/php-data-timezone/</loc>
     
     <lastmod>2023-06-09T07:36:51.528Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2015/10/11/php-data-timezone/</loc>
+    <loc>https://www.xiemx.com/2016/07/06/php_curl/</loc>
     
     <lastmod>2023-06-09T07:36:51.528Z</lastmod>
     
@@ -590,13 +590,6 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2017/01/18/nginx-server_name_hash_bucket_size/</loc>
-    
-    <lastmod>2023-06-09T07:36:51.526Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.xiemx.com/2020/01/22/nginx-tick/</loc>
     
     <lastmod>2023-06-09T07:36:51.526Z</lastmod>
@@ -604,14 +597,21 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2019/12/12/nginx-remote-port-is-null/</loc>
+    <loc>https://www.xiemx.com/2017/01/18/nginx-server_name_hash_bucket_size/</loc>
+    
+    <lastmod>2023-06-09T07:36:51.526Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.xiemx.com/2017/01/18/nginx-referer/</loc>
     
     <lastmod>2023-06-09T07:36:51.525Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2017/01/18/nginx-referer/</loc>
+    <loc>https://www.xiemx.com/2019/12/12/nginx-remote-port-is-null/</loc>
     
     <lastmod>2023-06-09T07:36:51.525Z</lastmod>
     
@@ -646,14 +646,14 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2015/08/24/mysqlcheck/</loc>
+    <loc>https://www.xiemx.com/2016/02/18/mysql-proxy-amoeba/</loc>
     
     <lastmod>2023-06-09T07:36:51.522Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/02/18/mysql-proxy-amoeba/</loc>
+    <loc>https://www.xiemx.com/2015/08/24/mysqlcheck/</loc>
     
     <lastmod>2023-06-09T07:36:51.522Z</lastmod>
     
@@ -688,7 +688,7 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/01/30/multi-tomcat-server/</loc>
+    <loc>https://www.xiemx.com/2015/08/21/mime-type/</loc>
     
     <lastmod>2023-06-09T07:36:51.519Z</lastmod>
     
@@ -702,7 +702,7 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2015/08/21/mime-type/</loc>
+    <loc>https://www.xiemx.com/2016/01/30/multi-tomcat-server/</loc>
     
     <lastmod>2023-06-09T07:36:51.519Z</lastmod>
     
@@ -765,6 +765,13 @@
   </url>
   
   <url>
+    <loc>https://www.xiemx.com/2017/03/29/linux-process-status/</loc>
+    
+    <lastmod>2023-06-09T07:36:51.514Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.xiemx.com/2015/11/15/linux-process-manager/</loc>
     
     <lastmod>2023-06-09T07:36:51.514Z</lastmod>
@@ -773,13 +780,6 @@
   
   <url>
     <loc>https://www.xiemx.com/2017/01/07/linux-start-stop-daemon/</loc>
-    
-    <lastmod>2023-06-09T07:36:51.514Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.xiemx.com/2017/03/29/linux-process-status/</loc>
     
     <lastmod>2023-06-09T07:36:51.514Z</lastmod>
     
@@ -807,14 +807,14 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2020/01/21/linux-network-namespace/</loc>
+    <loc>https://www.xiemx.com/2015/11/29/linux-lvm/</loc>
     
     <lastmod>2023-06-09T07:36:51.512Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2015/11/29/linux-lvm/</loc>
+    <loc>https://www.xiemx.com/2020/01/21/linux-network-namespace/</loc>
     
     <lastmod>2023-06-09T07:36:51.512Z</lastmod>
     
@@ -842,6 +842,13 @@
   </url>
   
   <url>
+    <loc>https://www.xiemx.com/2015/11/29/linux-disk-quota/</loc>
+    
+    <lastmod>2023-06-09T07:36:51.510Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.xiemx.com/2015/10/16/linux-find-commands/</loc>
     
     <lastmod>2023-06-09T07:36:51.510Z</lastmod>
@@ -849,9 +856,9 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2015/11/29/linux-disk-quota/</loc>
+    <loc>https://www.xiemx.com/2015/11/15/linux-boot-workflow/</loc>
     
-    <lastmod>2023-06-09T07:36:51.510Z</lastmod>
+    <lastmod>2023-06-09T07:36:51.509Z</lastmod>
     
   </url>
   
@@ -864,13 +871,6 @@
   
   <url>
     <loc>https://www.xiemx.com/2015/11/28/linux-crontab-and-at/</loc>
-    
-    <lastmod>2023-06-09T07:36:51.509Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.xiemx.com/2015/11/15/linux-boot-workflow/</loc>
     
     <lastmod>2023-06-09T07:36:51.509Z</lastmod>
     
@@ -947,13 +947,6 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2020/02/24/k8s-pdb/</loc>
-    
-    <lastmod>2023-06-09T07:36:51.499Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.xiemx.com/2020/02/22/k8s-limit-range/</loc>
     
     <lastmod>2023-06-09T07:36:51.499Z</lastmod>
@@ -962,6 +955,13 @@
   
   <url>
     <loc>https://www.xiemx.com/2020/01/20/k8s-pause-container/</loc>
+    
+    <lastmod>2023-06-09T07:36:51.499Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.xiemx.com/2020/02/24/k8s-pdb/</loc>
     
     <lastmod>2023-06-09T07:36:51.499Z</lastmod>
     
@@ -1017,6 +1017,13 @@
   </url>
   
   <url>
+    <loc>https://www.xiemx.com/2017/04/11/iptables-count/</loc>
+    
+    <lastmod>2023-06-09T07:36:51.494Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.xiemx.com/2015/08/21/iis-set-urlrewrite/</loc>
     
     <lastmod>2023-06-09T07:36:51.494Z</lastmod>
@@ -1024,9 +1031,9 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2017/04/11/iptables-count/</loc>
+    <loc>https://www.xiemx.com/2017/03/31/iis-backup-restore/</loc>
     
-    <lastmod>2023-06-09T07:36:51.494Z</lastmod>
+    <lastmod>2023-06-09T07:36:51.493Z</lastmod>
     
   </url>
   
@@ -1039,13 +1046,6 @@
   
   <url>
     <loc>https://www.xiemx.com/2015/08/24/iis-auth/</loc>
-    
-    <lastmod>2023-06-09T07:36:51.493Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.xiemx.com/2017/03/31/iis-backup-restore/</loc>
     
     <lastmod>2023-06-09T07:36:51.493Z</lastmod>
     
@@ -1087,6 +1087,13 @@
   </url>
   
   <url>
+    <loc>https://www.xiemx.com/2016/09/29/django-reset-admin-password/</loc>
+    
+    <lastmod>2023-06-09T07:36:51.490Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.xiemx.com/2015/11/30/dns-server/</loc>
     
     <lastmod>2023-06-09T07:36:51.490Z</lastmod>
@@ -1101,14 +1108,7 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/09/29/django-reset-admin-password/</loc>
-    
-    <lastmod>2023-06-09T07:36:51.490Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.xiemx.com/2016/04/13/deploy-zabbix_agent-to-windows/</loc>
+    <loc>https://www.xiemx.com/2016/07/06/cpulimit/</loc>
     
     <lastmod>2023-06-09T07:36:51.489Z</lastmod>
     
@@ -1122,16 +1122,9 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/07/06/cpulimit/</loc>
+    <loc>https://www.xiemx.com/2016/04/13/deploy-zabbix_agent-to-windows/</loc>
     
     <lastmod>2023-06-09T07:36:51.489Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.xiemx.com/2016/02/18/build-mysql-proxy/</loc>
-    
-    <lastmod>2023-06-09T07:36:51.488Z</lastmod>
     
   </url>
   
@@ -1150,14 +1143,21 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2020/12/03/aws-targetgroupbinding/</loc>
+    <loc>https://www.xiemx.com/2016/02/18/build-mysql-proxy/</loc>
+    
+    <lastmod>2023-06-09T07:36:51.488Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.xiemx.com/2020/01/21/aws-vpc-cni/</loc>
     
     <lastmod>2023-06-09T07:36:51.487Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2020/01/21/aws-vpc-cni/</loc>
+    <loc>https://www.xiemx.com/2020/12/03/aws-targetgroupbinding/</loc>
     
     <lastmod>2023-06-09T07:36:51.487Z</lastmod>
     
@@ -1178,6 +1178,13 @@
   </url>
   
   <url>
+    <loc>https://www.xiemx.com/2016/08/15/apachetop/</loc>
+    
+    <lastmod>2023-06-09T07:36:51.485Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.xiemx.com/2016/01/17/apache-webserver/</loc>
     
     <lastmod>2023-06-09T07:36:51.485Z</lastmod>
@@ -1186,13 +1193,6 @@
   
   <url>
     <loc>https://www.xiemx.com/2015/09/29/apppool-0x80-error/</loc>
-    
-    <lastmod>2023-06-09T07:36:51.485Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.xiemx.com/2016/08/15/apachetop/</loc>
     
     <lastmod>2023-06-09T07:36:51.485Z</lastmod>
     
@@ -1220,14 +1220,14 @@
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2020/12/17/aliyun-ack-sls/</loc>
+    <loc>https://www.xiemx.com/2016/02/18/Three-shared-storage-comparisons/</loc>
     
     <lastmod>2023-06-09T07:36:51.483Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.xiemx.com/2016/02/18/Three-shared-storage-comparisons/</loc>
+    <loc>https://www.xiemx.com/2020/12/17/aliyun-ack-sls/</loc>
     
     <lastmod>2023-06-09T07:36:51.483Z</lastmod>
     

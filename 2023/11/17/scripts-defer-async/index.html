@@ -18,21 +18,21 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>scripts-defer-asycn | 求索</title>
-  <meta name="description" content="defer 和 async 都是 HTML5 中的新特性，用于异步加载 JavaScript 文件。它们的主要区别在于加载时机和执行顺序。 123456789defer：defer 属性用于指定脚本在文档解析和渲染过程中的执行时机。具有 defer 属性的脚本会在文档解析完成后，但 DOM 构建完成之前执行。这意味着脚本可以在 DOM 元素被创建之前运行，这对于某些需要操作 DOM 的脚本来说非常">
+  <title>scripts-defer-async | 求索</title>
+  <meta name="description" content="defer vs async defer 和 async 都是 HTML5 中的新特性，用于异步加载 JavaScript 文件。它们的主要区别在于加载时机和执行顺序。 1234567891011defer：defer 属性用于指定脚本在文档解析和渲染过程中的执行时机。具有 defer 属性的脚本会在文档解析完成后，但 DOM 构建完成之前执行。这意味着脚本可以在 DOM 元素被创建之前运行，这">
 <meta property="og:type" content="article">
-<meta property="og:title" content="scripts-defer-asycn">
-<meta property="og:url" content="https://www.xiemx.com/2023/11/17/scripts-defer-asycn/index.html">
+<meta property="og:title" content="scripts-defer-async">
+<meta property="og:url" content="https://www.xiemx.com/2023/11/17/scripts-defer-async/index.html">
 <meta property="og:site_name" content="求索">
-<meta property="og:description" content="defer 和 async 都是 HTML5 中的新特性，用于异步加载 JavaScript 文件。它们的主要区别在于加载时机和执行顺序。 123456789defer：defer 属性用于指定脚本在文档解析和渲染过程中的执行时机。具有 defer 属性的脚本会在文档解析完成后，但 DOM 构建完成之前执行。这意味着脚本可以在 DOM 元素被创建之前运行，这对于某些需要操作 DOM 的脚本来说非常">
+<meta property="og:description" content="defer vs async defer 和 async 都是 HTML5 中的新特性，用于异步加载 JavaScript 文件。它们的主要区别在于加载时机和执行顺序。 1234567891011defer：defer 属性用于指定脚本在文档解析和渲染过程中的执行时机。具有 defer 属性的脚本会在文档解析完成后，但 DOM 构建完成之前执行。这意味着脚本可以在 DOM 元素被创建之前运行，这">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-11-17T01:53:09.000Z">
-<meta property="article:modified_time" content="2023-11-17T01:55:39.492Z">
+<meta property="article:modified_time" content="2023-11-17T02:21:43.990Z">
 <meta property="article:author" content="mingxu.xie">
 <meta property="article:tag" content="javascripts">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://www.xiemx.com/2023/11/17/scripts-defer-asycn/index.html">
+  <link rel="canonical" href="https://www.xiemx.com/2023/11/17/scripts-defer-async/index.html">
   
   <link rel="alternate" href="/atom.xml" title="求索" type="application/atom+xml">
   
@@ -63,9 +63,9 @@
             height="200">
         </a>
         <h2 id="name" class="hidden-xs hidden-sm">mingxu.xie</h2>
-        <h3 id="title" class="hidden-xs hidden-sm hidden-md">devops、sre</h3>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">devops</h3>
         <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>
-          Shanghai, China</small>
+          Shanghai</small>
       </div>
       
       <div class="search" id="search-form-wrap">
@@ -217,7 +217,7 @@
           <li>
             
             <div class="item-thumb">
-              <a href="/2023/11/17/scripts-defer-asycn/" class="thumb">
+              <a href="/2023/11/17/scripts-defer-async/" class="thumb">
     
     
         <span class="thumb-image thumb-none"></span>
@@ -231,7 +231,7 @@
                 
               </p>
               <p class="item-title">
-                <a href="/2023/11/17/scripts-defer-asycn/" class="title">scripts-defer-asycn</a>
+                <a href="/2023/11/17/scripts-defer-async/" class="title">scripts-defer-async</a>
               </p>
               <p class="item-date">
                 <time datetime="2023-11-17T01:53:09.000Z" itemprop="datePublished">2023-11-17</time>
@@ -352,7 +352,7 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-scripts-defer-asycn" class="article article-type-post" itemscope
+  <article id="post-scripts-defer-async" class="article article-type-post" itemscope
     itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
@@ -360,7 +360,7 @@
       
   
     <h1 class="article-title" itemprop="name">
-      scripts-defer-asycn
+      scripts-defer-async
     </h1>
   
 
@@ -368,7 +368,7 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2023/11/17/scripts-defer-asycn/" class="article-date">
+	<a href="/2023/11/17/scripts-defer-async/" class="article-date">
 	  <time datetime="2023-11-17T01:53:09.000Z" itemprop="datePublished">2023-11-17</time>
 	</a>
 </span>
@@ -389,19 +389,16 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/11/17/scripts-defer-asycn/#comments"
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/11/17/scripts-defer-async/#comments"
             class="article-comment-link">Comments</a></span>
         
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-      <p>defer 和 async 都是 HTML5 中的新特性，用于异步加载 JavaScript 文件。它们的主要区别在于加载时机和执行顺序。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">defer</span>：<span class="keyword">defer</span> 属性用于指定脚本在文档解析和渲染过程中的执行时机<span class="operator">。</span></span><br><span class="line">具有 <span class="keyword">defer</span> 属性的脚本会在文档解析完成后，但 <span class="type">DOM</span> 构建完成之前执行<span class="operator">。</span></span><br><span class="line">这意味着脚本可以在 <span class="type">DOM</span> 元素被创建之前运行，这对于某些需要操作 <span class="type">DOM</span> 的脚本来说非常有用<span class="operator">。</span></span><br><span class="line">同时，由于 <span class="keyword">defer</span> 脚本在 <span class="type">DOM</span> 构建之前执行，它们不会影响页面的渲染速度<span class="operator">。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span>：<span class="keyword">async</span> 属性用于指定脚本异步加载<span class="operator">。</span></span><br><span class="line">具有 <span class="keyword">async</span> 属性的脚本会在页面加载时异步下载，并在下载完成后按照它们在 <span class="type">HTML</span> 文件中出现的顺序执行<span class="operator">。</span></span><br><span class="line">这允许你将关键的 <span class="type">JavaScript</span> 代码（如交互逻辑）放在页面的顶部，而将非关键的代码（如第三方库）异步加载，从而提高页面的加载速度<span class="operator">。</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>总结：</p>
-<p>如果你需要在 DOM 构建之前执行某些操作，请使用 defer。<br />
-如果你需要异步加载 JavaScript 文件以提高页面加载速度，请使用 async。<br />
-在实际应用中，通常将关键的 JavaScript 代码放在具有 defer 属性的 <script> 标签中，将非关键的代码放在具有 async 属性的 <script> 标签中。这样可以在保证页面功能的同时，提高页面的加载速度。</p>
+      <h3 id="defer-vs-async"><a class="markdownIt-Anchor" href="#defer-vs-async"></a> defer vs async</h3>
+<p>defer 和 async 都是 HTML5 中的新特性，用于异步加载 JavaScript 文件。它们的主要区别在于加载时机和执行顺序。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">defer</span>：<span class="keyword">defer</span> 属性用于指定脚本在文档解析和渲染过程中的执行时机<span class="operator">。</span></span><br><span class="line">具有 <span class="keyword">defer</span> 属性的脚本会在文档解析完成后，但 <span class="type">DOM</span> 构建完成之前执行<span class="operator">。</span></span><br><span class="line">这意味着脚本可以在 <span class="type">DOM</span> 元素被创建之前运行，这对于某些需要操作 <span class="type">DOM</span> 的脚本来说非常有用<span class="operator">。</span></span><br><span class="line">同时，由于 <span class="keyword">defer</span> 脚本在 <span class="type">DOM</span> 构建之前执行，它们不会影响页面的渲染速度<span class="operator">。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span>：<span class="keyword">async</span> 属性用于指定脚本异步加载<span class="operator">。</span></span><br><span class="line">具有 <span class="keyword">async</span> 属性的脚本会在页面加载时异步下载，并在下载完成后按照它们在 <span class="type">HTML</span> 文件中出现的顺序执行<span class="operator">。</span></span><br><span class="line">这允许你将关键的 <span class="type">JavaScript</span> 代码（如交互逻辑）放在页面的顶部，而将非关键的代码（如第三方库）异步加载，从而提高页面的加载速度<span class="operator">。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">PS</span>: 通常将关键的 <span class="type">JavaScript</span> 代码放在具有 <span class="keyword">defer</span> 属性的 <span class="operator">&lt;</span>script<span class="operator">&gt;</span> 标签中，将非关键的代码放在具有 <span class="keyword">async</span> 属性的 <span class="operator">&lt;</span>script<span class="operator">&gt;</span> 标签中<span class="operator">。</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -411,7 +408,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://www.xiemx.com/2023/11/17/scripts-defer-asycn/" title="scripts-defer-asycn" target="_blank" rel="external">https://www.xiemx.com/2023/11/17/scripts-defer-asycn/</a>
+      <a href="https://www.xiemx.com/2023/11/17/scripts-defer-async/" title="scripts-defer-async" target="_blank" rel="external">https://www.xiemx.com/2023/11/17/scripts-defer-async/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -432,9 +429,9 @@
       </div>
       <div class="media-body">
         <h3 class="media-heading"><a href="https://github.com/xiemx" target="_blank"><span
-              class="text-dark">mingxu.xie</span><small class="ml-1x">devops、sre</small></a>
+              class="text-dark">mingxu.xie</span><small class="ml-1x">devops</small></a>
         </h3>
-        <div>农民工、打工人</div>
+        <div>进城打工农民工👨‍🌾</div>
       </div>
     </figure>
   </div>
